@@ -21,22 +21,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/timetable"
             android:layout_width="290dp"
             android:layout_height="304dp"
-            android:onClick="onClickDecoTaskButton"
-            android:background="@drawable/empty_graph" />
+            android:background="@drawable/empty_graph"
+            android:onClick="onClickDecoTaskButton" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="특정 날짜에 적용"
         android:textSize="15dp" />
 
@@ -52,16 +51,18 @@
             android:textSize="30dp" />
 
         <Button
+            android:id="@+id/date_set_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00/00/00" />
+            android:onClick="onClickSet"
+            android:text="00 / 00 / 00" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="반복하기"
         android:textSize="15dp" />
 
@@ -132,56 +133,56 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
 
         <CheckBox
             android:id="@+id/checkBox2"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
 
         <CheckBox
             android:id="@+id/checkBox3"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
 
         <CheckBox
             android:id="@+id/checkBox4"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
 
         <CheckBox
             android:id="@+id/checkBox5"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
 
         <CheckBox
             android:id="@+id/checkBox6"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
 
         <CheckBox
             android:id="@+id/checkBox7"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.50"
-            android:scaleY="1.50" />
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
     </LinearLayout>
 
     <Button
