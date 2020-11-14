@@ -1,4 +1,4 @@
-package com.example.mobileapp;
+package com.example.harujogak;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -28,17 +28,6 @@ public class TimeTableEdit extends AppCompatActivity {
 
         Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
-
-//        taskLabel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String strTaskName = taskLabel.getText().toString().trim();
-//
-//                if(taskLabel.length() > 0) {
-//                    Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
 
         add_task_done.setOnClickListener(new View.OnClickListener(){
             @Override

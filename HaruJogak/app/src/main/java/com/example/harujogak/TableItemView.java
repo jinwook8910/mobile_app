@@ -1,4 +1,4 @@
-package com.example.mobileapp;
+package com.example.harujogak;
 
 import android.content.Context;
 import android.util.AttributeSet;

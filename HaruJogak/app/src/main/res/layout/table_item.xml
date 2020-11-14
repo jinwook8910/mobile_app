@@ -17,6 +17,7 @@
             android:text="2020-11-14"
             android:textSize="15dp" />
 
+<!--        나중에 시간표로 바꿀 부분-->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"

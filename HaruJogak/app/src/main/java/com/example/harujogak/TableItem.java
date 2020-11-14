@@ -1,4 +1,4 @@
-package com.example.mobileapp;
+package com.example.harujogak;
 
 public class TableItem {
     String date;

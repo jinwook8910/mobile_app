@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:label="TimeTableList" android:name=".TimeTableList"/>
+        <activity android:label="TimeTableEdit" android:name=".TimeTableEdit"/>
     </application>
 
 </manifest>

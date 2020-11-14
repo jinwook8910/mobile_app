@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Log.i("MainActivity", "onClickButton");
-                Intent intent = new Intent(MainActivity.this, com.example.mobileapp.TimeTableList.class);
+                Intent intent = new Intent(MainActivity.this, TimeTableList.class);
                 startActivity(intent);
             }
         });
