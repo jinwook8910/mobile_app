@@ -17,9 +17,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = (Button)findViewById(R.id.nextbtn);
-        btn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        Button btn = (Button) findViewById(R.id.nextbtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 Log.i("MainActivity", "onClickButton");
                 Intent intent = new Intent(MainActivity.this, TimeTableList.class);
                 startActivity(intent);

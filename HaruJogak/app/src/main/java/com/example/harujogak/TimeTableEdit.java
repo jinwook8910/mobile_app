@@ -24,16 +24,17 @@ public class TimeTableEdit extends AppCompatActivity {
     DateSetListener dateSetListener = new DateSetListener();
     TimeSetListener timeSetListener = new TimeSetListener();
 
-    class DateSetListener implements DatePickerDialog.OnDateSetListener{
+    class DateSetListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            datebutton.setText(year+" / "+month+" / "+dayOfMonth);
+            datebutton.setText(year + " / " + month + " / " + dayOfMonth);
         }
     }
-    class TimeSetListener implements TimePickerDialog.OnTimeSetListener{
+
+    class TimeSetListener implements TimePickerDialog.OnTimeSetListener {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            timebutton.setText(hourOfDay+" : "+minute);
+            timebutton.setText(hourOfDay + " : " + minute);
         }
     }
 
@@ -42,7 +43,7 @@ public class TimeTableEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_edit);
 
-        datebutton = (Button)findViewById(R.id.date_set_button);
+        datebutton = (Button) findViewById(R.id.date_set_button);
     }
 
     public void onClickAddTaskButton(View v) {
@@ -53,12 +54,12 @@ public class TimeTableEdit extends AppCompatActivity {
 
         Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
-        timebutton = (Button)addTaskDialog.findViewById(R.id.time_set_button);
+        timebutton = (Button) addTaskDialog.findViewById(R.id.time_set_button);
 
-        add_task_done.setOnClickListener(new View.OnClickListener(){
+        add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), ""+taskLabel.getText().toString().trim(),
+                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(),
                         Toast.LENGTH_LONG).show();
                 addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
@@ -76,7 +77,7 @@ public class TimeTableEdit extends AppCompatActivity {
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
         taskLabel = (EditText) decoTaskDialog.findViewById(R.id.task_label_set);
 
-        decorate_done.setOnClickListener(new View.OnClickListener(){
+        decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
@@ -87,7 +88,7 @@ public class TimeTableEdit extends AppCompatActivity {
         decoTaskDialog.show();
     }
 
-    public void onClickSet(View view){
+    public void onClickSet(View view) {
         Calendar cal = Calendar.getInstance();
         int mYear = cal.get(Calendar.YEAR);
         int mMonth = cal.get(Calendar.MONTH);
@@ -95,11 +96,11 @@ public class TimeTableEdit extends AppCompatActivity {
         int mHour = cal.get(Calendar.HOUR_OF_DAY);
         int mMinute = cal.get(Calendar.MINUTE);
 
-        if(view == datebutton){
+        if (view == datebutton) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
             datePickerDialog.show();
         }
-        if(view == timebutton){
+        if (view == timebutton) {
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, true);
             timePickerDialog.show();
         }
