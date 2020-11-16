@@ -9,32 +9,23 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn1;
-    Button btn2;
-    Button btn4;
-    Button btn5;
+    Button btn1, btn2, btn3, btn4, btn5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btn1 = (Button) findViewById(R.id.main_btn1);
         btn2 = (Button) findViewById(R.id.main_btn2);
+        btn3 = (Button) findViewById(R.id.main_btn3);
         btn4 = (Button) findViewById(R.id.main_btn4);
         btn5 = (Button) findViewById(R.id.main_btn5);
 
         btn1.setOnClickListener(listener);
         btn2.setOnClickListener(listener);
+        btn3.setOnClickListener(listener);
         btn4.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
-
-        Button btn = (Button) findViewById(R.id.nextbtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Log.i("MainActivity", "onClickButton");
-                Intent intent = new Intent(MainActivity.this, TimeTableList.class);
-                startActivity(intent);
-            }
-        });
     }
 
     class Listener implements View.OnClickListener{
@@ -45,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(view==btn2){
                 System.out.println("btn2");
+            }
+            else if(view==btn3){
+                Log.i("MainActivity", "onClickButton");
+                Intent intent = new Intent(MainActivity.this, TimeTableList.class);
+                startActivity(intent);
             }
             else if(view==btn4){
                 Intent intent = new Intent(MainActivity.this, Calendar.class);
