@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "23991322771",
+    "firebase_url": "https://harujogak.firebaseio.com",
+    "project_id": "harujogak",
+    "storage_bucket": "harujogak.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23991322771:android:0e6b36a5c6368d8ae7a566",
+        "android_client_info": {
+          "package_name": "com.example.harujogak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23991322771-9ivv1hc7ui526brg4bvpej0e5eh5j328.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.harujogak",
+            "certificate_hash": "d96b972293e9f6cdb07871754c29125293159f79"
+          }
+        },
+        {
+          "client_id": "23991322771-mlquahlj98hdeqhq2stp0vb51n3t2k5f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrvDfaCv7WCzIJUOIVNGJbmuPy_t4x8vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23991322771-mlquahlj98hdeqhq2stp0vb51n3t2k5f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
