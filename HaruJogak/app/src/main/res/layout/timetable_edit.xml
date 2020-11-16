@@ -26,14 +26,14 @@
 <!--        <com.github.mikephil.charting.charts.PieChart-->
 <!--            android:id="@+id/piechart"-->
 <!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
+<!--            android:layout_height="300dp" />-->
 
-        <ImageView
-            android:id="@+id/timetable"
-            android:layout_width="290dp"
-            android:layout_height="304dp"
-            android:background="@drawable/empty_graph"
-            android:onClick="onClickDecoTaskButton" />
+<!--        <ImageView-->
+<!--            android:id="@+id/timetable"-->
+<!--            android:layout_width="290dp"-->
+<!--            android:layout_height="304dp"-->
+<!--            android:background="@drawable/empty_graph"-->
+<!--            android:onClick="onClickDecoTaskButton" />-->
 
     </LinearLayout>
 
