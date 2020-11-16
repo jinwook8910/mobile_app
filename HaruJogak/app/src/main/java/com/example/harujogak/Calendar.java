@@ -24,8 +24,6 @@ public class Calendar extends AppCompatActivity {
         EditText calendar_text = findViewById(R.id.calendar_text);
         Button calendar_btn = findViewById(R.id.calendar_btn);
 
-        calendar_date.setText("날짜를 선택하세요");
-
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
                 calendar_date.setVisibility(View.VISIBLE);
@@ -39,7 +37,4 @@ public class Calendar extends AppCompatActivity {
 
     }
 
-    public void checkDay(int cYear, int cMonth, int cDay){
-
-    }
 }
