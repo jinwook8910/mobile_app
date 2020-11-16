@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 public class TableItemView extends LinearLayout {
 
     TextView textView;
-    TextView textView2;
     ImageView imageView;
 
     // Generate > Constructor
