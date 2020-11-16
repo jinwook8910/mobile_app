@@ -18,8 +18,8 @@
         </activity>
         <activity android:label="TimeTableList" android:name=".TimeTableList"/>
         <activity android:label="TimeTableEdit" android:name=".TimeTableEdit"/>
-        <activity android:label="Goal" android:name=".Goal"/>
-        <activity android:label="Calendar" android:name=".Calendar"/>
+        <activity android:label="GoalActivity" android:name=".GoalActivity"/>
+        <activity android:label="CalendarActivity" android:name=".CalendarActivity"/>
     </application>
 
 </manifest>
