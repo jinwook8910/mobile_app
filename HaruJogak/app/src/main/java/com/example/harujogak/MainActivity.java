@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     class Listener implements View.OnClickListener{
         public void onClick(View view){
             if(view==btn1){
-                Intent intent = new Intent(MainActivity.this, Goal.class);
+                Intent intent = new Intent(MainActivity.this, GoalActivity.class);
                 startActivity(intent);
             }
             else if(view==btn2){
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn4){
-                Intent intent = new Intent(MainActivity.this, Calendar.class);
+                Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
                 startActivity(intent);
             }
             else if(view==btn5){
