@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
@@ -11,7 +12,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/goal_text"
         android:textSize="20dp"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="20dp"
         />
     <EditText
@@ -22,14 +22,12 @@
         android:id="@+id/goal_input"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="100dp"
         android:hint="목표"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:layout_marginLeft="100dp"
         android:id="@+id/goal_result"
         />
     <CalendarView
@@ -44,7 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:id="@+id/goal_btn"
-        android:layout_marginLeft="100dp"
         />
 
 </LinearLayout>

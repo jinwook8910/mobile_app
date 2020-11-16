@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
     <CalendarView
@@ -16,17 +17,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:id="@+id/calender_date"
-        android:layout_marginLeft="100dp"
         />
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/calendar_text"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="100dp"
-        android:visibility="invisible"
         />
     <Button
         android:text="추가"
@@ -34,8 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:id="@+id/calendar_btn"
-        android:layout_marginLeft="100dp"
-        android:visibility="invisible"
         />
 
 </LinearLayout>

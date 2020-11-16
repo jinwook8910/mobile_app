@@ -5,8 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/main_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize = "20dp"
+        android:layout_marginTop="15dp"
+        />
+    <TextView
+        android:id="@+id/main_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize = "20dp"
+        android:layout_marginTop="10dp"
+        />
 <!--대충 적어놓은 것-->
     <LinearLayout
         android:layout_width="match_parent"
