@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:background="#fff"
             android:onClick="onClickSet"
-            android:text="   :   " />
+            android:text="hh : mm" />
     </LinearLayout>
 
     <LinearLayout

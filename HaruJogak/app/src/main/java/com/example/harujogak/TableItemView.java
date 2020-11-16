@@ -15,7 +15,6 @@ public class TableItemView extends LinearLayout {
     ImageView imageView;
 
     // Generate > Constructor
-
     public TableItemView(Context context) {
         super(context);
         init(context);
