@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-public class TimeTableEdit extends AppCompatActivity {
+public class TimeTableEditActivity extends AppCompatActivity {
     Dialog addTaskDialog, decoTaskDialog;
     EditText taskLabel;
     Button datebutton, timebutton;

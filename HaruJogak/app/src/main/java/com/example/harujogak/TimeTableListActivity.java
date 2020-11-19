@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 
-public class TimeTableList extends AppCompatActivity {
+public class TimeTableListActivity extends AppCompatActivity {
 
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
     ArrayList<TableItemByDay> week = new ArrayList<>(7);
@@ -60,7 +60,7 @@ public class TimeTableList extends AppCompatActivity {
                 TableItemByDate item = (TableItemByDate) tableAdapter.getItem(position);
                 Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(TimeTableList.this, TimeTableEdit.class);
+                Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
                 startActivity(intent);
             }
         });
