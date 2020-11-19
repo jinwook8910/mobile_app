@@ -51,7 +51,7 @@ public class TimeTableEdit extends AppCompatActivity {
         addTaskDialog = new Dialog(this);
         addTaskDialog.setContentView(R.layout.add_task_dialog);
         addTaskDialog.setTitle("일정 추가");
-        Task task = new Task();
+        //Task task = new Task();
 
         Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
