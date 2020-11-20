@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CalendarActivity extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity {
     long mNow;
     Date mDate;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy / MM / dd");

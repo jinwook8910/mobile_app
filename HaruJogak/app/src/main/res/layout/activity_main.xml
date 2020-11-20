@@ -4,25 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/main_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize = "20dp"
         android:layout_marginTop="15dp"
-        />
+        android:textSize="20dp" />
+
     <TextView
         android:id="@+id/main_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize = "20dp"
         android:layout_marginTop="10dp"
-        />
-<!--대충 적어놓은 것-->
+        android:textSize="20dp" />
+
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/todayPieChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,26 +43,35 @@
             android:id="@+id/main_btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:text="goal" />
+
         <Button
             android:id="@+id/main_btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:text="static" />
+
         <Button
             android:id="@+id/main_btn3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:text="time table" />
+
         <Button
             android:id="@+id/main_btn4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:text="calendar" />
+
         <Button
             android:id="@+id/main_btn5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:text="today" /> <!--오늘 시간표 수정?-->
     </LinearLayout>
 
