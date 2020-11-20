@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -28,12 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/timetable"-->
-<!--            android:layout_width="290dp"-->
-<!--            android:layout_height="304dp"-->
-<!--            android:background="@drawable/empty_graph"-->
-<!--            android:onClick="onClickDecoTaskButton" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/timetable"-->
+        <!--            android:layout_width="290dp"-->
+        <!--            android:layout_height="304dp"-->
+        <!--            android:background="@drawable/empty_graph"-->
+        <!--            android:onClick="onClickDecoTaskButton" />-->
 
     </LinearLayout>
 
@@ -47,84 +48,95 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="Date : "
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/date_set_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:onClick="onClickSet"
             android:text="yy / mm / dd" />
-
+<!--버튼 색은 Tint로 설정해야 적용되는 듯?? 왜그런거지-->
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="반복하기"
         android:textSize="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
             android:text="월"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
+            android:gravity="center"
             android:text="화"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
+            android:gravity="center"
             android:text="수"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
+            android:gravity="center"
             android:text="목"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
+            android:gravity="center"
             android:text="금"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
+            android:gravity="center"
             android:text="토"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
+            android:gravity="center"
             android:text="일"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -136,58 +148,45 @@
         <CheckBox
             android:id="@+id/checkBox1"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:gravity="center" />
 
         <CheckBox
             android:id="@+id/checkBox2"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp" />
 
         <CheckBox
             android:id="@+id/checkBox3"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp" />
 
         <CheckBox
             android:id="@+id/checkBox4"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp" />
 
         <CheckBox
             android:id="@+id/checkBox5"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp" />
 
         <CheckBox
             android:id="@+id/checkBox6"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp" />
 
         <CheckBox
             android:id="@+id/checkBox7"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp" />
     </LinearLayout>
 
     <Button
@@ -195,10 +194,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_margin="20dp"
-        android:background="#505159"
+        android:layout_margin="15dp"
+        android:backgroundTint="#505159"
         android:text="추가"
-        android:textColor="#fff"
-        android:textSize="30dp" />
+        android:textColor="#fff"/>
 
 </LinearLayout>

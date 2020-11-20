@@ -2,8 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:layout_margin="10dp"
     android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="일정 변경"
+        android:textSize="25dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,10 +20,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="일정 : "
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/task_label_show"
@@ -25,7 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="일정입니당"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
     </LinearLayout>
 
@@ -38,18 +45,19 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="시간 : "
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/task_time_show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="시간입니당"
-            android:textSize="30dp" />
+            android:text="HH : MM  ~  HH : MM"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -61,18 +69,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="배경 : "
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/task_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:gravity="center"
-            android:text="시간입니당"
-            android:textSize="30dp" />
+            android:text="컬러피커"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -84,18 +94,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="글씨 : "
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/themeColor"
             android:gravity="center"
-            android:text="시간입니당"
-            android:textSize="30dp" />
+            android:text="컬러피커"
+            android:textSize="20dp" />
     </LinearLayout>
 
     <Button
@@ -104,9 +116,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_margin="20dp"
-        android:background="#505159"
+        android:backgroundTint="#505159"
         android:text="완료"
-        android:textColor="#fff"
-        android:textSize="30dp" />
+        android:textColor="#fff" />
 
 </LinearLayout>
