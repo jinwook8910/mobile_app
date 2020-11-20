@@ -19,6 +19,7 @@
         <activity android:label="TimeTableList" android:name=".TimeTableListActivity"/>
         <activity android:label="TimeTableEdit" android:name=".TimeTableEditActivity"/>
         <activity android:label="GoalActivity" android:name=".GoalActivity"/>
+        <activity android:label="GoalAddActivity" android:name=".GoalAddActivity"/>
         <activity android:label="CalendarActivity" android:name=".ScheduleActivity"/>
     </application>
 
