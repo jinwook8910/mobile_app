@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class TimeTableListActivity extends AppCompatActivity {
 
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
+    // 나중에 사용자 정보에 저장된 ArrayList를 가져와서 동작시켜야함
     ArrayList<TableItemByDay> week = new ArrayList<>(7);
 
     @Override

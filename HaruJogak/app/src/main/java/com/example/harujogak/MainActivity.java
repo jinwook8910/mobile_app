@@ -55,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(view==btn3){
                 Log.i("MainActivity", "onClickButton");
-                Intent intent = new Intent(MainActivity.this, TimeTableList.class);
+                Intent intent = new Intent(MainActivity.this, TimeTableListActivity.class);
                 startActivity(intent);
             }
             else if(view==btn4){
-                Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
+                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
                 startActivity(intent);
             }
             else if(view==btn5){
