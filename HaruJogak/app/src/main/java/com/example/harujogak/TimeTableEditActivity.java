@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -21,13 +22,16 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TimeTableEditActivity extends AppCompatActivity {
     Dialog addTaskDialog, decoTaskDialog;
     EditText taskLabel;
-    Button datebutton, timebutton;
+    Button dateButton;
+    TextView startTimeButton, endTimeButton;
+    int flag;
 
     DateSetListener dateSetListener = new DateSetListener();
     TimeSetListener timeSetListener = new TimeSetListener();
@@ -35,14 +39,17 @@ public class TimeTableEditActivity extends AppCompatActivity {
     class DateSetListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            datebutton.setText(year + " / " + month + " / " + dayOfMonth);
+            dateButton.setText(year + " / " + month + " / " + dayOfMonth);
         }
     }
 
     class TimeSetListener implements TimePickerDialog.OnTimeSetListener {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            timebutton.setText(hourOfDay + " : " + minute);
+            if (flag == 1)
+                startTimeButton.setText(hourOfDay + " : " + minute);
+            if (flag == 2)
+                endTimeButton.setText(hourOfDay + " : " + minute);
         }
     }
 
@@ -51,11 +58,20 @@ public class TimeTableEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_edit);
 
-        datebutton = (Button) findViewById(R.id.date_set_button);
+        dateButton = (Button) findViewById(R.id.date_set_button);
+
+        /*
+         * 파이차트 동작
+         * 1. 파이차트 객체 생성
+         * 2. 파이차트에 들어갈 태스크리스트 == PieEntry arraylist 생성
+         * 3. PieEntry arraylist에 PieEntry를 여러개 만들어서 넣음 => add
+         * 4. 해당 어래이리스트를 라벨링함 => PieDataSet
+         * 5. 그 PieData를 파이차트 객체에 넣어줌 => setData
+         * */
 
         PieChart pieChart = findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(true);
+        pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
 
         pieChart.setDragDecelerationFrictionCoef(0.95f);
@@ -66,7 +82,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        // task 추가
         //yValues.add(new PieEntry(34f, "Japan"));
         yValues.add(new PieEntry(23f, "USA"));
         yValues.add(new PieEntry(14f, "UK"));
@@ -80,8 +95,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
         pieChart.setDescription(description);
 
         PieDataSet dataSet = new PieDataSet(yValues, "Countries");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(3f);
+        dataSet.setSliceSpace(2f);
+        dataSet.setSelectionShift(1f);
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         PieData data = new PieData((dataSet));
@@ -99,14 +114,14 @@ public class TimeTableEditActivity extends AppCompatActivity {
         //Task task = new Task();
 
         Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
+        startTimeButton = (TextView) addTaskDialog.findViewById(R.id.start_time_set_button);
+        endTimeButton = (TextView) addTaskDialog.findViewById(R.id.end_time_set_button);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
-        timebutton = (Button) addTaskDialog.findViewById(R.id.time_set_button);
 
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
                 addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
         });
@@ -142,12 +157,16 @@ public class TimeTableEditActivity extends AppCompatActivity {
         int mHour = cal.get(Calendar.HOUR_OF_DAY);
         int mMinute = cal.get(Calendar.MINUTE);
 
-        if (view == datebutton) {
+        if (view == dateButton) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
             datePickerDialog.show();
-        }
-        if (view == timebutton) {
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, true);
+        } else if (view == startTimeButton) {
+            flag = 1;
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, false);
+            timePickerDialog.show();
+        } else if (view == endTimeButton) {
+            flag = 2;
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, false);
             timePickerDialog.show();
         }
     }

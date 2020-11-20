@@ -14,9 +14,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -26,13 +26,35 @@
             android:text="시간 : "
             android:textSize="20dp" />
 
-        <Button
-            android:id="@+id/time_set_button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:onClick="onClickSet"
-            android:text="hh : mm" />
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/start_time_set_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickSet"
+                android:text="00 : 00"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    ~    "
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/end_time_set_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickSet"
+                android:text="00 : 00"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -88,5 +110,5 @@
         android:layout_margin="20dp"
         android:backgroundTint="#505159"
         android:text="추가"
-        android:textColor="#fff"/>
+        android:textColor="#fff" />
 </LinearLayout>
