@@ -22,20 +22,24 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.jaredrummler.android.colorpicker.ColorPanelView;
+import com.jaredrummler.android.colorpicker.ColorPickerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TimeTableEditActivity extends AppCompatActivity {
-    Dialog addTaskDialog, decoTaskDialog;
-    EditText taskLabel;
-    Button dateButton;
-    TextView startTimeButton, endTimeButton;
-    int flag;
+    private EditText taskLabel;
+    private Button dateButton;
+    private TextView startTimeButton, endTimeButton;
+    private ColorPickerView colorPickerView;
+    private ColorPanelView newColorPanelView;
+    private int flag;
 
     DateSetListener dateSetListener = new DateSetListener();
     TimeSetListener timeSetListener = new TimeSetListener();
 
+    //리스너
     class DateSetListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -106,12 +110,12 @@ public class TimeTableEditActivity extends AppCompatActivity {
         pieChart.setData(data);
     }
 
+    //버튼 클릭시 add Task 다이얼로그 띄우는 함수
     public void onClickAddTaskButton(View v) {
-        Log.i("Custom", "onClickButton");
-        addTaskDialog = new Dialog(this);
+        Log.i("Custom", "onClickAddTaskButton");
+        Dialog addTaskDialog = new Dialog(this);
         addTaskDialog.setContentView(R.layout.add_task_dialog);
         addTaskDialog.setTitle("일정 추가");
-        //Task task = new Task();
 
         Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
         startTimeButton = (TextView) addTaskDialog.findViewById(R.id.start_time_set_button);
@@ -128,21 +132,40 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
         addTaskDialog.show();
     }
-
+    //버튼 클릭시 decorate task 다이얼로그 띄우는 함수
     public void onClickDecoTaskButton(View v) {
-        Log.i("Custom", "onClickButton");
-        decoTaskDialog = new Dialog(this);
+        Log.i("Custom", "onClickDecoTaskButton");
+
+        Dialog decoTaskDialog = new Dialog(this);
         decoTaskDialog.setContentView(R.layout.decorate_dialog);
         decoTaskDialog.setTitle("일정 추가");
 
+        TextView taskLabelLine = (TextView) decoTaskDialog.findViewById(R.id.task_label_show);
+        TextView taskTimeLine = (TextView) decoTaskDialog.findViewById(R.id.task_time_show);
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
-        taskLabel = (EditText) decoTaskDialog.findViewById(R.id.task_label_set);
+        Button pieColorButton = (Button) decoTaskDialog.findViewById(R.id.pie_Color);
+        Button textColorButton = (Button) decoTaskDialog.findViewById(R.id.text_color);
 
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
                 decoTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+            }
+        });
+
+        pieColorButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_LONG).show();
+                showColorPicker(v);
+            }
+        });
+        textColorButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "textColorButton done", Toast.LENGTH_LONG).show();
+                showColorPicker(v);
             }
         });
 
@@ -169,5 +192,21 @@ public class TimeTableEditActivity extends AppCompatActivity {
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, false);
             timePickerDialog.show();
         }
+    }
+
+    public void showColorPicker(View view){
+        Dialog colorPickerDialog = new Dialog(this);
+        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
+        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
+
+        colorPickDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
+                colorPickerDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+            }
+        });
+
+        colorPickerDialog.show();
     }
 }
