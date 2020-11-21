@@ -5,119 +5,125 @@
     android:layout_margin="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="일정 변경"
-        android:textSize="25dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:padding="25dp">
 
         <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="일정 : "
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/task_label_show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="일정입니당"
-            android:textSize="20dp" />
+            android:padding="15dp"
+            android:text="일정 변경"
+            android:textColor="#6200EE"
+            android:textSize="25dp" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="시간 : "
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/task_time_show"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="HH : MM  ~  HH : MM"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="일정 : "
+                android:textSize="20dp" />
 
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="배경 : "
-            android:textSize="20dp" />
+            <TextView
+                android:id="@+id/task_label_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="일정입니당"
+                android:textSize="20dp" />
 
-        <Button
-            android:id="@+id/task_background"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:gravity="center"
-            android:text="컬러피커"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="시간 : "
+                android:textSize="20dp" />
 
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="글씨 : "
-            android:textSize="20dp" />
+            <TextView
+                android:id="@+id/task_time_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="HH : MM  ~  HH : MM"
+                android:textSize="20dp" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/text_color"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:gravity="center"
-            android:text="컬러피커"
-            android:textSize="20dp" />
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="배경 : "
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/pie_Color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/themeColor"
+                android:gravity="center"
+                android:text="컬러피커"
+                android:textSize="20dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="글씨 : "
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/text_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/themeColor"
+                android:gravity="center"
+                android:text="컬러피커"
+                android:textSize="20dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button
         android:id="@+id/decorate_done"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_margin="20dp"
-        android:backgroundTint="#505159"
-        android:text="완료"
-        android:textColor="#fff" />
+        android:text="OK" />
 
 </LinearLayout>
