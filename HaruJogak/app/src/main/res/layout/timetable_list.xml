@@ -17,18 +17,11 @@
             android:text="주간 시간표"
             android:textSize="20dp" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler1"
-                android:scrollbars="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"/>
 
     </LinearLayout>
 

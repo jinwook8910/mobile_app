@@ -24,9 +24,13 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jaredrummler.android.colorpicker.ColorPanelView;
 import com.jaredrummler.android.colorpicker.ColorPickerView;
+//import com.jaredrummler.android.colorpicker.ColorPanelView;
+//import com.jaredrummler.android.colorpicker.ColorPickerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class TimeTableEditActivity extends AppCompatActivity {
     private EditText taskLabel;
@@ -74,19 +78,17 @@ public class TimeTableEditActivity extends AppCompatActivity {
          * */
 
         PieChart pieChart = findViewById(R.id.pieChart);
-        pieChart.setUsePercentValues(true);
+//        pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
 
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
+//        pieChart.setDragDecelerationFrictionCoef(0.95f);
 
         pieChart.setDrawHoleEnabled(false);
-        pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        //yValues.add(new PieEntry(34f, "Japan"));
+        yValues.add(new PieEntry(34f, "Japan"));
         yValues.add(new PieEntry(23f, "USA"));
         yValues.add(new PieEntry(14f, "UK"));
         yValues.add(new PieEntry(35f, "India"));
@@ -195,18 +197,35 @@ public class TimeTableEditActivity extends AppCompatActivity {
     }
 
     public void showColorPicker(View view){
-        Dialog colorPickerDialog = new Dialog(this);
-        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
-        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
-
-        colorPickDoneButton.setOnClickListener(new View.OnClickListener() {
+//        Dialog colorPickerDialog = new Dialog(this);
+//        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
+//        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
+//
+//        colorPickDoneButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
+//                colorPickerDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+//            }
+//        });
+//
+//        colorPickerDialog.show();
+        final ColorPicker colorPicker = new ColorPicker(TimeTableEditActivity.this);
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
-                colorPickerDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+            public void onChooseColor(int position,int color) {
+                view.setBackgroundColor(color);
             }
-        });
 
-        colorPickerDialog.show();
+            @Override
+            public void onCancel(){
+                colorPicker.dismissDialog();
+            }
+        })
+                .setRoundColorButton(true)
+                .setDefaultColorButton(Color.parseColor("#f84c44"))
+                .setColumns(5)
+                .show();
     }
+
 }
