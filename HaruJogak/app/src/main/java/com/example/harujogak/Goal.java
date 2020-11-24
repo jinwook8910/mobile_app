@@ -4,11 +4,13 @@ package com.example.harujogak;
 //        목표 리스트를 보여주는 화면을 먼저 만들고 거기서 다시 추가, 수정, 삭제 가능하도록
 //        보여주는 것은 목표 이름, D-Day만
 
-public class Goal {
-    String goal_name;
-    int Deadline;
+import java.util.Date;
 
-    public void setDeadline(int deadline) {
+public class Goal {
+    private String goal_name;
+    private Date Deadline;
+
+    public void setDeadline(Date deadline) {
         Deadline = deadline;
     }
 
@@ -16,7 +18,7 @@ public class Goal {
         this.goal_name = goal_name;
     }
 
-    public int getDeadline() {
+    public Date getDeadline() {
         return Deadline;
     }
 
