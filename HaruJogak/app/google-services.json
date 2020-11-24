@@ -4,11 +4,16 @@
     "firebase_url": "https://harujogak.firebaseio.com",
     "project_id": "harujogak",
     "storage_bucket": "harujogak.appspot.com"
+    "project_number": "605649567065",
+    "firebase_url": "https://team4-cab1f.firebaseio.com",
+    "project_id": "team4-cab1f",
+    "storage_bucket": "team4-cab1f.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:23991322771:android:0e6b36a5c6368d8ae7a566",
+        "mobilesdk_app_id": "1:605649567065:android:e5e14c96790a43bfa12048",
         "android_client_info": {
           "package_name": "com.example.harujogak"
         }
@@ -16,20 +21,24 @@
       "oauth_client": [
         {
           "client_id": "23991322771-9ivv1hc7ui526brg4bvpej0e5eh5j328.apps.googleusercontent.com",
+          "client_id": "605649567065-pbq0od5gp86thr4soif7hmc8ddd7gi6i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.harujogak",
             "certificate_hash": "d96b972293e9f6cdb07871754c29125293159f79"
+            "certificate_hash": "a2366374cc559bb9acea8dc72e8f07974139763d"
           }
         },
         {
           "client_id": "23991322771-mlquahlj98hdeqhq2stp0vb51n3t2k5f.apps.googleusercontent.com",
+          "client_id": "605649567065-isqk1j36ttfsnl1492g9us1rsdo7vkma.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
           "current_key": "AIzaSyCrvDfaCv7WCzIJUOIVNGJbmuPy_t4x8vc"
+          "current_key": "AIzaSyAyE8wC6fzmHGzy0IveEp_Yn_LvLnhizlo"
         }
       ],
       "services": {
@@ -37,6 +46,7 @@
           "other_platform_oauth_client": [
             {
               "client_id": "23991322771-mlquahlj98hdeqhq2stp0vb51n3t2k5f.apps.googleusercontent.com",
+              "client_id": "605649567065-isqk1j36ttfsnl1492g9us1rsdo7vkma.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

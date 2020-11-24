@@ -43,6 +43,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="time table" />
+
+        <Button
+            android:id="@+id/main_btn6"
+            android:layout_width="62dp"
+            android:layout_height="68dp"
+            android:text="rating" />
+
         <Button
             android:id="@+id/main_btn4"
             android:layout_width="wrap_content"

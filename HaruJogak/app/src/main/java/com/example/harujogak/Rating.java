@@ -1,4 +1,4 @@
-package com.example.project_hyunji;
+package com.example.harujogak;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
+public class Rating extends AppCompatActivity  {
     FirebaseDatabase database;
     DatabaseReference myRef;
     private RatingBar ratingBar;
@@ -33,16 +30,17 @@ public class MainActivity extends AppCompatActivity {
     ImageButton left;
     TextView result;
     TextView schedule;
+
     float sum=0;
     int count=0;
     int now=0;
     String[] arr =new String[100];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.rating_main);
         //firebase 정의
         database = FirebaseDatabase.getInstance();
         myRef=database.getReference();
@@ -116,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 result.setText("오늘의 달성률은 "+re1+"%");
             }
         });
-
     }
 
     class Listener implements RatingBar.OnRatingBarChangeListener{
