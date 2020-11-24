@@ -38,7 +38,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private TextView startTimeButton, endTimeButton;
     private ColorPickerView colorPickerView;
     private ColorPanelView newColorPanelView;
-    private int flag;
+    private int flag_time, flag_template;
 
     DateSetListener dateSetListener = new DateSetListener();
     TimeSetListener timeSetListener = new TimeSetListener();
@@ -54,9 +54,9 @@ public class TimeTableEditActivity extends AppCompatActivity {
     class TimeSetListener implements TimePickerDialog.OnTimeSetListener {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            if (flag == 1)
+            if (flag_time == 1)
                 startTimeButton.setText(hourOfDay + " : " + minute);
-            if (flag == 2)
+            if (flag_time == 2)
                 endTimeButton.setText(hourOfDay + " : " + minute);
         }
     }
@@ -134,6 +134,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
         addTaskDialog.show();
     }
+
     //버튼 클릭시 decorate task 다이얼로그 띄우는 함수
     public void onClickDecoTaskButton(View v) {
         Log.i("Custom", "onClickDecoTaskButton");
@@ -145,8 +146,9 @@ public class TimeTableEditActivity extends AppCompatActivity {
         TextView taskLabelLine = (TextView) decoTaskDialog.findViewById(R.id.task_label_show);
         TextView taskTimeLine = (TextView) decoTaskDialog.findViewById(R.id.task_time_show);
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
-        Button pieColorButton = (Button) decoTaskDialog.findViewById(R.id.pie_Color);
-        Button textColorButton = (Button) decoTaskDialog.findViewById(R.id.text_color);
+        Button showTemplate = (Button) decoTaskDialog.findViewById(R.id.show_adapted_task);
+        TextView backgroundColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_background);
+        TextView textColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_text_color);
 
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,18 +158,20 @@ public class TimeTableEditActivity extends AppCompatActivity {
             }
         });
 
-        pieColorButton.setOnClickListener(new View.OnClickListener(){
+        backgroundColorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_LONG).show();
-                showColorPicker(v);
+                flag_template = 1;
+                showColorPicker(showTemplate);
             }
         });
-        textColorButton.setOnClickListener(new View.OnClickListener(){
+        textColorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "textColorButton done", Toast.LENGTH_LONG).show();
-                showColorPicker(v);
+                flag_template = 2;
+                showColorPicker(showTemplate);
             }
         });
 
@@ -186,17 +190,17 @@ public class TimeTableEditActivity extends AppCompatActivity {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
             datePickerDialog.show();
         } else if (view == startTimeButton) {
-            flag = 1;
+            flag_time = 1;
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, false);
             timePickerDialog.show();
         } else if (view == endTimeButton) {
-            flag = 2;
+            flag_time = 2;
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, false);
             timePickerDialog.show();
         }
     }
 
-    public void showColorPicker(View view){
+    public void showColorPicker(View view) {
 //        Dialog colorPickerDialog = new Dialog(this);
 //        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
 //        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
@@ -212,13 +216,18 @@ public class TimeTableEditActivity extends AppCompatActivity {
 //        colorPickerDialog.show();
         final ColorPicker colorPicker = new ColorPicker(TimeTableEditActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            Button showTemplate = (Button) view.findViewById(R.id.show_adapted_task);
+
             @Override
-            public void onChooseColor(int position,int color) {
-                view.setBackgroundColor(color);
+            public void onChooseColor(int position, int color) {
+                if (flag_template == 1)
+                    showTemplate.setBackgroundColor(color);
+                else if (flag_template == 2)
+                    showTemplate.setTextColor(color);
             }
 
             @Override
-            public void onCancel(){
+            public void onCancel() {
                 colorPicker.dismissDialog();
             }
         })

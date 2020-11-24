@@ -73,20 +73,15 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="배경 : "
-                android:textSize="20dp" />
 
             <Button
-                android:id="@+id/pie_Color"
+                android:id="@+id/show_adapted_task"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="72dp"
                 android:backgroundTint="@color/themeColor"
                 android:gravity="center"
-                android:text="컬러피커"
+                android:text="일정이름"
+                android:textColor="#fff"
                 android:textSize="20dp" />
 
 
@@ -95,25 +90,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal"
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/set_background"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
                 android:gravity="center"
-                android:text="글씨 : "
+                android:text="배경"
                 android:textSize="20dp" />
 
-            <Button
-                android:id="@+id/text_color"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/set_text_color"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/themeColor"
+                android:layout_marginHorizontal="20dp"
                 android:gravity="center"
-                android:text="컬러피커"
+                android:text="글씨"
                 android:textSize="20dp" />
+
         </LinearLayout>
 
     </LinearLayout>
