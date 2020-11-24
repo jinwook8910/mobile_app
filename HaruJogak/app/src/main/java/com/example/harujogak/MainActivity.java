@@ -93,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                System.out.println("btn2");
+                Intent intent =new Intent(MainActivity.this,Rating.class);
+                startActivity(intent);
             }
             else if(view==btn3){
                 Log.i("MainActivity", "onClickButton");
