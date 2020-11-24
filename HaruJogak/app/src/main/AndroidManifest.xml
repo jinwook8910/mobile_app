@@ -20,7 +20,6 @@
         <activity android:label="TimeTableEdit" android:name=".TimeTableEdit"/>
         <activity android:label="GoalActivity" android:name=".GoalActivity"/>
         <activity android:label="CalendarActivity" android:name=".CalendarActivity"/>
-        <activity android:label="Rating" android:name=".Rating"/>
     </application>
 
 </manifest>
