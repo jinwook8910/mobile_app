@@ -44,7 +44,7 @@ public class GoalAddActivity extends AppCompatActivity {
                 //날짜 초단위로 변경
                 t=tcalendar.getTimeInMillis()/(24*60*60*1000);
                 d=dcalendar.getTimeInMillis()/(24*60*60*1000);
-                dday=(int)(d-t);
+                dday=(int)(t-d);
                 if(dday>0)
                     goal_result.setText("D+"+Integer.toString(dday));
                 else if(dday==0)

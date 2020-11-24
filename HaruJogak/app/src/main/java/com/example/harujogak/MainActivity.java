@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn1, btn2, btn3, btn4, btn5;
+    Button btn1, btn2, btn3, btn4;
     TextView date, time;
     long mNow;
     Date mDate;
@@ -40,13 +39,11 @@ public class MainActivity extends AppCompatActivity {
         btn2 = (Button) findViewById(R.id.main_btn2);
         btn3 = (Button) findViewById(R.id.main_btn3);
         btn4 = (Button) findViewById(R.id.main_btn4);
-        btn5 = (Button) findViewById(R.id.main_btn5);
 
         btn1.setOnClickListener(listener);
         btn2.setOnClickListener(listener);
         btn3.setOnClickListener(listener);
         btn4.setOnClickListener(listener);
-        btn5.setOnClickListener(listener);
 
         date.setText(getDate());
         time.setText(getTime());
@@ -55,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
+        //pieChart 고정
+        pieChart.setRotationEnabled(false);
 
         pieChart.setDragDecelerationFrictionCoef(0f);
 
@@ -101,12 +100,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, TimeTableListActivity.class);
                 startActivity(intent);
             }
-            else if(view==btn4){
+            else if(view==btn4) {
                 Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn5){
-                System.out.println("btn5");
             }
         }
     }
