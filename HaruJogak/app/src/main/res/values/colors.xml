@@ -8,5 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 <!--임시-->
-    <color name="themeColor">#7A8BEC</color>
+    <color name="themeColor">#DA7F7F</color>
+    <color name="textColor">#ffffff</color>
 </resources>

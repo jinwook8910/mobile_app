@@ -12,15 +12,15 @@
         android:id="@+id/main_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="20dp" />
+        android:layout_marginTop="25dp"
+        android:textSize="18dp" />
 
     <TextView
         android:id="@+id/main_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="20dp" />
+        android:layout_marginTop="5dp"
+        android:textSize="28dp" />
 
      <LinearLayout
         android:layout_width="match_parent"
@@ -36,43 +36,44 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:backgroundTint="@color/themeColor"
+        android:background="@color/themeColor">
 
         <Button
             android:id="@+id/main_btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:text="goal" />
+            android:textColor="@color/textColor"
+            android:backgroundTint="#00ff0000"
+            android:text="목표" />
 
         <Button
             android:id="@+id/main_btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:text="static" />
+            android:textColor="@color/textColor"
+            android:backgroundTint="#00ff0000"
+            android:shadowColor="#00ff0000"
+            android:text="통계" />
 
         <Button
             android:id="@+id/main_btn3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:text="time table" />
+            android:textColor="@color/textColor"
+            android:background="@drawable/main_button"
+            android:text="시간표" />
 
         <Button
             android:id="@+id/main_btn4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:text="calendar" />
+            android:textColor="@color/textColor"
+            android:background="@drawable/main_button"
+            android:text="캘린더" />
 
-        <Button
-            android:id="@+id/main_btn5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/themeColor"
-            android:text="today" /> <!--오늘 시간표 수정?-->
     </LinearLayout>
 
 </LinearLayout>
