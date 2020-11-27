@@ -53,15 +53,18 @@
             android:id="@+id/main_btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:backgroundTint="@color/themeColor"
             android:text="rating" />
-=======
+
+<!--        <<<<<<< HEAD
+            android:backgroundTint="@color/themeColor"
+            android:text="rating" />
+        =======
             android:textColor="@color/textColor"
             android:backgroundTint="#00ff0000"
             android:shadowColor="#00ff0000"
             android:text="통계" />
->>>>>>> 41d9cc1cbf49b577b52cd6c68ee3a9721ce4bd34
+        >>>>>>> 41d9cc1cbf49b577b52cd6c68ee3a9721ce4bd34-->
 
         <Button
             android:id="@+id/main_btn3"
