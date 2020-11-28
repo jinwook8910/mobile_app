@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     TextView date, time;
     long mNow;
     Date mDate;
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년MM월dd일");
     SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         date = findViewById(R.id.main_date);
         time = findViewById(R.id.main_time);
+
 
         btn1 = (Button) findViewById(R.id.main_btn1);
         btn2 = (Button) findViewById(R.id.main_btn2);
