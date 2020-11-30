@@ -2,8 +2,6 @@ package com.example.harujogak;
 
 import com.github.mikephil.charting.charts.PieChart;
 
-import java.util.ArrayList;
-
 // PieChart
 public class TimeTable {
     String day, date;
@@ -15,3 +13,4 @@ class Task{
     String taskName;
     String startTime, endTime;
 }
+

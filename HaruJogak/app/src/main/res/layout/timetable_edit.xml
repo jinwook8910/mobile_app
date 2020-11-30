@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:text="수정"
             android:textSize="20dp"
-            android:layout_marginRight="8dp"/>
-<!--            android:onClick="onClickDecoTaskButton"/>-->
+            android:layout_marginRight="8dp"
+            android:onClick="onClickDecoTaskButton"/>
 
         <ImageButton
             android:id="@+id/add_task"
@@ -38,6 +38,13 @@
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
             android:layout_height="300dp"/>
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/timetable"-->
+        <!--            android:layout_width="290dp"-->
+        <!--            android:layout_height="304dp"-->
+        <!--            android:background="@drawable/empty_graph"-->
+        <!--            android:onClick="onClickDecoTaskButton" />-->
 
     </LinearLayout>
 
