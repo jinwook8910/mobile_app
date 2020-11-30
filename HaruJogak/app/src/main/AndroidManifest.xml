@@ -21,6 +21,7 @@
         <activity android:label="GoalActivity" android:name=".GoalActivity"/>
         <activity android:label="GoalAddActivity" android:name=".GoalAddActivity"/>
         <activity android:label="CalendarActivity" android:name=".ScheduleActivity"/>
+        <activity android:label="LoginActivity" android:name=".LoginActivity"></activity>
         <activity android:label="Rating" android:name=".Rating"/>
     </application>
 
