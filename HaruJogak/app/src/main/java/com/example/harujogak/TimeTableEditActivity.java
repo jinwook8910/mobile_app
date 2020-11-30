@@ -24,13 +24,15 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jaredrummler.android.colorpicker.ColorPanelView;
 import com.jaredrummler.android.colorpicker.ColorPickerView;
-//import com.jaredrummler.android.colorpicker.ColorPanelView;
-//import com.jaredrummler.android.colorpicker.ColorPickerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
+
+//import com.jaredrummler.android.colorpicker.ColorPanelView;
+//import com.jaredrummler.android.colorpicker.ColorPickerView;
 
 public class TimeTableEditActivity extends AppCompatActivity {
     private EditText taskLabel;
@@ -39,6 +41,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private ColorPickerView colorPickerView;
     private ColorPanelView newColorPanelView;
     private int flag_time, flag_template;
+    ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
     DateSetListener dateSetListener = new DateSetListener();
     TimeSetListener timeSetListener = new TimeSetListener();
@@ -87,14 +90,16 @@ public class TimeTableEditActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
         pieChart.setRotationEnabled(false);
 
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+        //전역으로 사용
+        //ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        yValues.add(new PieEntry(34f, "Japan"));
-        yValues.add(new PieEntry(23f, "USA"));
-        yValues.add(new PieEntry(14f, "UK"));
-        yValues.add(new PieEntry(35f, "India"));
-        yValues.add(new PieEntry(40f, "Russia"));
-        yValues.add(new PieEntry(40f, "Korea"));
+        //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
+        yValues.add(new PieEntry(200f, " "));//일정 없는 것
+        yValues.add(new PieEntry(150f, "USA"));
+        yValues.add(new PieEntry(150f, "UK"));
+        yValues.add(new PieEntry(300f, "India"));
+        yValues.add(new PieEntry(400f, "Russia"));
+        yValues.add(new PieEntry(240f, "Korea"));
 
         Description description = new Description();
         description.setText("세계 국가"); //라벨
@@ -128,7 +133,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+                //파이차트 객체 생성
                 PieChart pieChart = findViewById(R.id.pieChart);
 
                 pieChart.getDescription().setEnabled(false);
@@ -137,21 +142,53 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 pieChart.setDrawHoleEnabled(false);
                 pieChart.setRotationEnabled(false);
 
-                ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+                //시간 문자열 => 분으로 계산
+                String startTime = (String)startTimeButton.getText();
+                String endTime = (String)endTimeButton.getText();
 
-                yValues.add(new PieEntry(34f, "Japan"));
-                yValues.add(new PieEntry(23f, "USA"));
-                yValues.add(new PieEntry(14f, "UK"));
-                yValues.add(new PieEntry(35f, "India"));
-                yValues.add(new PieEntry(40f, "Russia"));
-                yValues.add(new PieEntry(40f, "Korea"));
+                String start_times[] = startTime.split(" : ");
+                int start_time = Integer.parseInt(start_times[0])*60 + Integer.parseInt(start_times[1]);
+                String end_times[] = endTime.split(" : ");
+                int end_time = Integer.parseInt(end_times[0])*60 + Integer.parseInt(end_times[1]);
+                System.out.println("************************\n"+start_time);
+                System.out.println(end_time);
+
+
+                //기존의 파이차트 정보와 추가할 일정 정보 합치기
+                boolean done = false;
+                ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
+                Iterator<PieEntry> yValues_entries = yValues.iterator();
+                int total_time=0;
+                while(yValues_entries.hasNext()){
+                    PieEntry yValues_entry = yValues_entries.next();
+                    total_time += yValues_entry.getValue();
+                    System.out.println("**************\n"+total_time);
+                    if(!done && total_time >= start_time && total_time >= end_time){//선택한 시간
+                        if(yValues_entry.getLabel().equals(" ")){//선택한 시간에 일정이 없는 경우
+                            total_time -= yValues_entry.getValue();
+                            yValues_new.add(new PieEntry(start_time-total_time, " "));
+                            yValues_new.add(new PieEntry(end_time-start_time, taskLabel.getText().toString()));
+                            yValues_new.add(new PieEntry(yValues_entry.getValue()-(end_time-total_time), " "));
+                            total_time += yValues_entry.getValue();
+                            done = true; //추가 완료함을 표시
+                        }
+                        else{//선택한 시간에 일정이 있는 경우
+                            Toast.makeText(getApplicationContext(), "schedule already exists", Toast.LENGTH_LONG).show();
+                            total_time += yValues_entry.getValue();
+                        }
+                    }
+                    else{//나머지 시간
+                        yValues_new.add(yValues_entry);
+                    }
+                }
+                yValues= yValues_new;
 
                 Description description = new Description();
                 description.setText("계획표"); //라벨
                 description.setTextSize(15);
                 pieChart.setDescription(description);
 
-                PieDataSet dataSet = new PieDataSet(yValues, "Countries");
+                PieDataSet dataSet = new PieDataSet(yValues_new, "Countries");
                 dataSet.setSliceSpace(2f);
                 dataSet.setSelectionShift(1f);
                 dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
@@ -162,7 +199,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
                 pieChart.setData(data);
 
-                 */
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
                 addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
