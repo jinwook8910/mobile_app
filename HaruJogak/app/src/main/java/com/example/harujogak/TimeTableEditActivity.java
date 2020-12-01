@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -41,8 +42,7 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 //import com.jaredrummler.android.colorpicker.ColorPanelView;
 //import com.jaredrummler.android.colorpicker.ColorPickerView;
 
-// Todo : spinner 만들기, selected Listener 수정하기
-//      : 태스크 추가 기능 넣기..
+// Todo : spinner 만들기
 
 public class TimeTableEditActivity extends AppCompatActivity {
     private EditText taskLabel;
@@ -110,7 +110,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         yValues.add(new PieEntry(150f, "USA"));
         yValues.add(new PieEntry(150f, "UK"));
         yValues.add(new PieEntry(300f, "India"));
-        yValues.add(new PieEntry(400f, "Russia"));
+        yValues.add(new PieEntry(200f, "Russia"));
         yValues.add(new PieEntry(240f, "Korea"));
 
         Description description = new Description();
@@ -132,62 +132,17 @@ public class TimeTableEditActivity extends AppCompatActivity {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-//                PieData x = pieChart.getData();
-                Log.i("onValueSelected", "어캐해야하노ㅠㅠ");
-//                Log.i("onValueSelected", x+"/"+yValues.size());
+                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+                Toast.makeText(TimeTableEditActivity.this, x + "/" + yValues.get(x).getLabel(), Toast.LENGTH_SHORT).show();
+                onClickDecoTaskButton(pieChart, x);
+                Log.i("onValueSelected", x + "/" + yValues.get(x).getLabel());
 //                onClickDecoTaskButton(x);
             }
 
             @Override
-            public void onNothingSelected() {
-
-            }
+            public void onNothingSelected() {            }
         });
-//
-//        //여기서부터 테스트용 코드
-//        fillRegionalSalesArrayList();
-//
-//        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Regional Sales");
-//        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-//        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        pieDataSet.setValueTextSize(16);
-//
-//        PieData pieData = new PieData(pieDataSet);
-//        pieChart.setData(pieData);
-//
-//        //legend : 밑에 목록만 적은 것
-//        Legend legend = pieChart.getLegend();
-//        legend.setTextSize(13);
-//        legend.setDrawInside(false);
-//        legend.setWordWrapEnabled(true);
-//        pieChart.animateXY(2000, 2000);
-//        pieChart.invalidate();
-//
-//        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-//            @Override
-//            public void onValueSelected(Entry e, Highlight h) {
-//                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-//                String region = regionalSalesDataArrayList.get(x).getRegion();
-//                String sales = NumberFormat.getCurrencyInstance().format(regionalSalesDataArrayList.get(x).getSales());
-//                AlertDialog.Builder builder = new AlertDialog.Builder(TimeTableEditActivity.this);
-//                builder.setCancelable(true);
-//
-//                View view = LayoutInflater.from(TimeTableEditActivity.this).inflate(R.layout.regional_sales_layout, null);
-//                TextView regionTxtView = view.findViewById(R.id.region);
-//                TextView salesTxtView = view.findViewById(R.id.sales);
-//                regionTxtView.setText(region);
-//                salesTxtView.setText(sales);
-//                builder.setView(view);
-//                AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected() {
-//
-//            }
-//        });
+
     }
 
     //버튼 클릭시 add Task 다이얼로그 띄우는 함수
@@ -278,7 +233,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
     }
 
     //버튼 클릭시 decorate task 다이얼로그 띄우는 함수
-    public void onClickDecoTaskButton(int index) {
+    public void onClickDecoTaskButton(PieChart pieChart, int index) {
         Log.i("Custom", "onClickDecoTaskButton");
 
         Dialog decoTaskDialog = new Dialog(this);
@@ -292,14 +247,13 @@ public class TimeTableEditActivity extends AppCompatActivity {
         TextView backgroundColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_background);
         TextView textColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_text_color);
 
-        PieEntry pieEntry = yValues.get(index);
-        taskLabelLine.setText(pieEntry.getLabel());
-        taskTimeLine.setText(pieEntry.getValue() + "");
+        taskLabelLine.setText(yValues.get(index).getLabel());
+        taskTimeLine.setText(yValues.get(index).getValue() + "");
 
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_SHORT).show();
                 decoTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
         });
@@ -307,17 +261,18 @@ public class TimeTableEditActivity extends AppCompatActivity {
         backgroundColorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_SHORT).show();
                 flag_template = 1;
-                showColorPicker(showTemplate);
+                showColorPicker(showTemplate, index);
+
             }
         });
         textColorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "textColorButton done", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "textColorButton done", Toast.LENGTH_SHORT).show();
                 flag_template = 2;
-                showColorPicker(showTemplate);
+                showColorPicker(showTemplate, index);
             }
         });
 
@@ -336,7 +291,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         if (view == dateButton) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
             datePickerDialog.show();
-            Log.i("date button", mYear+"/"+mMonth+"/"+mDay);
+            Log.i("date button", mYear + "/" + mMonth + "/" + mDay);
         } else if (view == startTimeButton) {
             flag_time = 1;
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, timeSetListener, mHour, mMinute, false);
@@ -348,7 +303,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         }
     }
 
-    public void showColorPicker(View view) {
+    public void showColorPicker(View view, int index) {
 //        Dialog colorPickerDialog = new Dialog(this);
 //        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
 //        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
@@ -362,16 +317,22 @@ public class TimeTableEditActivity extends AppCompatActivity {
 //        });
 //
 //        colorPickerDialog.show();
+
         final ColorPicker colorPicker = new ColorPicker(TimeTableEditActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             Button showTemplate = (Button) view.findViewById(R.id.show_adapted_task);
 
             @Override
             public void onChooseColor(int position, int color) {
-                if (flag_template == 1)
+                if (flag_template == 1) {
                     showTemplate.setBackgroundColor(color);
-                else if (flag_template == 2)
+                    // TODO : 백그라운드 색상, 텍스트 색상 변경하도록..
+                    pieChart.getPaint(PieChart.PAINT_DESCRIPTION).setColor(color);
+
+                } else if (flag_template == 2) {
                     showTemplate.setTextColor(color);
+                    pieChart.getPaint(Chart.PAINT_DESCRIPTION).setColor(color);
+                }
             }
 
             @Override
