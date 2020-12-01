@@ -9,9 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -36,6 +40,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -54,7 +59,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
     TimeSetListener timeSetListener = new TimeSetListener();
 
     private PieChart pieChart;
-
     ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
     //리스너
@@ -172,6 +176,27 @@ public class TimeTableEditActivity extends AppCompatActivity {
         endTimeButton = (TextView) addTaskDialog.findViewById(R.id.end_time_set_button);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
 
+//        // 목표 스피너
+//        Spinner spinner = (Spinner)findViewById(R.id.goalSpinner);
+//        ArrayList<String> arrayList = new ArrayList<>();
+//        arrayList.add("토익 시험"); arrayList.add("다이어트"); arrayList.add("코딩테스트");
+//
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+//                android.R.layout.simple_spinner_dropdown_item, arrayList);
+//
+////        spinner.setAdapter(arrayAdapter);
+//
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(getApplicationContext(),arrayList.get(i)+"가 선택되었습니다.",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//            }
+//        });
+
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +219,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
                 System.out.println("************************\n" + start_time);
                 System.out.println(end_time);
-
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
