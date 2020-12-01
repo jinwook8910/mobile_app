@@ -143,51 +143,51 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
             }
         });
-
-        //여기서부터 테스트용 코드
-        fillRegionalSalesArrayList();
-
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Regional Sales");
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieDataSet.setValueTextSize(16);
-
-        PieData pieData = new PieData(pieDataSet);
-        pieChart.setData(pieData);
-
-        //legend : 밑에 목록만 적은 것
-        Legend legend = pieChart.getLegend();
-        legend.setTextSize(13);
-        legend.setDrawInside(false);
-        legend.setWordWrapEnabled(true);
-        pieChart.animateXY(2000, 2000);
-        pieChart.invalidate();
-
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-                String region = regionalSalesDataArrayList.get(x).getRegion();
-                String sales = NumberFormat.getCurrencyInstance().format(regionalSalesDataArrayList.get(x).getSales());
-                AlertDialog.Builder builder = new AlertDialog.Builder(TimeTableEditActivity.this);
-                builder.setCancelable(true);
-
-                View view = LayoutInflater.from(TimeTableEditActivity.this).inflate(R.layout.regional_sales_layout, null);
-                TextView regionTxtView = view.findViewById(R.id.region);
-                TextView salesTxtView = view.findViewById(R.id.sales);
-                regionTxtView.setText(region);
-                salesTxtView.setText(sales);
-                builder.setView(view);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
+//
+//        //여기서부터 테스트용 코드
+//        fillRegionalSalesArrayList();
+//
+//        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Regional Sales");
+//        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+//        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        pieDataSet.setValueTextSize(16);
+//
+//        PieData pieData = new PieData(pieDataSet);
+//        pieChart.setData(pieData);
+//
+//        //legend : 밑에 목록만 적은 것
+//        Legend legend = pieChart.getLegend();
+//        legend.setTextSize(13);
+//        legend.setDrawInside(false);
+//        legend.setWordWrapEnabled(true);
+//        pieChart.animateXY(2000, 2000);
+//        pieChart.invalidate();
+//
+//        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+//            @Override
+//            public void onValueSelected(Entry e, Highlight h) {
+//                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+//                String region = regionalSalesDataArrayList.get(x).getRegion();
+//                String sales = NumberFormat.getCurrencyInstance().format(regionalSalesDataArrayList.get(x).getSales());
+//                AlertDialog.Builder builder = new AlertDialog.Builder(TimeTableEditActivity.this);
+//                builder.setCancelable(true);
+//
+//                View view = LayoutInflater.from(TimeTableEditActivity.this).inflate(R.layout.regional_sales_layout, null);
+//                TextView regionTxtView = view.findViewById(R.id.region);
+//                TextView salesTxtView = view.findViewById(R.id.sales);
+//                regionTxtView.setText(region);
+//                salesTxtView.setText(sales);
+//                builder.setView(view);
+//                AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected() {
+//
+//            }
+//        });
     }
 
     //버튼 클릭시 add Task 다이얼로그 띄우는 함수
