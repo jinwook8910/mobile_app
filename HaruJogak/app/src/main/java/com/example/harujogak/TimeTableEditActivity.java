@@ -48,8 +48,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private EditText taskLabel;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
-    private ColorPickerView colorPickerView;
-    private ColorPanelView newColorPanelView;
     private int flag_time, flag_template;
 
     DateSetListener dateSetListener = new DateSetListener();
@@ -73,12 +71,31 @@ public class TimeTableEditActivity extends AppCompatActivity {
     }
 
     class TimeSetListener implements TimePickerDialog.OnTimeSetListener {
+        int mHour, mMinute;
+
         @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        public void onTimeSet(TimePicker view, int hour, int minute) {
+            mHour = hour;
+            mMinute = minute;
+            String strHour = hour + "";
+            String strMinute = minute + "";
+
+            if (hour < 10)
+                strHour = "0" + strHour;
+            if (minute < 10)
+                strMinute = "0" + strMinute;
+
             if (flag_time == 1)
-                startTimeButton.setText(hourOfDay + " : " + minute);
-            if (flag_time == 2)
-                endTimeButton.setText(hourOfDay + " : " + minute);
+                startTimeButton.setText(strHour + " : " + strMinute);
+            else if (flag_time == 2)
+                endTimeButton.setText(strHour + " : " + strMinute);
+        }
+
+        int getmHour(){
+            return mHour;
+        }
+        int getmMinute(){
+            return mMinute;
         }
     }
 
@@ -96,8 +113,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
 //        pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
-
-//        pieChart.setDragDecelerationFrictionCoef(0.95f);
 
         pieChart.setDrawHoleEnabled(false);
         pieChart.setRotationEnabled(false);
@@ -294,16 +309,22 @@ public class TimeTableEditActivity extends AppCompatActivity {
             Log.i("date button", mYear + "/" + mMonth + "/" + mDay);
         } else if (view == startTimeButton) {
             flag_time = 1;
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, timeSetListener, mHour, mMinute, false);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, timeSetListener, mHour, mMinute, true);
+            timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show();
+            
         } else if (view == endTimeButton) {
             flag_time = 2;
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, timeSetListener, mHour, mMinute, false);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, timeSetListener, mHour, mMinute, true);
+            timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show();
         }
     }
 
     public void showColorPicker(View view, int index) {
+//        ColorPickerView colorPickerView;
+//        ColorPanelView newColorPanelView;
+
 //        Dialog colorPickerDialog = new Dialog(this);
 //        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
 //        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
