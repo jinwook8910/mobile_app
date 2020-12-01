@@ -18,6 +18,8 @@ import java.util.Calendar;
 public class GoalAddActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
+    char[] fb_dday=new char[20]; //firebase
+    int dday;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class GoalAddActivity extends AppCompatActivity {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
                 int tYear, tMonth, tDay;
                 long t, d;
-                int dday;
+
 
                 Calendar tcalendar = Calendar.getInstance();
                 Calendar dcalendar = Calendar.getInstance();
@@ -53,7 +55,9 @@ public class GoalAddActivity extends AppCompatActivity {
 
                 //목표 날짜
                 dcalendar.set(year, month, dayOfMonth);
-                myRef.child("UserID").child("목표D-day").setValue(Integer.toString(year)+"년 "+Integer.toString(month)+"월 "+Integer.toString(dayOfMonth)+"일");
+                String date=Integer.toString(year)+"년 "+Integer.toString(month)+"월 "+Integer.toString(dayOfMonth)+"일";
+                fb_dday=null;
+                fb_dday=date.toCharArray();
 
                 //날짜 초단위로 변경
                 t=tcalendar.getTimeInMillis()/(24*60*60*1000);
@@ -72,7 +76,10 @@ public class GoalAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String getGoal =goal_input.getText().toString();
-                myRef.child("UserID").child("목표").setValue(getGoal);
+                String input_dday=String.valueOf(fb_dday);
+                myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
+                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
+                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
                 goal_input.setText("");
             }
         });

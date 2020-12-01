@@ -18,10 +18,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class Rating extends AppCompatActivity {
         FirebaseDatabase database;
         DatabaseReference myRef;
         private RatingBar ratingBar;
+        char[] fb_today =new char[20]; //firebase
         EditText interrupt;
         Button save;
         Button stat;
@@ -43,6 +49,13 @@ public class Rating extends AppCompatActivity {
             database = FirebaseDatabase.getInstance();
             myRef=database.getReference();
 
+            //오늘 날짜 받아오기
+            Date currentTime = Calendar.getInstance().getTime();
+            String today_text=new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(currentTime);
+            fb_today=null;
+            fb_today=today_text.toCharArray();
+            String input_today=String.valueOf(fb_today);
+
             ratingBar = findViewById(R.id.ratingbar);
             ratingBar.setOnRatingBarChangeListener(new Listener());
             interrupt=findViewById(R.id.interrupt);
@@ -58,7 +71,7 @@ public class Rating extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     String getInterrupt=interrupt.getText().toString();
-                    myRef.child("UserID").child("날짜").child(arr[now]).child("방해요소").setValue(getInterrupt);
+                    myRef.child("UserID").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
                     interrupt.setText("");
                 }
             });
@@ -83,7 +96,7 @@ public class Rating extends AppCompatActivity {
                 }
             });
             //Read data
-            DatabaseReference data=myRef.child("UserID").child("날짜");
+            DatabaseReference data=myRef.child("UserID").child(input_today);
             data.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -118,7 +131,8 @@ public class Rating extends AppCompatActivity {
         class Listener implements RatingBar.OnRatingBarChangeListener{
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
-                myRef.child("UserID").child("날짜").child(arr[now]).child("평가").setValue(rating);
+                String input_today_r=String.valueOf(fb_today);
+                myRef.child("UserID").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
             }
         }
     }

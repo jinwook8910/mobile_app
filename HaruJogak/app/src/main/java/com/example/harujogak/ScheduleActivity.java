@@ -20,7 +20,7 @@ import java.util.Date;
 public class ScheduleActivity extends AppCompatActivity {
     long mNow;
     Date mDate;
-    char[] fb_date =new char[10]; //firebase에 키 값으로 들어갈 날짜
+    char[] fb_date =new char[20]; //firebase에 키 값으로 들어갈 날짜
     FirebaseDatabase database;
     DatabaseReference myRef;
 
@@ -57,7 +57,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 String input_date=String.valueOf(fb_date);
                 String getDayGoal=calendar_text.getText().toString();
                 calendar_text.setText("");
-                myRef.child("UserID").child(input_date).child(getDayGoal).setValue("");
+                myRef.child("UserID").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
+                myRef.child("UserID").child(input_date).child(getDayGoal).child("평가").setValue(0);
             }
         });
     }
