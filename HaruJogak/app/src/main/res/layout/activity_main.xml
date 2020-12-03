@@ -81,13 +81,6 @@
             android:textColor="@color/textColor"
             android:background="@drawable/main_button"
             android:text="캘린더" />
-        <Button
-            android:id="@+id/main_btn5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:background="@drawable/main_button"
-            android:text="회원가입" />
 
     </LinearLayout>
 

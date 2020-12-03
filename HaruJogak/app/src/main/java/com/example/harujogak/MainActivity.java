@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn1, btn2, btn3, btn4,btn5;
+    Button btn1, btn2, btn3, btn4;
     TextView date, time;
     long mNow;
     Date mDate;
@@ -41,13 +41,11 @@ public class MainActivity extends AppCompatActivity {
         btn2 = (Button) findViewById(R.id.main_btn2);
         btn3 = (Button) findViewById(R.id.main_btn3);
         btn4 = (Button) findViewById(R.id.main_btn4);
-        btn5=(Button)findViewById(R.id.main_btn5);
 
         btn1.setOnClickListener(listener);
         btn2.setOnClickListener(listener);
         btn3.setOnClickListener(listener);
         btn4.setOnClickListener(listener);
-        btn5.setOnClickListener(listener);
 
         //date.setText(getDate());
         //time.setText(getTime());
@@ -107,10 +105,6 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(view==btn4) {
                 Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
-                startActivity(intent);
-            }
-            else if(view==btn5){
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         }
