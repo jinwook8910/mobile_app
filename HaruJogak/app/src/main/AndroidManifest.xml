@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.HaruJogak">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,7 +23,8 @@
         <activity android:label="GoalAddActivity" android:name=".GoalAddActivity"/>
         <activity android:label="CalendarActivity" android:name=".ScheduleActivity"/>
         <activity android:label="LoginActivity" android:name=".LoginActivity"></activity>
-        <activity android:label="Rating" android:name=".Rating"/>
+        <activity android:label="Rating" android:name=".Rating" />
+        <activity android:label="SignUpActivity" android:name=".SignUpActivity"/>
     </application>
 
 </manifest>
