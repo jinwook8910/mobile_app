@@ -4,52 +4,43 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
-import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.jaredrummler.android.colorpicker.ColorPanelView;
-import com.jaredrummler.android.colorpicker.ColorPickerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.List;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 //import com.jaredrummler.android.colorpicker.ColorPanelView;
 //import com.jaredrummler.android.colorpicker.ColorPickerView;
 
-// Todo : spinner 만들기
+// Todo : spinner 만들기 끝났다!! 히히
 
-public class TimeTableEditActivity extends AppCompatActivity {
+public class TimeTableEditActivity extends AppCompatActivity{
     private EditText taskLabel;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
@@ -140,8 +131,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
         dataSet.setColors(table_background);
 
         PieData data = new PieData((dataSet));
-        data.setValueTextSize(10f);
-        data.setValueTextColor(Color.YELLOW);
+        data.setValueTextSize(14f);
+        data.setValueTextColor(Color.BLACK);
 
         pieChart.setData(data);
 
@@ -158,6 +149,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected() {            }
         });
+        //
 
     }
 
@@ -165,6 +157,9 @@ public class TimeTableEditActivity extends AppCompatActivity {
     public void onClickAddTaskButton(View v) {
         Log.i("Custom", "onClickAddTaskButton");
         Dialog addTaskDialog = new Dialog(this);
+        //test 12/3
+        //View view = LayoutInflater.from(this).inflate(R.layout.add_task_dialog, null);
+
         addTaskDialog.setContentView(R.layout.add_task_dialog);
         addTaskDialog.setTitle("일정 추가");
 
@@ -173,26 +168,26 @@ public class TimeTableEditActivity extends AppCompatActivity {
         endTimeButton = (TextView) addTaskDialog.findViewById(R.id.end_time_set_button);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
 
-//        // 목표 스피너
-//        Spinner spinner = (Spinner)findViewById(R.id.goalSpinner);
-//        ArrayList<String> arrayList = new ArrayList<>();
-//        arrayList.add("토익 시험"); arrayList.add("다이어트"); arrayList.add("코딩테스트");
-//
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
-//                android.R.layout.simple_spinner_dropdown_item, arrayList);
-//
-////        spinner.setAdapter(arrayAdapter);
-//
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(getApplicationContext(),arrayList.get(i)+"가 선택되었습니다.",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//            }
-//        });
+
+        //
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("토익 시험"); arrayList.add("다이어트"); arrayList.add("코딩테스트");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, arrayList);
+        Spinner s = (Spinner)addTaskDialog.findViewById(R.id.goalSpinner);
+        //arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setAdapter(arrayAdapter); //adapter를 spinner에 연결
+
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                System.out.println("!!position : " + position +
+                        parent.getItemAtPosition(position));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,8 +252,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 //
 
                 PieData data = new PieData((dataSet));
-                data.setValueTextSize(10f);
-                data.setValueTextColor(Color.YELLOW);
+                data.setValueTextSize(14f);
+                data.setValueTextColor(Color.BLACK);
 
                 pieChart.setData(data);
 
