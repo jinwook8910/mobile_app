@@ -54,6 +54,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
+    private ArrayList<Integer> table_background=new ArrayList<>();
 
     DateSetListener dateSetListener = new DateSetListener();
     TimeSetListener timeSetListener = new TimeSetListener();
@@ -65,10 +66,10 @@ public class TimeTableEditActivity extends AppCompatActivity {
     class DateSetListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            dateButton.setText(year + " / " + month + " / " + dayOfMonth);
+            dateButton.setText(year + " / " + month+1 + " / " + dayOfMonth);
 
             Description description = new Description();
-            description.setText(year + " / " + month + " / " + dayOfMonth);
+            description.setText(year + " / " + month+1 + " / " + dayOfMonth);
             description.setTextSize(15);
             pieChart.setDescription(description);
         }
@@ -125,12 +126,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         //ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
         //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
-        yValues.add(new PieEntry(200f, " "));//일정 없는 것
-        yValues.add(new PieEntry(150f, "USA"));
-        yValues.add(new PieEntry(150f, "UK"));
-        yValues.add(new PieEntry(300f, "India"));
-        yValues.add(new PieEntry(200f, "Russia"));
-        yValues.add(new PieEntry(240f, "Korea"));
+        yValues.add(new PieEntry(1440f, " "));//일정 없는 것
 
         Description description = new Description();
         description.setText("세계 국가"); //라벨
@@ -140,7 +136,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(yValues, "Countries");
         dataSet.setSliceSpace(2f);
         dataSet.setSelectionShift(1f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        table_background.add(Color.rgb(250, 250, 250));
+        dataSet.setColors(table_background);
 
         PieData data = new PieData((dataSet));
         data.setValueTextSize(10f);
@@ -152,7 +149,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-                Toast.makeText(TimeTableEditActivity.this, x + "/" + yValues.get(x).getLabel(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimeTableEditActivity.this, x, Toast.LENGTH_SHORT).show();
                 onClickDecoTaskButton(pieChart, x);
                 Log.i("onValueSelected", x + "/" + yValues.get(x).getLabel());
 //                onClickDecoTaskButton(x);
@@ -217,8 +214,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
                 String end_times[] = endTime.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
-                System.out.println("************************\n" + start_time);
-                System.out.println(end_time);
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
@@ -228,7 +223,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 while (yValues_entries.hasNext()) {
                     PieEntry yValues_entry = yValues_entries.next();
                     total_time += yValues_entry.getValue();
-                    System.out.println("**************\n" + total_time);
                     if (!done && total_time >= start_time && total_time >= end_time) {//선택한 시간
                         if (yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
                             total_time -= yValues_entry.getValue();
@@ -255,7 +249,12 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 PieDataSet dataSet = new PieDataSet(yValues_new, "Countries");
                 dataSet.setSliceSpace(2f);
                 dataSet.setSelectionShift(1f);
-                dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+                //이게.. 일정을 추가해서 빈 칸이 생기면 두개 추가해야하고 빈 칸 없이 바로 이어붙인거면 하나만 추가..
+                //현재 추가된 task 백그라운드 색상 추가
+                table_background.add(Color.rgb(250, 250, 250));
+                dataSet.setColors(table_background);
+                //
 
                 PieData data = new PieData((dataSet));
                 data.setValueTextSize(10f);
