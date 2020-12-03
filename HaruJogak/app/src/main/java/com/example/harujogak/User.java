@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class User {
     private String id, passWord, eMail;
-    private ArrayList<TimeTable> dayTable = new ArrayList<>();
-    private ArrayList<TimeTable> weekTable = new ArrayList<>(7);
+    private ArrayList<MyTimeTable> dateTable = new ArrayList<>();
+    private ArrayList<MyTimeTable> weekTable = new ArrayList<>(7);
     private ArrayList<Goal> goal = new ArrayList<>();
     //private ArrayList<Obstruction> obstruction;
 
@@ -27,27 +27,27 @@ public class User {
         return passWord;
     }
 
-    public void seteMail(String eMail) {
+    public void setEMail(String eMail) {
         this.eMail = eMail;
     }
 
-    public String geteMail() {
+    public String getEMail() {
         return eMail;
     }
 
-    public void setDayTable(ArrayList<TimeTable> dayTable) {
-        this.dayTable = dayTable;
+    public void setDayTable(ArrayList<MyTimeTable> dayTable) {
+        this.dateTable = dayTable;
     }
 
-    public ArrayList<TimeTable> getDayTable() {
-        return dayTable;
+    public ArrayList<MyTimeTable> getDayTable() {
+        return dateTable;
     }
 
-    public void setWeekTable(ArrayList<TimeTable> weekTable) {
+    public void setWeekTable(ArrayList<MyTimeTable> weekTable) {
         this.weekTable = weekTable;
     }
 
-    public ArrayList<TimeTable> getWeekTable() {
+    public ArrayList<MyTimeTable> getWeekTable() {
         return weekTable;
     }
 
