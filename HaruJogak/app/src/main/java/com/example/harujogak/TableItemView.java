@@ -1,6 +1,7 @@
 package com.example.harujogak;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -10,11 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 
 public class TableItemView extends LinearLayout {
-
-    TextView textView;
-    ImageView imageView;
+    private TextView textView;
+    private PieChart pieChartView;
 
     // Generate > Constructor
     public TableItemView(Context context) {
@@ -33,15 +36,25 @@ public class TableItemView extends LinearLayout {
         inflater.inflate(R.layout.table_item, this, true);
 
         textView = (TextView) findViewById(R.id.dateView);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        pieChartView = (PieChart) findViewById(R.id.pieChartView);
     }
 
     public void setDate(String date) {
         textView.setText(date);
     }
 
-    public void setImage(int resId) {
-        imageView.setImageResource(resId);
+    public void setPieChart(PieData pieData) {
+        pieChartView.setData(pieData);
+
+        pieChartView.getLegend().setEnabled(false);
+        pieChartView.getDescription().setEnabled(false);
+
+        pieChartView.setUsePercentValues(false);
+
+        pieChartView.setDrawHoleEnabled(false);
+        pieChartView.setHoleColor(Color.WHITE);
+        pieChartView.setTransparentCircleRadius(61f);
+
     }
 
 }

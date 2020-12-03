@@ -1,12 +1,15 @@
 package com.example.harujogak;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+
 public class TableItemByDate {
     String date;
-    int resId;
+    private PieData pieData;
 
-    public TableItemByDate(String date, int resId) {
-        this.date = date;
-        this.resId = resId;
+    public TableItemByDate(MyTimeTable t) {
+        date = t.getOnDate();
+        pieData = t.getPieData();
     }
 
     public String getDate() {
@@ -17,23 +20,24 @@ public class TableItemByDate {
         this.date = date;
     }
 
-    public int getResId() {
-        return resId;
+    public PieData getPieData() {
+        return pieData;
     }
 
-    public void setResId(int resId) {
-        this.resId = resId;
+    public void setPieData(PieData pieData) {
+        this.pieData = pieData;
     }
 
 }
 
 class TableItemByDay {
     String day;
-    int resId;
+    //    private PieChart pieChart;
+    private PieData pieData;
 
-    public TableItemByDay(String day, int resId) {
+    public TableItemByDay(MyTimeTable t) {
         this.day = day;
-        this.resId = resId;
+        pieData = t.getPieData();
     }
 
     public String getDate() {
@@ -44,12 +48,12 @@ class TableItemByDay {
         this.day = day;
     }
 
-    public int getResId() {
-        return resId;
+    public PieData getPieData() {
+        return pieData;
     }
 
-    public void setResId(int resId) {
-        this.resId = resId;
+    public void setPieData(PieData pieData) {
+        this.pieData = pieData;
     }
 
 }

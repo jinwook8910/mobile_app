@@ -15,19 +15,19 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import java.util.ArrayList;
 
 public class MyTimeTable {
-    private PieChart pieChart;
+    private PieData pieData;
     private ArrayList<int[]> MyBackground = new ArrayList<>();
     private ArrayList<PieEntry> MyTasks = new ArrayList<>();
     private int[] OnWeek = {0, 0, 0, 0, 0, 0, 0};    // MON ~ SUN
-    private ArrayList<String> OnDate = new ArrayList<>();
+    private String OnDate = new String();
 
 
-    void setPieChart(PieChart p) {
-        pieChart = p;
+    void setPieData(PieData p) {
+        pieData = p;
     }
 
-    PieChart getPieChart() {
-        return pieChart;
+    PieData getPieData() {
+        return pieData;
     }
 
     void setMyBackground(ArrayList<int[]> background) {
@@ -78,37 +78,37 @@ public class MyTimeTable {
         return OnWeek;
     }
 
-    void add_Date(String date) {
-        OnDate.add(date);
+    void setOnDate(String date) {
+        OnDate = date;
     }
 
-    ArrayList<String> getOnDate() {
+    String getOnDate() {
         return OnDate;
     }
 
     //*수정필요*
-    void Table_setting() {
-        pieChart.setRotationEnabled(false);
-
-        pieChart.setDragDecelerationFrictionCoef(0f);
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
-
-        Description description = new Description();
-        description.setText("새로운 시간표"); //라벨
-        description.setTextSize(15);
-        pieChart.setDescription(description);
-
-        PieDataSet dataSet = new PieDataSet(MyTasks, "Tasks");
-        dataSet.setSliceSpace(1f);
-        dataSet.setSelectionShift(1f);
-//        dataSet.setColors(MyBackground);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(10f);
-        data.setValueTextColor(Color.YELLOW);
-
-        pieChart.setData(data);
-    }
+//    void Table_setting() {
+//        pieChart.setRotationEnabled(false);
+//
+//        pieChart.setDragDecelerationFrictionCoef(0f);
+//        pieChart.setDrawHoleEnabled(false);
+//        pieChart.setHoleColor(Color.WHITE);
+//        pieChart.setTransparentCircleRadius(61f);
+//
+//        Description description = new Description();
+//        description.setText("새로운 시간표"); //라벨
+//        description.setTextSize(15);
+//        pieChart.setDescription(description);
+//
+//        PieDataSet dataSet = new PieDataSet(MyTasks, "Tasks");
+//        dataSet.setSliceSpace(1f);
+//        dataSet.setSelectionShift(1f);
+////        dataSet.setColors(MyBackground);
+//
+//        PieData data = new PieData((dataSet));
+//        data.setValueTextSize(10f);
+//        data.setValueTextColor(Color.YELLOW);
+//
+//        pieChart.setData(data);
+//    }
 }
