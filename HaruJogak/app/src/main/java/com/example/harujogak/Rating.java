@@ -73,7 +73,7 @@ public class Rating extends AppCompatActivity {
                     if(arr[now]==null){}
                     else {
                         String getInterrupt = interrupt.getText().toString();
-                        myRef.child("UserID").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
+                        myRef.child("UserID").child("날짜별 일정").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
                         interrupt.setText("");
                     }
                 }
@@ -108,7 +108,7 @@ public class Rating extends AppCompatActivity {
             });
             //Read data
             DatabaseReference data;
-            data=myRef.child("UserID").child(input_today);
+            data=myRef.child("UserID").child("날짜별 일정").child(input_today);
             data.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -155,7 +155,7 @@ public class Rating extends AppCompatActivity {
                 if(arr[now]==null){}
                 else {
                     String input_today_r = String.valueOf(fb_today);
-                    myRef.child("UserID").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
+                    myRef.child("UserID").child("날짜별 일정").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
                 }
             }
         }

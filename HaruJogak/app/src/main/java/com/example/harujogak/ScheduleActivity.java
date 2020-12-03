@@ -57,8 +57,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 String input_date=String.valueOf(fb_date);
                 String getDayGoal=calendar_text.getText().toString();
                 calendar_text.setText("");
-                myRef.child("UserID").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
-                myRef.child("UserID").child(input_date).child(getDayGoal).child("평가").setValue(0);
+                myRef.child("UserID").child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
+                myRef.child("UserID").child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
             }
         });
     }
