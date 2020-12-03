@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn5){
-                Intent intent =new Intent(MainActivity.this,SignUpActivity.class);
+                Intent intent =new Intent(MainActivity.this,Login2.class);
                 startActivity(intent);
             }
         }

@@ -37,6 +37,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = email_join.getText().toString().trim();
                 String pwd = pwd_join.getText().toString().trim();
+                email_join.setText("");
+                pwd_join.setText("");
 
                 firebaseAuth.createUserWithEmailAndPassword(email, pwd)
                         .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
@@ -44,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(SignUpActivity.this, Login2.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
