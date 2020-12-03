@@ -44,7 +44,6 @@ public class GoalAddActivity extends AppCompatActivity {
                 int tYear, tMonth, tDay;
                 long t, d;
 
-
                 Calendar tcalendar = Calendar.getInstance();
                 Calendar dcalendar = Calendar.getInstance();
 
@@ -55,7 +54,7 @@ public class GoalAddActivity extends AppCompatActivity {
 
                 //목표 날짜
                 dcalendar.set(year, month, dayOfMonth);
-                String date=Integer.toString(year)+"년 "+Integer.toString(month)+"월 "+Integer.toString(dayOfMonth)+"일";
+                String date=Integer.toString(year)+"년 "+Integer.toString(month+1)+"월 "+Integer.toString(dayOfMonth)+"일";
                 fb_dday=null;
                 fb_dday=date.toCharArray();
 

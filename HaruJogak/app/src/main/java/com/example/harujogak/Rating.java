@@ -70,59 +70,80 @@ public class Rating extends AppCompatActivity {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String getInterrupt=interrupt.getText().toString();
-                    myRef.child("UserID").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
-                    interrupt.setText("");
+                    if(arr[now]==null){}
+                    else {
+                        String getInterrupt = interrupt.getText().toString();
+                        myRef.child("UserID").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
+                        interrupt.setText("");
+                    }
                 }
             });
             right.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if((now+1)<count) {
-                        now=now+1;
+                    if(arr[now]==null){}
+                    else {
+                        if ((now + 1) < count) {
+                            now = now + 1;
+                        } else {
+                            now = 0;
+                        }
+                        schedule.setText(arr[now]);
                     }
-                    else {now=0;}
-                    schedule.setText(arr[now]);
                 }
             });
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if((now-1)>=0){
-                        now=now-1;
+                    if(arr[now]==null){}
+                    else {
+                        if ((now - 1) >= 0) {
+                            now = now - 1;
+                        } else {
+                            now = count - 1;
+                        }
+                        schedule.setText(arr[now]);
                     }
-                    else {now=count-1;}
-                    schedule.setText(arr[now]);
                 }
             });
             //Read data
-            DatabaseReference data=myRef.child("UserID").child(input_today);
+            DatabaseReference data;
+            data=myRef.child("UserID").child(input_today);
             data.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    sum=0;
-                    count=0;
-                    for(DataSnapshot ds:snapshot.getChildren()){
-                        if(ds.child("평가").getValue()!=null) {
-                            String rat = ds.child("평가").getValue().toString();
-                            String sche =ds.getKey().toString();
-                            arr[count++]=sche;
-                            float temp = Float.parseFloat(rat);
-                            sum += temp;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        sum = 0;
+                        count = 0;
+                        if(snapshot.getValue()==null){
+                            schedule.setText("오늘의 일정이 없습니다.");
+                        }
+                        else {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                if (ds.getValue() != null) {
+                                    String rat = ds.child("평가").getValue().toString();
+                                    String sche = ds.getKey().toString();
+                                    arr[count++] = sche;
+                                    float temp = Float.parseFloat(rat);
+                                    sum += temp;
+                                }
+                            }
                         }
                     }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w("TAG","Firebase error");
-                }
-            });
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("TAG", "Firebase error");
+                    }
+                });
 
             stat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    float re1=(sum/count)*20;
-                    result.setText("오늘의 달성률은 "+re1+"%");
+                    if(arr[now]==null){}
+                    else {
+                        float re1 = (sum / count) * 20;
+                        result.setText("오늘의 달성률은 " + re1 + "%");
+                    }
                 }
             });
 
@@ -131,8 +152,11 @@ public class Rating extends AppCompatActivity {
         class Listener implements RatingBar.OnRatingBarChangeListener{
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
-                String input_today_r=String.valueOf(fb_today);
-                myRef.child("UserID").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
+                if(arr[now]==null){}
+                else {
+                    String input_today_r = String.valueOf(fb_today);
+                    myRef.child("UserID").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
+                }
             }
         }
     }
