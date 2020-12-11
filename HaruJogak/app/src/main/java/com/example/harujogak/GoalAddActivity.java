@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GoalAddActivity extends AppCompatActivity {
@@ -21,9 +20,6 @@ public class GoalAddActivity extends AppCompatActivity {
     DatabaseReference myRef;
     char[] fb_dday=new char[20]; //firebase
     int dday;
-    User user = new User();
-    Goal g1=new Goal();
-    private ArrayList<Goal> goal = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,10 +76,6 @@ public class GoalAddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String getGoal =goal_input.getText().toString();
                 String input_dday=String.valueOf(fb_dday);
-                g1.setGoal_name(getGoal);
-                g1.setDeadline(input_dday);
-                goal.add(g1);
-                user.setGoal(goal);
                 myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
                 myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
                 myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
@@ -91,4 +83,6 @@ public class GoalAddActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
