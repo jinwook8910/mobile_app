@@ -60,7 +60,6 @@ public class TableItemView extends LinearLayout {
 
         return pieChartView;
     }
-    
 }
 
 //    TextView textView;

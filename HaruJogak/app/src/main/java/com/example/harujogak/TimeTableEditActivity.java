@@ -56,10 +56,11 @@ public class TimeTableEditActivity extends AppCompatActivity {
     class DateSetListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            dateButton.setText(year + " / " + month + 1 + " / " + dayOfMonth);
+            month+=1;
+            dateButton.setText(year + " / " + month + " / " + dayOfMonth);
 
             Description description = new Description();
-            description.setText(year + " / " + month + 1 + " / " + dayOfMonth);
+            description.setText(year + " / " + month + " / " + dayOfMonth);
             description.setTextSize(15);
             pieChart.setDescription(description);
         }
@@ -167,13 +168,14 @@ public class TimeTableEditActivity extends AppCompatActivity {
         endTimeButton = (TextView) addTaskDialog.findViewById(R.id.end_time_set_button);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
 
-        ////////
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("토익 시험");
-        arrayList.add("다이어트");
-        arrayList.add("코딩테스트");
+        //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
+        //ArrayList<String> GoalList = user.getGoalList(); ????????
+        ArrayList<String> GoalList = new ArrayList<>();
+        GoalList.add("토익 시험");
+        GoalList.add("다이어트");
+        GoalList.add("코딩테스트");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, arrayList);
+                android.R.layout.simple_spinner_dropdown_item, GoalList);
         Spinner s = (Spinner) addTaskDialog.findViewById(R.id.goalSpinner);
         s.setAdapter(arrayAdapter); //adapter를 spinner에 연결
 
@@ -189,26 +191,31 @@ public class TimeTableEditActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        /////////
 
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Task newTask = new Task();
                 pieChart.getDescription().setEnabled(false);
                 pieChart.setExtraOffsets(5, 10, 5, 5);
 
                 pieChart.setDrawHoleEnabled(false);
                 pieChart.setRotationEnabled(false);
 
-                //시간 문자열 => 분으로 계산
-                String startTime = (String) startTimeButton.getText();
-                String endTime = (String) endTimeButton.getText();
+                //Todo : 새로 태스크 추가될 때 마다 pieEntry 새로 만들어서 endTime - startTime 으로 pieEntry f 값 지정해줘야함
 
-                String start_times[] = startTime.split(" : ");
+                //시간 문자열 => 분으로 계산
+                newTask.setStartTime((String) startTimeButton.getText());
+                newTask.setEndTime((String) endTimeButton.getText());
+
+                String start_times[] = newTask.getStartTime().split(" : ");
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
-                String end_times[] = endTime.split(" : ");
+                String end_times[] = newTask.getEndTime().split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
+
+                //Todo : 새로운 태스크 추가될 때 마다 pieEntry 새로 만들어서 endTime - startTime 으로 pieEntry f 값 지정해줘야함
+                // 맨처음에는 24시간이 빈칸인 pieEntry가 있음. 그거에다가 지금 Task 가지고 밑에처럼 pieEntry 만들어서 yValue_new에 추가 -> yValue로 덮어 씀.
+                PieEntry newPieEntry = new PieEntry(end_time - start_time, taskLabel.getText());
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
@@ -278,14 +285,14 @@ public class TimeTableEditActivity extends AppCompatActivity {
         decoTaskDialog.setTitle("일정 추가");
 
         TextView taskLabelLine = (TextView) decoTaskDialog.findViewById(R.id.task_label_show);
-        TextView taskTimeLine = (TextView) decoTaskDialog.findViewById(R.id.task_time_show);
+        TextView startTime = (TextView) decoTaskDialog.findViewById(R.id.start_time);
+        TextView endTime = (TextView) decoTaskDialog.findViewById(R.id.end_time);
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
         Button showTemplate = (Button) decoTaskDialog.findViewById(R.id.show_adapted_task);
         TextView backgroundColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_background);
         TextView textColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_text_color);
 
         taskLabelLine.setText(yValues.get(index).getLabel());
-        taskTimeLine.setText(yValues.get(index).getValue() + "");
 
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override

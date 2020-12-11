@@ -14,10 +14,10 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 
-public class MyTimeTable {
+class MyTimeTable {
     private PieData pieData;
     private ArrayList<int[]> MyBackground = new ArrayList<>();
-    private ArrayList<PieEntry> MyTasks = new ArrayList<>();
+    private ArrayList<Task> MyTasks = new ArrayList<>();
     private int[] OnWeek = {0, 0, 0, 0, 0, 0, 0};    // MON ~ SUN
     private String OnDate = new String();
 
@@ -38,21 +38,21 @@ public class MyTimeTable {
         return MyBackground;
     }
 
-    void setMyTasks(ArrayList<PieEntry> tasks) {
+    void setMyTasks(ArrayList<Task> tasks) {
         MyTasks = tasks;
     }
 
-    ArrayList<PieEntry> getMyTasks() {
+    ArrayList<Task> getMyTasks() {
         return MyTasks;
     }
 
     //task 추가 함수
-    void add_Task(PieEntry e) {
+    void add_Task(Task e) {
         MyTasks.add(e);
     }
 
-    void add_Task(float f, String label) {
-        MyTasks.add(new PieEntry(f, label));
+    void add_Task(String label, String startTime, String endTime) {
+        MyTasks.add(new Task(label, startTime, endTime));
     }
 
     //백그라운드 리스트에 새로운 색상 추가
@@ -74,7 +74,8 @@ public class MyTimeTable {
         for (int i = 0; i < 7; i++)
             OnWeek[i] = week[i];
     }
-    int[] getOnWeek(){
+
+    int[] getOnWeek() {
         return OnWeek;
     }
 
@@ -111,4 +112,43 @@ public class MyTimeTable {
 //
 //        pieChart.setData(data);
 //    }
+}
+
+class Task {
+    String label;
+    String startTime, endTime;
+
+    public Task() {
+
+    }
+
+    public Task(String label, String startTime, String endTime) {
+        this.label = label;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    void setLabel(String label) {
+        this.label = label;
+    }
+
+    String getLabel() {
+        return label;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
 }

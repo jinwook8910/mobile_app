@@ -57,13 +57,33 @@
                 android:text="시간 : "
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/task_time_show"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="HH : MM  ~  HH : MM"
-                android:textSize="20dp" />
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickSet"
+                    android:text="00 : 00"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    ~    "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickSet"
+                    android:text="00 : 00"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
