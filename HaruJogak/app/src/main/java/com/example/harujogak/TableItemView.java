@@ -1,19 +1,21 @@
 package com.example.harujogak;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 public class TableItemView extends LinearLayout {
     private TextView textView;
@@ -46,6 +48,7 @@ public class TableItemView extends LinearLayout {
     public void setPieChart(PieData pieData) {
         pieChartView.setData(pieData);
 
+        pieChartView.setRotationEnabled(false);
         pieChartView.getLegend().setEnabled(false);
         pieChartView.getDescription().setEnabled(false);
 
@@ -54,7 +57,6 @@ public class TableItemView extends LinearLayout {
         pieChartView.setDrawHoleEnabled(false);
         pieChartView.setHoleColor(Color.WHITE);
         pieChartView.setTransparentCircleRadius(61f);
-
     }
 
 }

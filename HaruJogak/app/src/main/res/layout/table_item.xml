@@ -22,9 +22,8 @@
             android:id="@+id/pieChartView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:gravity="center"
-            android:scaleX="1.5"
-            android:scaleY="1.5" />
+            android:onClick="goEditPage"
+            android:gravity="center" />
 
     </LinearLayout>
 
