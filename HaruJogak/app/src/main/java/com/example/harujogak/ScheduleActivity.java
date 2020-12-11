@@ -14,7 +14,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -54,6 +53,10 @@ public class ScheduleActivity extends AppCompatActivity {
         calendar_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //class에 저장
+                Schedule new_schedule = new Schedule(calendar_date.getText().toString() ,calendar_text.getText().toString());
+
+                //firebase
                 String input_date=String.valueOf(fb_date);
                 String getDayGoal=calendar_text.getText().toString();
                 calendar_text.setText("");
