@@ -1,26 +1,41 @@
 package com.example.harujogak;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 public class User {
+    private static volatile User instance = null;
     private String id, passWord, eMail;
-    private ArrayList<MyTimeTable> dateTable = new ArrayList<>();
-    private ArrayList<MyTimeTable> weekTable = new ArrayList<>(7);
-    private ArrayList<Goal> goal = new ArrayList<>();
+    private ArrayList<MyTimeTable> dateTable;
+    private ArrayList<MyTimeTable> weekTable;
+    private ArrayList<Goal> goal;
     //private ArrayList<Obstruction> obstruction;
+    private ScheduleList scheduleList;
 
+    public User(){
+        this.dateTable = new ArrayList<>();
+        this.weekTable = new ArrayList<>(7);
+        this.goal = new ArrayList<>();
+        this.scheduleList = new ScheduleList();
+    }//firebase에서 데이터 로드한 걸 add해야 함.
 
-    public void setId(String id) {
-        this.id = id;
+    public User(String user_id, String user_pw){
+        this.id = user_id;
+        this.passWord = user_pw;
+    }
+
+    public static User getInstance(String user_id, String user_pw){
+        if(instance == null){
+            instance = new User(user_id, user_pw);
+        }
+        return instance;
+    }
+
+    public static User getInstance(){ //객체 하나만 존재하도록 함
+        return instance;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
     }
 
     public String getPassWord() {
@@ -57,5 +72,13 @@ public class User {
 
     public ArrayList<Goal> getGoal() {
         return goal;
+    }
+
+    public ScheduleList getScheduleList() {
+        return scheduleList;
+    }
+
+    public void setScheduleList(ScheduleList scheduleList) {
+        this.scheduleList = scheduleList;
     }
 }
