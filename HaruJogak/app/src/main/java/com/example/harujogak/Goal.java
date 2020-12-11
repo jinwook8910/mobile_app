@@ -8,9 +8,9 @@ import java.util.Date;
 
 public class Goal {
     private String goal_name;
-    private Date Deadline;
+    private String Deadline;
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         Deadline = deadline;
     }
 
@@ -18,7 +18,7 @@ public class Goal {
         this.goal_name = goal_name;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return Deadline;
     }
 
