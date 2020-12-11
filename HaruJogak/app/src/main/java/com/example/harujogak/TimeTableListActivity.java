@@ -20,18 +20,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
-
-// Todo : 이미지 대신에 piechart 넣기. 근데 piechart를 어떻게 resID로 나타낼 수 있을까..
-
 
 public class TimeTableListActivity extends AppCompatActivity {
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
@@ -39,9 +37,10 @@ public class TimeTableListActivity extends AppCompatActivity {
     private ArrayList<TableItemByDay> week = new ArrayList<>(7);
     private TableAdapter tableAdapter;
 
+    MyTimeTable exT = new MyTimeTable();
     MyTimeTable exTable = new MyTimeTable();
 
-    public void setdata(){
+    public void setdata1(){
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
         yValues.add(new PieEntry(34f, "Japan"));
@@ -59,8 +58,30 @@ public class TimeTableListActivity extends AppCompatActivity {
         PieData data = new PieData((dataSet));
         data.setValueTextSize(0f);
         data.setValueTextColor(Color.YELLOW);
-
         exTable.setPieData(data);
+
+    }
+
+    public void setdata2(){
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(40f, "Jan"));
+        yValues.add(new PieEntry(13f, "S"));
+        yValues.add(new PieEntry(17f, "U"));
+        yValues.add(new PieEntry(35f, "I"));
+        yValues.add(new PieEntry(20f, "R"));
+        yValues.add(new PieEntry(40f, "K"));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "temp");
+        dataSet.setSliceSpace(0f);
+        dataSet.setSelectionShift(1f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(0f);
+        data.setValueTextColor(Color.YELLOW);
+
+        exT.setPieData(data);
 
     }
 
@@ -69,18 +90,24 @@ public class TimeTableListActivity extends AppCompatActivity {
         tableAdapter.addItem(new TableItemByDate(exTable));
         tableAdapter.addItem(new TableItemByDate(exTable));
         tableAdapter.addItem(new TableItemByDate(exTable));
+        tableAdapter.addItem(new TableItemByDate(exT));
         tableAdapter.addItem(new TableItemByDate(exTable));
-        tableAdapter.addItem(new TableItemByDate(exTable));
-        tableAdapter.addItem(new TableItemByDate(exTable));
+        tableAdapter.addItem(new TableItemByDate(exT));
     }
     public void addToList(){
+        week.add(new TableItemByDay(exT));
         week.add(new TableItemByDay(exTable));
+        week.add(new TableItemByDay(exT));
         week.add(new TableItemByDay(exTable));
+        week.add(new TableItemByDay(exT));
+        week.add(new TableItemByDay(exT));
         week.add(new TableItemByDay(exTable));
-        week.add(new TableItemByDay(exTable));
-        week.add(new TableItemByDay(exTable));
-        week.add(new TableItemByDay(exTable));
-        week.add(new TableItemByDay(exTable));
+    }
+
+    void goEditPage(){
+        Log.i("Onclick", "goEditPage");
+        Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -91,7 +118,8 @@ public class TimeTableListActivity extends AppCompatActivity {
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1) ;
 
-        setdata();
+        setdata1();
+        setdata2();
         addToAdapter(this);
         addToList();
 
@@ -182,6 +210,7 @@ public class TimeTableListActivity extends AppCompatActivity {
                 textView1 = itemView.findViewById(R.id.dateView);
                 pieChart = itemView.findViewById(R.id.pieChartView);
 
+                pieChart.setRotationEnabled(false);
                 pieChart.getLegend().setEnabled(false);
                 pieChart.getDescription().setEnabled(false);
 
@@ -202,6 +231,18 @@ public class TimeTableListActivity extends AppCompatActivity {
                             Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
                             startActivity(intent);
                         }
+                    }
+                });
+                pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                    @Override
+                    public void onValueSelected(Entry e, Highlight h) {
+                        Log.i("Onclick", "goEditPage");
+                        Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onNothingSelected() {
                     }
                 });
             }
