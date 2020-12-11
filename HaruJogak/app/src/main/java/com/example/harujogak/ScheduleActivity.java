@@ -55,6 +55,8 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //class에 저장
                 Schedule new_schedule = new Schedule(calendar_date.getText().toString() ,calendar_text.getText().toString());
+                User user = User.getInstance();
+                user.getScheduleList().add(new_schedule);
 
                 //firebase
                 String input_date=String.valueOf(fb_date);

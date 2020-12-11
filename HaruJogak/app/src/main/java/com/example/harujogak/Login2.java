@@ -47,7 +47,7 @@ public class Login2 extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    User user =new User(email,pwd);
+                                    User user = User.getInstance(email, pwd);
                                     Intent intent = new Intent(Login2.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {

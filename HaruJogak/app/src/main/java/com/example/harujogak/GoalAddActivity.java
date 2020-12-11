@@ -16,11 +16,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 
 public class GoalAddActivity extends AppCompatActivity {
+    String goal_date; //선택한 날짜 문자열로 저장
+    //
     FirebaseDatabase database;
     DatabaseReference myRef;
     char[] fb_dday=new char[20]; //firebase
     int dday;
-    Goal goal =new Goal();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public class GoalAddActivity extends AppCompatActivity {
                 String date=Integer.toString(year)+"년 "+Integer.toString(month+1)+"월 "+Integer.toString(dayOfMonth)+"일";
                 fb_dday=null;
                 fb_dday=date.toCharArray();
+                goal_date= String.format("%d / %d / %d",year,month+1,dayOfMonth);
 
                 //날짜 초단위로 변경
                 t=tcalendar.getTimeInMillis()/(24*60*60*1000);
@@ -75,15 +78,21 @@ public class GoalAddActivity extends AppCompatActivity {
         goal_add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getGoal =goal_input.getText().toString();
-                String input_dday=String.valueOf(fb_dday);
-                goal.setGoal_name(getGoal);
-                goal.setDeadline(input_dday);
-                
-                myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
-                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
-                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
-                goal_input.setText("");
+                //class에 저장
+                Goal new_goal = new Goal(goal_input.getText().toString(), goal_date); //goal class에 생성자 만들기
+                User user = User.getInstance(); //현재 사용중인 사용자
+                user.getGoalList().add(new_goal);
+
+                //firebase에 저장
+//                String getGoal =goal_input.getText().toString();
+//                String input_dday=String.valueOf(fb_dday);
+//                myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
+//                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
+//                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
+//                goal_input.setText("");
+
+                //이전 Activity로 돌아가기
+                finish();
             }
         });
     }

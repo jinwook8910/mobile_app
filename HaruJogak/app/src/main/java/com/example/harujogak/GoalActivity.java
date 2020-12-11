@@ -14,6 +14,11 @@ public class GoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goal);
 
+        //목표 리스트 출력
+        User user = User.getInstance();
+
+
+        //'추가'버튼
         btn=(Button) findViewById(R.id.goal_btn);
         btn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){

@@ -7,20 +7,19 @@ public class User {
     private String id, passWord, eMail;
     private ArrayList<MyTimeTable> dateTable;
     private ArrayList<MyTimeTable> weekTable;
-    private ArrayList<Goal> goal;
+    private ArrayList<Goal> goalList;
     //private ArrayList<Obstruction> obstruction;
     private ScheduleList scheduleList;
-
-    public User(){
-        this.dateTable = new ArrayList<>();
-        this.weekTable = new ArrayList<>(7);
-        this.goal = new ArrayList<>();
-        this.scheduleList = new ScheduleList();
-    }//firebase에서 데이터 로드한 걸 add해야 함.
 
     public User(String user_id, String user_pw){
         this.id = user_id;
         this.passWord = user_pw;
+
+        //firebase에서 데이터 로드한 걸 add해야 함.
+        this.dateTable = new ArrayList<>();
+        this.weekTable = new ArrayList<>(7);
+        this.goalList = new ArrayList<>();
+        this.scheduleList = new ScheduleList();
     }
 
     public static User getInstance(String user_id, String user_pw){
@@ -66,12 +65,12 @@ public class User {
         return weekTable;
     }
 
-    public void setGoal(ArrayList<Goal> goal) {
-        this.goal = goal;
+    public ArrayList<Goal> getGoalList() {
+        return goalList;
     }
 
-    public ArrayList<Goal> getGoal() {
-        return goal;
+    public void setGoalList(ArrayList<Goal> goalList) {
+        this.goalList = goalList;
     }
 
     public ScheduleList getScheduleList() {
