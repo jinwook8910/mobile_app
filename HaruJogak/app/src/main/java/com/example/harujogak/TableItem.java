@@ -3,7 +3,7 @@ package com.example.harujogak;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 
-public class TableItemByDate {
+class TableItemByDate {
     String date;
     private PieData pieData;
 
