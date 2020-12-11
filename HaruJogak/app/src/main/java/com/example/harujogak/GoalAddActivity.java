@@ -20,6 +20,7 @@ public class GoalAddActivity extends AppCompatActivity {
     DatabaseReference myRef;
     char[] fb_dday=new char[20]; //firebase
     int dday;
+    Goal goal =new Goal();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +77,9 @@ public class GoalAddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String getGoal =goal_input.getText().toString();
                 String input_dday=String.valueOf(fb_dday);
+                goal.setGoal_name(getGoal);
+                goal.setDeadline(input_dday);
+                
                 myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
                 myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
                 myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
