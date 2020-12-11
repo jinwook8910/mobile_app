@@ -188,7 +188,18 @@ public class TimeTableListActivity extends AppCompatActivity {
             TableItemByDate item = items.get(position);
 
             view.setDate(item.getDate());
-            view.setPieChart(item.getPieData());
+            view.setPieChart(item.getPieData()).setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
+                    Log.i("Onclick", "goEditPage");
+                    Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onNothingSelected() {
+                }
+            });
 
             return view;
         }

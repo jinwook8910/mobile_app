@@ -45,7 +45,7 @@ public class TableItemView extends LinearLayout {
         textView.setText(date);
     }
 
-    public void setPieChart(PieData pieData) {
+    public PieChart setPieChart(PieData pieData) {
         pieChartView.setData(pieData);
 
         pieChartView.setRotationEnabled(false);
@@ -57,8 +57,10 @@ public class TableItemView extends LinearLayout {
         pieChartView.setDrawHoleEnabled(false);
         pieChartView.setHoleColor(Color.WHITE);
         pieChartView.setTransparentCircleRadius(61f);
-    }
 
+        return pieChartView;
+    }
+    
 }
 
 //    TextView textView;
