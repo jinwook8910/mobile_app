@@ -21,6 +21,7 @@ public class Login2 extends AppCompatActivity {
     private EditText email_login;
     private EditText pwd_login;
     FirebaseAuth firebaseAuth;
+    User user=new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class Login2 extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email = email_login.getText().toString().trim();
                 String pwd = pwd_login.getText().toString().trim();
                 email_login.setText("");
@@ -47,6 +49,8 @@ public class Login2 extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    user.setEMail(email);
+                                    user.setPassWord(pwd);
                                     Intent intent = new Intent(Login2.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -66,4 +70,5 @@ public class Login2 extends AppCompatActivity {
             }
         });
     }
+
 }
