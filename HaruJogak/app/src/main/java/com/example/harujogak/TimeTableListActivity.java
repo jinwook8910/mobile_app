@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,12 +105,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         week.add(new TableItemByDay(exTable));
     }
 
-    void goEditPage(){
-        Log.i("Onclick", "goEditPage");
-        Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +172,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TableItemView view;
-            Log.d("Adapter", "pos: " + position);
             if (convertView == null) {
                 view = new TableItemView(context);
                 view.setLayoutParams(new GridView.LayoutParams(320, 390));
@@ -188,11 +182,11 @@ public class TimeTableListActivity extends AppCompatActivity {
             TableItemByDate item = items.get(position);
 
             view.setDate(item.getDate());
-            view.setPieChart(item.getPieData()).setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            view.setPieChart(item.getMyTimeTable().getPieData()).setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
-                    Log.i("Onclick", "goEditPage");
                     Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
+                    intent.putExtra("TableItemByDate", item);
                     startActivity(intent);
                 }
 

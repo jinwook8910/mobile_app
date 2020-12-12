@@ -5,12 +5,13 @@ import java.util.ArrayList;
 public class User {
     private static volatile User instance = null;
     private String id, passWord, eMail;
-    private ArrayList<MyTimeTable> dateTable;
     private ArrayList<MyTimeTable> weekTable;
+    private ArrayList<MyTimeTable> dateTable;
     private ArrayList<Goal> goalList;
     //private ArrayList<Obstruction> obstruction;
     private ScheduleList scheduleList;
 
+    public User(){}
     public User(String user_id, String user_pw){
         this.id = user_id;
         this.passWord = user_pw;

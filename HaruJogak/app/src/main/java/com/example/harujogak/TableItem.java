@@ -3,13 +3,25 @@ package com.example.harujogak;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 
-class TableItemByDate {
+import java.io.Serializable;
+
+class TableItemByDate implements Serializable {
     String date;
-    private PieData pieData;
+    MyTimeTable myTimeTable;
+//    private PieData pieData;
 
     public TableItemByDate(MyTimeTable t) {
+        this.myTimeTable = t;
         date = t.getOnDate();
-        pieData = t.getPieData();
+//        pieData = t.getPieData();
+    }
+
+    public MyTimeTable getMyTimeTable() {
+        return myTimeTable;
+    }
+
+    public void setMyTimeTable(MyTimeTable myTimeTable) {
+        this.myTimeTable = myTimeTable;
     }
 
     public String getDate() {
@@ -20,17 +32,17 @@ class TableItemByDate {
         this.date = date;
     }
 
-    public PieData getPieData() {
-        return pieData;
-    }
-
-    public void setPieData(PieData pieData) {
-        this.pieData = pieData;
+//    public PieData getPieData() {
+//        return pieData;
+//    }
+//
+//    public void setPieData(PieData pieData) {
+//        this.pieData = pieData;
     }
 
 }
 
-class TableItemByDay {
+class TableItemByDay implements Serializable{
     String day;
     //    private PieChart pieChart;
     private PieData pieData;
