@@ -88,21 +88,21 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     public void addToAdapter(Context c){
         tableAdapter = new TableAdapter(c);
-        tableAdapter.addItem(new TableItemByDate(exTable));
-        tableAdapter.addItem(new TableItemByDate(exTable));
-        tableAdapter.addItem(new TableItemByDate(exTable));
-        tableAdapter.addItem(new TableItemByDate(exT));
-        tableAdapter.addItem(new TableItemByDate(exTable));
-        tableAdapter.addItem(new TableItemByDate(exT));
+        tableAdapter.addItem(new TableItemByDate("2018-11-23", exTable));
+        tableAdapter.addItem(new TableItemByDate("2018-01-02", exTable));
+        tableAdapter.addItem(new TableItemByDate("2023-01-13", exTable));
+        tableAdapter.addItem(new TableItemByDate("2013-06-16", exT));
+        tableAdapter.addItem(new TableItemByDate("2017-12-03", exTable));
+        tableAdapter.addItem(new TableItemByDate("2010-09-21", exT));
     }
     public void addToList(){
-        week.add(new TableItemByDay(exT));
-        week.add(new TableItemByDay(exTable));
-        week.add(new TableItemByDay(exT));
-        week.add(new TableItemByDay(exTable));
-        week.add(new TableItemByDay(exT));
-        week.add(new TableItemByDay(exT));
-        week.add(new TableItemByDay(exTable));
+        week.add(new TableItemByDay("월", exT));
+        week.add(new TableItemByDay("화", exTable));
+        week.add(new TableItemByDay("수", exT));
+        week.add(new TableItemByDay("목", exTable));
+        week.add(new TableItemByDay("금", exT));
+        week.add(new TableItemByDay("토", exT));
+        week.add(new TableItemByDay("일", exTable));
     }
 
     @Override
@@ -186,7 +186,7 @@ public class TimeTableListActivity extends AppCompatActivity {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
                     Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
-                    intent.putExtra("TableItemByDate", item);
+//                    intent.putExtra("TableItemByDate", item);
                     startActivity(intent);
                 }
 
@@ -274,9 +274,9 @@ public class TimeTableListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(SimpleTextAdapter.ViewHolder holder, int position) {
             TableItemByDay data = weekSchedule.get(position);
-            holder.textView1.setText(data.getDate());
+            holder.textView1.setText(data.getDay());
             PieData piedata;
-            piedata = data.getPieData();
+            piedata = data.getMyTimeTable().getPieData();
             holder.pieChart.setData(piedata);
         }
 

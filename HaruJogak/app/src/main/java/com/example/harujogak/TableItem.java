@@ -8,12 +8,10 @@ import java.io.Serializable;
 class TableItemByDate implements Serializable {
     String date;
     MyTimeTable myTimeTable;
-//    private PieData pieData;
 
-    public TableItemByDate(MyTimeTable t) {
+    public TableItemByDate(String date, MyTimeTable t) {
+        this.date = date;
         this.myTimeTable = t;
-        date = t.getOnDate();
-//        pieData = t.getPieData();
     }
 
     public MyTimeTable getMyTimeTable() {
@@ -32,40 +30,26 @@ class TableItemByDate implements Serializable {
         this.date = date;
     }
 
-//    public PieData getPieData() {
-//        return pieData;
-//    }
-//
-//    public void setPieData(PieData pieData) {
-//        this.pieData = pieData;
-    }
-
 }
 
 class TableItemByDay implements Serializable{
     String day;
-    //    private PieChart pieChart;
-    private PieData pieData;
+    MyTimeTable myTimeTable;
 
-    public TableItemByDay(MyTimeTable t) {
-        this.day = day;
-        pieData = t.getPieData();
-    }
-
-    public String getDate() {
+    public String getDay() {
         return day;
     }
 
-    public void setDate(String day) {
+    public TableItemByDay(String day, MyTimeTable t) {
         this.day = day;
+        this.myTimeTable = t;
     }
 
-    public PieData getPieData() {
-        return pieData;
+    public MyTimeTable getMyTimeTable() {
+        return myTimeTable;
     }
 
-    public void setPieData(PieData pieData) {
-        this.pieData = pieData;
+    public void setMyTimeTable(MyTimeTable myTimeTable) {
+        this.myTimeTable = myTimeTable;
     }
-
 }

@@ -14,13 +14,11 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 
+/* 기본 타임테이블 */
 class MyTimeTable {
     private PieData pieData;
     private ArrayList<int[]> MyBackground = new ArrayList<>();
     private ArrayList<Task> MyTasks = new ArrayList<>();
-    private int[] OnWeek = {0, 0, 0, 0, 0, 0, 0};    // MON ~ SUN
-    private String OnDate = new String();
-
 
     void setPieData(PieData p) {
         pieData = p;
@@ -70,23 +68,6 @@ class MyTimeTable {
         MyBackground.remove(index);
     }
 
-    void setOnWeek(int[] week) {
-        for (int i = 0; i < 7; i++)
-            OnWeek[i] = week[i];
-    }
-
-    int[] getOnWeek() {
-        return OnWeek;
-    }
-
-    void setOnDate(String date) {
-        OnDate = date;
-    }
-
-    String getOnDate() {
-        return OnDate;
-    }
-
     //*수정필요*
 //    void Table_setting() {
 //        pieChart.setRotationEnabled(false);
@@ -117,6 +98,7 @@ class MyTimeTable {
 class Task {
     String label;
     String startTime, endTime;
+    String relativeGoal;
 
     public Task() {
 
@@ -150,5 +132,13 @@ class Task {
 
     public String getEndTime() {
         return endTime;
+    }
+
+    public void setRelativeGoal(String relativeGoal) {
+        this.relativeGoal = relativeGoal;
+    }
+
+    public String getRelativeGoal() {
+        return relativeGoal;
     }
 }

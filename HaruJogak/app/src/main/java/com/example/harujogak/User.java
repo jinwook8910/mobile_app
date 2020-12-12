@@ -5,21 +5,22 @@ import java.util.ArrayList;
 public class User {
     private static volatile User instance = null;
     private String id, passWord, eMail;
-    private ArrayList<MyTimeTable> weekTable;
-    private ArrayList<MyTimeTable> dateTable;
+    private ArrayList<TableItemByDay> weekTable;
+    private ArrayList<TableItemByDate> dateTable;
     private ArrayList<Goal> goalList;
-    //private ArrayList<Obstruction> obstruction;
+    private ArrayList<String> obstructList;
     private ScheduleList scheduleList;
 
-    public User(){}
+    public User(){} //임시 테스트용
     public User(String user_id, String user_pw){
         this.id = user_id;
         this.passWord = user_pw;
 
         //firebase에서 데이터 로드한 걸 add해야 함.
-        this.dateTable = new ArrayList<>();
         this.weekTable = new ArrayList<>(7);
+        this.dateTable = new ArrayList<>();
         this.goalList = new ArrayList<>();
+        this.obstructList = new ArrayList<>();
         this.scheduleList = new ScheduleList();
     }
 
@@ -50,20 +51,20 @@ public class User {
         return eMail;
     }
 
-    public void setDayTable(ArrayList<MyTimeTable> dayTable) {
-        this.dateTable = dayTable;
+    public ArrayList<TableItemByDay> getWeekTable() {
+        return weekTable;
     }
 
-    public ArrayList<MyTimeTable> getDayTable() {
-        return dateTable;
-    }
-
-    public void setWeekTable(ArrayList<MyTimeTable> weekTable) {
+    public void setWeekTable(ArrayList<TableItemByDay> weekTable) {
         this.weekTable = weekTable;
     }
 
-    public ArrayList<MyTimeTable> getWeekTable() {
-        return weekTable;
+    public ArrayList<TableItemByDate> getDateTable() {
+        return dateTable;
+    }
+
+    public void setDateTable(ArrayList<TableItemByDate> dateTable) {
+        this.dateTable = dateTable;
     }
 
     public ArrayList<Goal> getGoalList() {
@@ -72,6 +73,14 @@ public class User {
 
     public void setGoalList(ArrayList<Goal> goalList) {
         this.goalList = goalList;
+    }
+
+    public ArrayList<String> getObstructList() {
+        return obstructList;
+    }
+
+    public void setObstructList(ArrayList<String> obstructList) {
+        this.obstructList = obstructList;
     }
 
     public ScheduleList getScheduleList() {
