@@ -1,12 +1,19 @@
 package com.example.harujogak;
 
+import android.graphics.Color;
+
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+
 import java.util.ArrayList;
 
 public class User {
     private static volatile User instance = null;
     private String id, passWord, eMail;
-    private ArrayList<TableItemByDay> weekTable;
-    private ArrayList<TableItemByDate> dateTable;
+    private ArrayList<MyTimeTable> weekTable;
+    private ArrayList<MyTimeTable> dateTable;
     private ArrayList<Goal> goalList;
     private ArrayList<String> obstructList;
     private ScheduleList scheduleList;
@@ -22,6 +29,7 @@ public class User {
         this.goalList = new ArrayList<>();
         this.obstructList = new ArrayList<>();
         this.scheduleList = new ScheduleList();
+        init_Week();
     }
 
     public static User getInstance(String user_id, String user_pw){
@@ -51,19 +59,19 @@ public class User {
         return eMail;
     }
 
-    public ArrayList<TableItemByDay> getWeekTable() {
+    public ArrayList<MyTimeTable> getWeekTable() {
         return weekTable;
     }
 
-    public void setWeekTable(ArrayList<TableItemByDay> weekTable) {
+    public void setWeekTable(ArrayList<MyTimeTable> weekTable) {
         this.weekTable = weekTable;
     }
 
-    public ArrayList<TableItemByDate> getDateTable() {
+    public ArrayList<MyTimeTable> getDateTable() {
         return dateTable;
     }
 
-    public void setDateTable(ArrayList<TableItemByDate> dateTable) {
+    public void setDateTable(ArrayList<MyTimeTable> dateTable) {
         this.dateTable = dateTable;
     }
 
@@ -89,5 +97,25 @@ public class User {
 
     public void setScheduleList(ScheduleList scheduleList) {
         this.scheduleList = scheduleList;
+    }
+
+    private void init_Week(){
+        ArrayList<PieEntry> temp = new ArrayList<>();
+        temp.add(new PieEntry(1440f, " "));
+
+        PieDataSet dataSet = new PieDataSet(temp, "Tasks");
+        dataSet.setSliceSpace(2f);
+        dataSet.setSelectionShift(1f);
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(14f);
+        data.setValueTextColor(Color.BLACK);
+
+        this.weekTable.add(new MyTimeTable("월", data));
+        this.weekTable.add(new MyTimeTable("화", data));
+        this.weekTable.add(new MyTimeTable("수", data));
+        this.weekTable.add(new MyTimeTable("목", data));
+        this.weekTable.add(new MyTimeTable("금", data));
+        this.weekTable.add(new MyTimeTable("토", data));
+        this.weekTable.add(new MyTimeTable("일", data));
     }
 }

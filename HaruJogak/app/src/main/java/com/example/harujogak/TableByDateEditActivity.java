@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -40,7 +41,7 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 //import com.jaredrummler.android.colorpicker.ColorPanelView;
 //import com.jaredrummler.android.colorpicker.ColorPickerView;
 
-public class TimeTableEditActivity extends AppCompatActivity {
+public class TableByDateEditActivity extends AppCompatActivity {
     private EditText taskLabel;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
@@ -102,10 +103,12 @@ public class TimeTableEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timetable_edit);
+        setContentView(R.layout.timetable_edit_date);
 
-        Intent intent = new Intent();
+        Intent intent = getIntent();
+        int position = (int)intent.getIntExtra("byDate", -1);
 
+        Log.i("intent", position+"");
         //Todo : 리스트액티비티에서 Intent로 받아서 받은게 없다(=새로 만드는거다)면
         // myTimeTable = new MyTimeTable(); 하고
         // Intent로 받은게 있다면(=기존에 있는걸 수정하는거다)면
@@ -167,10 +170,18 @@ public class TimeTableEditActivity extends AppCompatActivity {
         addTaskDialog.setContentView(R.layout.add_task_dialog);
         addTaskDialog.setTitle("일정 추가");
 
-        Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
+        ImageButton exit = (ImageButton) addTaskDialog.findViewById(R.id.exit);
         startTimeButton = (TextView) addTaskDialog.findViewById(R.id.start_time_set_button);
         endTimeButton = (TextView) addTaskDialog.findViewById(R.id.end_time_set_button);
         taskLabel = (EditText) addTaskDialog.findViewById(R.id.task_label_set);
+        Button add_task_done = (Button) addTaskDialog.findViewById(R.id.add_task_done);
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTaskDialog.dismiss();
+            }
+        });
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
         //ArrayList<String> GoalList = user.getGoalList(); ????????
@@ -409,7 +420,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
 //
 //        colorPickerDialog.show();
 
-        final ColorPicker colorPicker = new ColorPicker(TimeTableEditActivity.this);
+        final ColorPicker colorPicker = new ColorPicker(TableByDateEditActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             Button showTemplate = (Button) view.findViewById(R.id.show_adapted_task);
 

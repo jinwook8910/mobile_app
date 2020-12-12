@@ -11,10 +11,17 @@
         android:orientation="vertical"
         android:padding="25dp">
 
+        <ImageButton
+            android:id="@+id/exit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right"
+            android:background="@drawable/exit" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:paddingBottom="15dp"
             android:text="일정 추가"
             android:textColor="#6200EE"
             android:textSize="25dp" />

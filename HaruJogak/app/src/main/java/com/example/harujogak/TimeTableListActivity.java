@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +27,12 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 public class TimeTableListActivity extends AppCompatActivity {
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
     // 나중에 사용자 정보에 저장된 ArrayList를 가져와서 동작시켜야함
-    private ArrayList<TableItemByDay> week = new ArrayList<>(7);
+    private ArrayList<MyTimeTable> week = new ArrayList<>(7);
     private TableAdapter tableAdapter;
 
     MyTimeTable exT = new MyTimeTable();
@@ -61,6 +58,7 @@ public class TimeTableListActivity extends AppCompatActivity {
         data.setValueTextColor(Color.YELLOW);
         exTable.setPieData(data);
 
+        exTable.setDate("월");
     }
 
     public void setdata2(){
@@ -83,26 +81,26 @@ public class TimeTableListActivity extends AppCompatActivity {
         data.setValueTextColor(Color.YELLOW);
 
         exT.setPieData(data);
-
+        exT.setDate("2020-12-12");
     }
 
     public void addToAdapter(Context c){
         tableAdapter = new TableAdapter(c);
-        tableAdapter.addItem(new TableItemByDate("2018-11-23", exTable));
-        tableAdapter.addItem(new TableItemByDate("2018-01-02", exTable));
-        tableAdapter.addItem(new TableItemByDate("2023-01-13", exTable));
-        tableAdapter.addItem(new TableItemByDate("2013-06-16", exT));
-        tableAdapter.addItem(new TableItemByDate("2017-12-03", exTable));
-        tableAdapter.addItem(new TableItemByDate("2010-09-21", exT));
+        tableAdapter.addItem(exT);
+        tableAdapter.addItem(exT);
+        tableAdapter.addItem(exT);
+        tableAdapter.addItem(exT);
+        tableAdapter.addItem(exT);
+        tableAdapter.addItem(exT);
     }
     public void addToList(){
-        week.add(new TableItemByDay("월", exT));
-        week.add(new TableItemByDay("화", exTable));
-        week.add(new TableItemByDay("수", exT));
-        week.add(new TableItemByDay("목", exTable));
-        week.add(new TableItemByDay("금", exT));
-        week.add(new TableItemByDay("토", exT));
-        week.add(new TableItemByDay("일", exTable));
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
     }
 
     @Override
@@ -123,10 +121,11 @@ public class TimeTableListActivity extends AppCompatActivity {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TableItemByDate item = (TableItemByDate) tableAdapter.getItem(position);
+                MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
                 Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
+                Intent intent = new Intent(TimeTableListActivity.this, TableByDateEditActivity.class);
+                intent.putExtra("byDate", position);
                 startActivity(intent);
             }
         });
@@ -144,7 +143,7 @@ public class TimeTableListActivity extends AppCompatActivity {
     // 그리드뷰 어댑터
     class TableAdapter extends BaseAdapter {
         Context context;
-        ArrayList<TableItemByDate> items = new ArrayList<TableItemByDate>();
+        ArrayList<MyTimeTable> items = new ArrayList<MyTimeTable>();
 
         public TableAdapter(Context c) {
             context = c;
@@ -155,7 +154,7 @@ public class TimeTableListActivity extends AppCompatActivity {
             return items.size();
         }
 
-        public void addItem(TableItemByDate item) {
+        public void addItem(MyTimeTable item) {
             items.add(item);
         }
 
@@ -179,14 +178,14 @@ public class TimeTableListActivity extends AppCompatActivity {
             } else {
                 view = (TableItemView) convertView;
             }
-            TableItemByDate item = items.get(position);
+            MyTimeTable item = items.get(position);
 
             view.setDate(item.getDate());
-            view.setPieChart(item.getMyTimeTable().getPieData()).setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            view.setPieChart(item.getPieData()).setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
-                    Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
-//                    intent.putExtra("TableItemByDate", item);
+                    Intent intent = new Intent(TimeTableListActivity.this, TableByDateEditActivity.class);
+                    intent.putExtra("byDate", position);
                     startActivity(intent);
                 }
 
@@ -202,7 +201,7 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     // 리사이클러뷰 어댑터
     class SimpleTextAdapter extends RecyclerView.Adapter<SimpleTextAdapter.ViewHolder> {
-        private ArrayList<TableItemByDay> weekSchedule = null;
+        private ArrayList<MyTimeTable> weekSchedule = null;
 
         // 아이템 뷰를 저장하는 뷰홀더 클래스.
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -228,12 +227,13 @@ public class TimeTableListActivity extends AppCompatActivity {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int pos = getAdapterPosition();
-                        if (pos != RecyclerView.NO_POSITION) {
-                            TableItemByDate item = (TableItemByDate) tableAdapter.getItem(pos);
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
                             Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
+                            Intent intent = new Intent(TimeTableListActivity.this, TableByDayEditActivity.class);
+                            intent.putExtra("byDate", position);
                             startActivity(intent);
                         }
                     }
@@ -241,9 +241,15 @@ public class TimeTableListActivity extends AppCompatActivity {
                 pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                     @Override
                     public void onValueSelected(Entry e, Highlight h) {
-                        Log.i("Onclick", "goEditPage");
-                        Intent intent = new Intent(TimeTableListActivity.this, TimeTableEditActivity.class);
-                        startActivity(intent);
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
+                            Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(getApplicationContext(), TableByDayEditActivity.class);
+                            intent.putExtra("byDate", position);
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -254,7 +260,7 @@ public class TimeTableListActivity extends AppCompatActivity {
         }
 
         // 생성자에서 데이터 리스트 객체를 전달받음.
-        SimpleTextAdapter(ArrayList<TableItemByDay> list) {
+        SimpleTextAdapter(ArrayList<MyTimeTable> list) {
             weekSchedule = list;
         }
 
@@ -273,10 +279,10 @@ public class TimeTableListActivity extends AppCompatActivity {
         // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
         @Override
         public void onBindViewHolder(SimpleTextAdapter.ViewHolder holder, int position) {
-            TableItemByDay data = weekSchedule.get(position);
-            holder.textView1.setText(data.getDay());
+            MyTimeTable data = weekSchedule.get(position);
+            holder.textView1.setText(data.getDate());
             PieData piedata;
-            piedata = data.getMyTimeTable().getPieData();
+            piedata = data.getPieData();
             holder.pieChart.setData(piedata);
         }
 

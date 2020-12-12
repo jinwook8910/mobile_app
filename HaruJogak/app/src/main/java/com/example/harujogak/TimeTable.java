@@ -1,24 +1,58 @@
 package com.example.harujogak;
 
-import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 
-/* 기본 타임테이블 */
-class MyTimeTable {
+class MyTimeTable implements Parcelable {
+    private String date;
     private PieData pieData;
     private ArrayList<int[]> MyBackground = new ArrayList<>();
     private ArrayList<Task> MyTasks = new ArrayList<>();
+
+    public MyTimeTable(){    }
+
+    public MyTimeTable(String date, PieData pieData){
+        this.date = date;
+        this.pieData = pieData;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeInt();
+
+    }
+
+    public static final Parcelable.Creator<MyTimeTable> CREATOR = new Creator<MyTimeTable>(){
+        @Override
+        public MyTimeTable createFromParcel(Parcel source){
+
+            String date = source.readString();
+            return new MyTimeTable();
+        }
+
+        @Override
+        public MyTimeTable[] newArray(int size) {
+            return new MyTimeTable[size];
+        }
+    };
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
+    }
 
     void setPieData(PieData p) {
         pieData = p;
