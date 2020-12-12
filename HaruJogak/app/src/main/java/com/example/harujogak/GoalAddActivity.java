@@ -22,7 +22,7 @@ public class GoalAddActivity extends AppCompatActivity {
     DatabaseReference myRef;
     char[] fb_dday=new char[20]; //firebase
     int dday;
-
+    Firebase firebase =new Firebase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,17 +79,17 @@ public class GoalAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //class에 저장
-                Goal new_goal = new Goal(goal_input.getText().toString(), goal_date); //goal class에 생성자 만들기
-                User user = User.getInstance(); //현재 사용중인 사용자
-                user.getGoalList().add(new_goal);
+                //Goal new_goal = new Goal(goal_input.getText().toString(), goal_date); //goal class에 생성자 만들기
+                //User user = User.getInstance(); //현재 사용중인 사용자
+                //user.getGoalList().add(new_goal);
 
                 //firebase에 저장
-//                String getGoal =goal_input.getText().toString();
-//                String input_dday=String.valueOf(fb_dday);
-//                myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
-//                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
-//                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
-//                goal_input.setText("");
+                String getGoal =goal_input.getText().toString();
+                String input_dday=String.valueOf(fb_dday);
+                myRef.child("UserID").child("목표리스트").child(getGoal).setValue("");
+                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 날짜").setValue(input_dday);
+                myRef.child("UserID").child("목표리스트").child(getGoal).child("목표 D-day").setValue(dday);
+                goal_input.setText("");
 
                 //이전 Activity로 돌아가기
                 finish();

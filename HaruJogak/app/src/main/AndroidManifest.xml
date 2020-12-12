@@ -26,6 +26,7 @@
         <activity android:label="Rating" android:name=".Rating" />
         <activity android:label="SignUpActivity" android:name=".SignUpActivity"/>
         <activity android:label="Login2" android:name=".Login2"/>
+        <activity android:label="StatActivity" android:name=".StatActivity"/>
     </application>
 
 </manifest>

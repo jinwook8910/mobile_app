@@ -1,5 +1,6 @@
 package com.example.harujogak;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -78,6 +79,7 @@ public class Rating extends AppCompatActivity {
                     }
                 }
             });
+
             right.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -92,6 +94,7 @@ public class Rating extends AppCompatActivity {
                     }
                 }
             });
+
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,6 +109,7 @@ public class Rating extends AppCompatActivity {
                     }
                 }
             });
+
             //Read data
             DatabaseReference data;
             data=myRef.child("UserID").child("날짜별 일정").child(input_today);
@@ -129,7 +133,6 @@ public class Rating extends AppCompatActivity {
                             }
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.w("TAG", "Firebase error");
@@ -139,11 +142,8 @@ public class Rating extends AppCompatActivity {
             stat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(arr[now]==null){}
-                    else {
-                        float re1 = (sum / count) * 20;
-                        result.setText("오늘의 달성률은 " + re1 + "%");
-                    }
+                    Intent intent = new Intent(Rating.this,StatActivity.class);
+                    startActivity(intent);
                 }
             });
 

@@ -22,15 +22,15 @@
         android:layout_marginTop="5dp"
         android:textSize="28dp" />
 
-     <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/todayPieChart"
-            android:layout_width="match_parent"
-            android:layout_height="450dp" />
+         <com.github.mikephil.charting.charts.PieChart
+             android:id="@+id/todayPieChart"
+             android:layout_width="match_parent"
+             android:layout_height="450dp" />
 
      </LinearLayout>
 
@@ -89,7 +89,7 @@
             android:background="@drawable/main_button"
             android:text="로그인"
             android:textColor="@color/textColor"
-            android:textSize="11dp"/>
+            android:textSize="11dp" />
 
     </LinearLayout>
 
