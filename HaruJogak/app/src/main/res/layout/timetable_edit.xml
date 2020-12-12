@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,22 +12,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="right">
-
-            <TextView
-                android:id="@+id/decoratebtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="수정"
-                android:textSize="20dp"
-                android:layout_marginRight="8dp"/>
-            <!--            android:onClick="onClickDecoTaskButton"/>-->
+            android:gravity="right"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/add_task"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:background="@drawable/add_icon"
                 android:onClick="onClickAddTaskButton" />
 
@@ -40,7 +32,7 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>
+                android:layout_height="300dp" />
 
             <!--        <ImageView-->
             <!--            android:id="@+id/timetable"-->
@@ -66,8 +58,8 @@
 
             <TextView
                 android:layout_width="70dp"
-                android:gravity="center"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Date : "
                 android:textSize="20dp" />
 
@@ -78,7 +70,7 @@
                 android:backgroundTint="@color/themeColor"
                 android:onClick="onClickSet"
                 android:text="yy / mm / dd" />
-    <!--버튼 색은 Tint로 설정해야 적용되는 듯?? 왜그런거지-->
+            <!--버튼 색은 Tint로 설정해야 적용되는 듯?? 왜그런거지-->
         </LinearLayout>
 
         <TextView
@@ -90,116 +82,85 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:gravity="center"
-                android:text="월"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center"
-                android:text="화"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center"
-                android:text="수"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center"
-                android:text="목"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center"
-                android:text="금"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center"
-                android:text="토"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center"
-                android:text="일"
-                android:textSize="20dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="55dp">
 
             <CheckBox
-                android:id="@+id/checkBox1"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp"
-                android:gravity="center" />
+                android:id="@+id/mon_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/mon_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
 
             <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp" />
+                android:id="@+id/tue_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/tue_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
 
             <CheckBox
-                android:id="@+id/checkBox3"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp" />
+                android:id="@+id/wed_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/wed_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
 
             <CheckBox
-                android:id="@+id/checkBox4"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp" />
+                android:id="@+id/thr_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/thu_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
 
             <CheckBox
-                android:id="@+id/checkBox5"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp" />
+                android:id="@+id/fri_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/fri_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
 
             <CheckBox
-                android:id="@+id/checkBox6"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp" />
+                android:id="@+id/sat_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/sat_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
 
             <CheckBox
-                android:id="@+id/checkBox7"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginHorizontal="5dp" />
+                android:id="@+id/sun_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/sun_button"
+                android:button="@null"
+                android:onClick="checkDay"
+                android:scaleX="0.95"
+                android:scaleY="0.95" />
+
         </LinearLayout>
 
         <Button
@@ -210,7 +171,7 @@
             android:layout_margin="15dp"
             android:backgroundTint="#505159"
             android:text="추가"
-            android:textColor="#fff"/>
+            android:textColor="#fff" />
     </LinearLayout>
 
 </ScrollView>
