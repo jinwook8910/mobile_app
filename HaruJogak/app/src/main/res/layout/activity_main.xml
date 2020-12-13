@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backColor"
-    android:backgroundTine="@color/backColor"
+    android:backgroundTint="@color/backColor"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -35,8 +35,8 @@
 
          <com.github.mikephil.charting.charts.PieChart
              android:id="@+id/todayPieChart"
-             android:layout_width="400dp"
-             android:layout_height="400dp" />
+             android:layout_width="300dp"
+             android:layout_height="300dp" />
 
      </LinearLayout>
 
@@ -51,7 +51,7 @@
             android:id="@+id/main_btn1"
             android:layout_width="220px"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00ff0000"
+            android:background="#00ff0000"
             android:fontFamily="@font/woman_flower"
             android:textSize="16dp"
             tools:visibility="visible"
@@ -62,7 +62,7 @@
             android:id="@+id/main_btn2"
             android:layout_width="220px"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00ff0000"
+            android:background="#00ff0000"
             android:fontFamily="@font/woman_flower"
             android:textSize="16dp"
             android:textColor="@color/buttonColor"
@@ -83,7 +83,7 @@
             android:id="@+id/main_btn5"
             android:layout_width="220px"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00ff0000"
+            android:background="#00ff0000"
             android:fontFamily="@font/woman_flower"
             android:textSize="16dp"
             android:textColor="@color/buttonColor"
@@ -94,7 +94,7 @@
             android:id="@+id/main_btn3"
             android:layout_width="220px"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00ff0000"
+            android:background="#00ff0000"
             android:fontFamily="@font/woman_flower"
             android:textSize="16dp"
             android:textColor="@color/buttonColor"
@@ -104,7 +104,7 @@
             android:id="@+id/main_btn4"
             android:layout_width="220px"
             android:layout_height="wrap_content"
-            android:backgroundTint="#00ff0000"
+            android:background="#00ff0000"
             android:fontFamily="@font/woman_flower"
             android:textSize="16dp"
             android:textColor="@color/buttonColor"
