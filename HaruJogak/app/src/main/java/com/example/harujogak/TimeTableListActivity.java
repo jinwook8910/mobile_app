@@ -84,7 +84,16 @@ public class TimeTableListActivity extends AppCompatActivity {
         exT.setDate("2020-12-12");
     }
 
-    public void addToAdapter(Context c){
+    public void addToWeekList(){
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+        week.add(exTable);
+    }
+    public void addToDateList(Context c){
         tableAdapter = new TableAdapter(c);
         tableAdapter.addItem(exT);
         tableAdapter.addItem(exT);
@@ -92,15 +101,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         tableAdapter.addItem(exT);
         tableAdapter.addItem(exT);
         tableAdapter.addItem(exT);
-    }
-    public void addToList(){
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
     }
 
     @Override
@@ -113,17 +113,15 @@ public class TimeTableListActivity extends AppCompatActivity {
 
         setdata1();
         setdata2();
-        addToAdapter(this);
-        addToList();
+        addToWeekList();
+        addToDateList(this);
 
         // 그리드뷰 어댑터, 리스너
         gv.setAdapter(tableAdapter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
-
+//                MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
                 Intent intent = new Intent(TimeTableListActivity.this, TableByDateEditActivity.class);
                 intent.putExtra("byDate", position);
                 startActivity(intent);

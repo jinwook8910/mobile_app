@@ -1,14 +1,11 @@
 package com.example.harujogak;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 
-class MyTimeTable implements Parcelable {
+class MyTimeTable {
     private String date;
     private PieData pieData;
     private ArrayList<int[]> MyBackground = new ArrayList<>();
@@ -20,31 +17,6 @@ class MyTimeTable implements Parcelable {
         this.date = date;
         this.pieData = pieData;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeInt();
-
-    }
-
-    public static final Parcelable.Creator<MyTimeTable> CREATOR = new Creator<MyTimeTable>(){
-        @Override
-        public MyTimeTable createFromParcel(Parcel source){
-
-            String date = source.readString();
-            return new MyTimeTable();
-        }
-
-        @Override
-        public MyTimeTable[] newArray(int size) {
-            return new MyTimeTable[size];
-        }
-    };
 
     public void setDate(String date) {
         this.date = date;

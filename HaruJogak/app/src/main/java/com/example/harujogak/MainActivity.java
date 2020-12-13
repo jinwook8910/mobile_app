@@ -23,12 +23,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn1, btn2, btn3, btn4,btn5;
-    TextView date, time;
-    long mNow;
-    Date mDate;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년MM월dd일");
-    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+    private Button btn1, btn2, btn3, btn4,btn5;
+    private TextView date, time;
+    private long mNow;
+    private Date mDate;
+    private MyTimeTable todaysTimeTable;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년MM월dd일");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         date = findViewById(R.id.main_date);
         time = findViewById(R.id.main_time);
+        PieChart pieChart = findViewById(R.id.todayPieChart);
 
         btn1 = (Button) findViewById(R.id.main_btn1);
         btn2 = (Button) findViewById(R.id.main_btn2);
@@ -54,41 +56,17 @@ public class MainActivity extends AppCompatActivity {
         //time.setText(getTime());
         ShowTimeMethod();
 
-        PieChart pieChart = findViewById(R.id.todayPieChart);
+        //Todo : DB에서 현재 날짜에 해당하는 시간표의 MyTimeTable 정보 가져옴
+        // 지금은 그냥 setExample 함수로 예시 정보 저장해서 사용했음
+        todaysTimeTable = new MyTimeTable();
+        setExample(todaysTimeTable); // 나중에 DB로 변경해야할 부분
+
         pieChart.setUsePercentValues(false);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5, 10, 5, 5);
-        //pieChart 고정
         pieChart.setRotationEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.getDescription().setEnabled(false);
 
-        pieChart.setDragDecelerationFrictionCoef(0f);
-
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
-
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(60f, "잠"));
-        yValues.add(new PieEntry(10f, "아침식사"));
-        yValues.add(new PieEntry(35f, "공부"));
-        yValues.add(new PieEntry(20f, "휴식"));
-        yValues.add(new PieEntry(10f, "점심식사"));
-        yValues.add(new PieEntry(35f, "운동"));
-        yValues.add(new PieEntry(20f, "휴식"));
-        yValues.add(new PieEntry(10f, "저녁식사"));
-
-        PieDataSet dataSet = new PieDataSet(yValues, "Countries");
-        dataSet.setSliceSpace(1f);
-        dataSet.setSelectionShift(1f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
-//        data.
-//        data.setValueTextSize(10f);
-//        data.setValueTextColor(Color.YELLOW);
-
-        pieChart.setData(data);
+        pieChart.setData(todaysTimeTable.getPieData());
     }
 
     class Listener implements View.OnClickListener{
@@ -149,5 +127,30 @@ public class MainActivity extends AppCompatActivity {
         };
         Thread thread = new Thread(task);
         thread.start();
+    }
+
+    public void setExample(MyTimeTable exT){
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(60f, "잠"));
+        yValues.add(new PieEntry(10f, "아침식사"));
+        yValues.add(new PieEntry(35f, "공부"));
+        yValues.add(new PieEntry(20f, "휴식"));
+        yValues.add(new PieEntry(10f, "점심식사"));
+        yValues.add(new PieEntry(35f, "운동"));
+        yValues.add(new PieEntry(20f, "휴식"));
+        yValues.add(new PieEntry(10f, "저녁식사"));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "temp");
+        dataSet.setSliceSpace(0f);
+        dataSet.setSelectionShift(1f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(0f);
+        data.setValueTextColor(Color.YELLOW);
+
+        exT.setPieData(data);
+        exT.setDate("2020-12-12");
     }
 }
