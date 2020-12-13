@@ -34,6 +34,7 @@ public class GoalActivity extends AppCompatActivity {
         ArrayList<String> goal_list1 = new ArrayList<>();
         goal_list1.add("hello1");
         goal_list1.add("hello2");
+
         //listview
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list1);
         ListView listview = (ListView) findViewById(R.id.goal_list);

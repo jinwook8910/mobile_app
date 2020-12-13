@@ -21,7 +21,9 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class StatActivity extends AppCompatActivity {
     FirebaseDatabase database;
@@ -31,6 +33,8 @@ public class StatActivity extends AppCompatActivity {
     TextView result1,result2,result3,result4;
     Button btn1,btn2,btn3,btn4;
     char[] fb_today =new char[20]; //firebase
+    Map<String,Integer> interr=new HashMap<String,Integer>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +44,9 @@ public class StatActivity extends AppCompatActivity {
         result1=findViewById(R.id.text2);
         result2=findViewById(R.id.text4);
         result3=findViewById(R.id.text6);
-        result4=findViewById(R.id.text8);
         btn1=findViewById(R.id.Button1);
         btn2=findViewById(R.id.Button3);
         btn3=findViewById(R.id.Button5);
-        btn4=findViewById(R.id.Button7);
-
-
 
         //오늘 날짜 받아오기
         Calendar cal=Calendar.getInstance();
@@ -139,9 +139,41 @@ public class StatActivity extends AppCompatActivity {
             }
         });
         //방해요소 통계
-        
-        //목표통계
-
+        DatabaseReference data_interrupt;
+        data_interrupt=myRef.child("UserID").child("날짜별 일정").child(input_today);
+        data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) { //map value값 초기화
+                        if (ds.getValue() != null) {
+                            String rat = ds.child("방해요소").getValue().toString();
+                            interr.put(rat,0);
+                        }
+                    }
+                    for(DataSnapshot ds:snapshot.getChildren()){
+                        if(ds.getValue()!=null){
+                            String key=ds.child("방해요소").getValue().toString();
+                            interr.put(key,interr.get(key)+1);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(String t:interr.keySet()){
+                    result3.setText(interr.toString());
+                }
+                System.out.println("");
+            }
+        });
 
     }
 
