@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         pieChart.getLegend().setEnabled(false);
         pieChart.getDescription().setEnabled(false);
 
+        pieChart.setDrawHoleEnabled(false);
+
         pieChart.setData(todaysTimeTable.getPieData());
     }
 
