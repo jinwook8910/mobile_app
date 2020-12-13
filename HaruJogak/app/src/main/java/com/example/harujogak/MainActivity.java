@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setRotationEnabled(false);
         pieChart.getLegend().setEnabled(false);
         pieChart.getDescription().setEnabled(false);
-
         pieChart.setDrawHoleEnabled(false);
 
         pieChart.setData(todaysTimeTable.getPieData());
@@ -143,14 +142,13 @@ public class MainActivity extends AppCompatActivity {
         yValues.add(new PieEntry(20f, "휴식"));
         yValues.add(new PieEntry(10f, "저녁식사"));
 
-        PieDataSet dataSet = new PieDataSet(yValues, "temp");
-        dataSet.setSliceSpace(0f);
-        dataSet.setSelectionShift(1f);
+        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         PieData data = new PieData((dataSet));
         data.setValueTextSize(0f);
-        data.setValueTextColor(Color.YELLOW);
 
         exT.setPieData(data);
         exT.setDate("2020-12-12");

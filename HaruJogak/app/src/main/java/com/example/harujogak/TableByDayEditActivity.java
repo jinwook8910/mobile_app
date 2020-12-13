@@ -45,6 +45,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
 
+    private int newTasks = 0;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
@@ -63,51 +64,45 @@ public class TableByDayEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int position = (int)intent.getIntExtra("byDate", -1);
+        //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
+        // position 값이 -1이면 새로 만드는 것임.
+        myTimeTable = new MyTimeTable();
 
         dateButton = (Button) findViewById(R.id.date_set_button);
+        pieChart = (PieChart) findViewById(R.id.pieChart);
 
-        pieChart = findViewById(R.id.pieChart);
-        pieChart.setUsePercentValues(true);
-
-        PieChart pieChart = findViewById(R.id.pieChart);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5, 10, 5, 5);
-
-        pieChart.setDrawHoleEnabled(false);
+        pieChart.setUsePercentValues(false);
         pieChart.setRotationEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setDrawHoleEnabled(false);
 
         //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
         yValues.add(new PieEntry(1440f, " "));//일정 없는 것
 
-        Description description = new Description();
-        description.setText("세계 국가"); //라벨
-        description.setTextSize(15);
-        pieChart.setDescription(description);
-
-        PieDataSet dataSet = new PieDataSet(yValues, "Countries");
-        dataSet.setSliceSpace(2f);
-        dataSet.setSelectionShift(1f);
-//        table_background.add(Color.rgb(250, 250, 250));
-//        dataSet.setColors(table_background);
+        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        dataSet.setColors(myTimeTable.getMyBackground());
 
         PieData data = new PieData((dataSet));
-        data.setValueTextSize(14f);
-        data.setValueTextColor(Color.BLACK);
+        data.setValueTextSize(0f);
 
+        myTimeTable.setPieData(data);
         pieChart.setData(data);
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-                onClickDecoTaskButton(pieChart, x);
+                if(x%2==0)
+                    onClickDecoTaskButton(pieChart, x);
             }
 
             @Override
             public void onNothingSelected() {
             }
         });
-        //
 
     }
 
@@ -117,11 +112,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             month+=1;
             dateButton.setText(year + " / " + month + " / " + dayOfMonth);
-
-            Description description = new Description();
-            description.setText(year + " / " + month + " / " + dayOfMonth);
-            description.setTextSize(15);
-            pieChart.setDescription(description);
+            myTimeTable.setDate("2020-12-12");
         }
     }
 
@@ -202,30 +193,25 @@ public class TableByDayEditActivity extends AppCompatActivity {
             }
         });
 
+        //Todo : 파이 색깔
+        // 중복되는거 계속 이상하게 됨..
+
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task newTask = new Task();
-//                PieChart pieChart = (PieChart) findViewById(R.id.pieChart);
-                pieChart.getDescription().setEnabled(false);
-                pieChart.setExtraOffsets(5, 10, 5, 5);
-
-                pieChart.setDrawHoleEnabled(false);
-                pieChart.setRotationEnabled(false);
-
-                //Todo : 새로 태스크 추가될 때 마다 pieEntry 새로 만들어서 endTime - startTime 으로 pieEntry f 값 지정해줘야함
+                PieEntry yValues_entry;
+                int background_entry;
 
                 //시간 문자열 => 분으로 계산
-                newTask.setStartTime((String) startTimeButton.getText());
-                newTask.setEndTime((String) endTimeButton.getText());
+                String strt = (String) startTimeButton.getText();
+                String endt = (String) endTimeButton.getText();
 
-                String start_times[] = newTask.getStartTime().split(" : ");
+                String start_times[] = strt.split(" : ");
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
-                String end_times[] = newTask.getEndTime().split(" : ");
+
+                String end_times[] = endt.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
 
-                //Todo : 새로운 태스크 추가될 때 마다 pieEntry 새로 만들어서 endTime - startTime 으로 pieEntry f 값 지정해줘야함
-                // 맨처음에는 24시간이 빈칸인 pieEntry가 있음. 그거에다가 지금 Task 가지고 밑에처럼 pieEntry 만들어서 yValue_new에 추가 -> yValue로 덮어 씀.
                 PieEntry newPieEntry = new PieEntry(end_time - start_time, taskLabel.getText());
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
@@ -233,16 +219,16 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
                 Iterator<PieEntry> yValues_entries = yValues.iterator();
                 ArrayList<Integer> table_background_new = new ArrayList<>();
-//                Iterator<Integer> backgrounds_entries = table_background.iterator();
-                int i =0;
+                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 int total_time = 0;
                 while (yValues_entries.hasNext()) {
-                    PieEntry yValues_entry = yValues_entries.next();
+                    yValues_entry = yValues_entries.next();
+                    background_entry = backgrounds_entries.next();
                     total_time += yValues_entry.getValue();
 
                     if (!done && total_time >= start_time && total_time >= end_time) {//선택한 시간
-                        if (yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
+                        if (yValues_entry.getLabel().equals("일정이 없습니다")||yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
                             total_time -= yValues_entry.getValue();
 
                             //빈칸 -> 흰색
@@ -250,8 +236,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
                             table_background_new.add(Color.rgb(250, 250, 250));
                             //추가된 태스크 -> 조이풀
                             yValues_new.add(new PieEntry(end_time - start_time, taskLabel.getText().toString()));
-                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[i%5]);
-                            i++;
+                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks%5]);
+                            newTasks++;
                             //빈칸 -> 흰색
                             yValues_new.add(new PieEntry(yValues_entry.getValue() - (end_time - total_time), " "));
                             table_background_new.add(Color.rgb(250, 250, 250));
@@ -264,23 +250,25 @@ public class TableByDayEditActivity extends AppCompatActivity {
                         }
                     } else {//나머지 시간
                         yValues_new.add(yValues_entry);
-                        //table_background_new.add(table_background);
+                        table_background_new.add(background_entry);
                     }
                 }
                 yValues = yValues_new;
+                myTimeTable.setMyBackground(table_background_new);
 
-                PieDataSet dataSet = new PieDataSet(yValues_new, "Countries");
-                dataSet.setSliceSpace(2f);
-                dataSet.setSelectionShift(1f);
+                PieDataSet dataSet = new PieDataSet(yValues_new, "Tasks");
+                dataSet.setSliceSpace(0.5f);
+                dataSet.setSelectionShift(0f);
+                dataSet.setColors(table_background_new);
 
                 PieData data = new PieData((dataSet));
-                data.setValueTextSize(14f);
-                data.setValueTextColor(Color.BLACK);
+                data.setValueTextSize(0f);
 
+                myTimeTable.setPieData(data);
                 pieChart.setData(data);
 
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
-                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+                addTaskDialog.dismiss();
             }
         });
 
@@ -309,6 +297,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_SHORT).show();
+                pieChart.setData(myTimeTable.getPieData());
                 decoTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
         });
@@ -319,7 +308,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_SHORT).show();
                 flag_template = 1;
                 showColorPicker(showTemplate, index);
-
             }
         });
         textColorButton.setOnClickListener(new View.OnClickListener() {
@@ -424,11 +412,10 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 if (flag_template == 1) {
                     showTemplate.setBackgroundColor(color);
                     // TODO : 백그라운드 색상, 텍스트 색상 변경하도록..
-                    pieChart.getPaint(PieChart.PAINT_DESCRIPTION).setColor(color);
+                    myTimeTable.getMyBackground().set(index, color);
 
                 } else if (flag_template == 2) {
                     showTemplate.setTextColor(color);
-                    pieChart.getPaint(Chart.PAINT_DESCRIPTION).setColor(color);
                 }
             }
 

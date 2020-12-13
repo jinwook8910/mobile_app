@@ -1,6 +1,9 @@
 package com.example.harujogak;
 
+import android.graphics.Color;
+
 import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
@@ -8,14 +11,24 @@ import java.util.ArrayList;
 class MyTimeTable {
     private String date;
     private PieData pieData;
-    private ArrayList<int[]> MyBackground = new ArrayList<>();
-    private ArrayList<Task> MyTasks = new ArrayList<>();
+    private ArrayList<Integer> MyBackground = new ArrayList<>();
 
-    public MyTimeTable(){    }
+    public MyTimeTable(){
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+        /* init */
+        MyBackground.add(Color.rgb(250,250,250));
+        yValues.add(new PieEntry(1440f, "일정이 없습니다"));
+        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        pieData = new PieData((dataSet));
+        pieData.setValueTextSize(0f);
+    }
 
     public MyTimeTable(String date, PieData pieData){
         this.date = date;
         this.pieData = pieData;
+        MyBackground.add(Color.rgb(250,250,250));
     }
 
     public void setDate(String date) {
@@ -34,42 +47,28 @@ class MyTimeTable {
         return pieData;
     }
 
-    void setMyBackground(ArrayList<int[]> background) {
-        MyBackground = background;
+    void setMyBackground(ArrayList<Integer> background) {
+        this.MyBackground = background;
+        PieDataSet dataSet = (PieDataSet)this.getPieData().getDataSet();
+        dataSet.setColors(this.MyBackground);
+        this.pieData.setDataSet(dataSet);
     }
 
-    ArrayList<int[]> getMyBackground() {
+    ArrayList<Integer> getMyBackground() {
         return MyBackground;
     }
 
-    void setMyTasks(ArrayList<Task> tasks) {
-        MyTasks = tasks;
-    }
-
-    ArrayList<Task> getMyTasks() {
-        return MyTasks;
-    }
-
-    //task 추가 함수
-    void add_Task(Task e) {
-        MyTasks.add(e);
-    }
-
-    void add_Task(String label, String startTime, String endTime) {
-        MyTasks.add(new Task(label, startTime, endTime));
-    }
-
     //백그라운드 리스트에 새로운 색상 추가
-    void add_Background(int[] color) {
+    void add_Background(Integer color) {
         MyBackground.add(color);
     }
 
-    void add_Background(int index, int[] color) {
+    void add_Background(int index, Integer color) {
         MyBackground.add(index, color);
     }
 
     //MyBackground[index]의 컬러를 변경
-    void set_Background(int index, int[] color) {
+    void set_Background(int index, Integer color) {
         MyBackground.add(index, color);
         MyBackground.remove(index);
     }
@@ -99,52 +98,4 @@ class MyTimeTable {
 //
 //        pieChart.setData(data);
 //    }
-}
-
-class Task {
-    String label;
-    String startTime, endTime;
-    String relativeGoal;
-
-    public Task() {
-
-    }
-
-    public Task(String label, String startTime, String endTime) {
-        this.label = label;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
-    void setLabel(String label) {
-        this.label = label;
-    }
-
-    String getLabel() {
-        return label;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setRelativeGoal(String relativeGoal) {
-        this.relativeGoal = relativeGoal;
-    }
-
-    public String getRelativeGoal() {
-        return relativeGoal;
-    }
 }

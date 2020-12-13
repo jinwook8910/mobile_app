@@ -49,8 +49,8 @@ public class TimeTableListActivity extends AppCompatActivity {
         yValues.add(new PieEntry(40f, "Korea"));
 
         PieDataSet dataSet = new PieDataSet(yValues, "Countries");
-        dataSet.setSliceSpace(0f);
-        dataSet.setSelectionShift(1f);
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         PieData data = new PieData((dataSet));
@@ -72,8 +72,8 @@ public class TimeTableListActivity extends AppCompatActivity {
         yValues.add(new PieEntry(40f, "K"));
 
         PieDataSet dataSet = new PieDataSet(yValues, "temp");
-        dataSet.setSliceSpace(0f);
-        dataSet.setSelectionShift(1f);
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         PieData data = new PieData((dataSet));
@@ -171,7 +171,7 @@ public class TimeTableListActivity extends AppCompatActivity {
             TableItemView view;
             if (convertView == null) {
                 view = new TableItemView(context);
-                view.setLayoutParams(new GridView.LayoutParams(320, 390));
+                view.setLayoutParams(new GridView.LayoutParams(320, 360));
                 view.setPadding(1, 1, 1, 1);
             } else {
                 view = (TableItemView) convertView;
@@ -212,15 +212,11 @@ public class TimeTableListActivity extends AppCompatActivity {
                 textView1 = itemView.findViewById(R.id.dateView);
                 pieChart = itemView.findViewById(R.id.pieChartView);
 
+                pieChart.setUsePercentValues(false);
                 pieChart.setRotationEnabled(false);
                 pieChart.getLegend().setEnabled(false);
                 pieChart.getDescription().setEnabled(false);
-
-                pieChart.setUsePercentValues(false);
-
                 pieChart.setDrawHoleEnabled(false);
-                pieChart.setHoleColor(Color.WHITE);
-                pieChart.setTransparentCircleRadius(61f);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
