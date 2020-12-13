@@ -72,6 +72,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
+    public String start_times[], end_times[];
 
     // yValues -> PieDataSet -> PieData
     private ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
@@ -270,39 +271,42 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 add_task_thread(taskLabel);
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
                 addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+
+                //알림 부분
+                SharedPreferences sharedPreferences = getSharedPreferences("daily alarm", MODE_PRIVATE);
+                long millis = sharedPreferences.getLong("nextNotifyTime", Calendar.getInstance().getTimeInMillis());
+
+                Calendar nextNotifyTime = new GregorianCalendar();
+                nextNotifyTime.setTimeInMillis(millis);
+
+                int Alarm_hour = Integer.parseInt(start_times[0]);
+                int Alarm_min = Integer.parseInt(start_times[1]);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.HOUR_OF_DAY, Alarm_hour);
+                calendar.set(Calendar.MINUTE, Alarm_min);
+                calendar.set(Calendar.SECOND, 0);
+
+                // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
+                if (calendar.before(Calendar.getInstance())) {
+                    calendar.add(Calendar.DATE, 1);
+                }
+
+                Date currentDateTime = calendar.getTime();
+                String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
+                Toast.makeText(getApplicationContext(),date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
+
+                //  Preference에 설정한 값 저장
+                SharedPreferences.Editor editor = getSharedPreferences("daily alarm", MODE_PRIVATE).edit();
+                editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
+                editor.apply();
+
+                diaryNotification(calendar);
+                //알림부분 끝
+
             }
         });
-
-
-//알림 부분
-        SharedPreferences sharedPreferences = getSharedPreferences("daily alarm", MODE_PRIVATE);
-        long millis = sharedPreferences.getLong("nextNotifyTime", Calendar.getInstance().getTimeInMillis());
-
-        Calendar nextNotifyTime = new GregorianCalendar();
-        nextNotifyTime.setTimeInMillis(millis);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 14);
-        calendar.set(Calendar.SECOND, 0);
-
-        // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
-
-        Date currentDateTime = calendar.getTime();
-        String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
-        Toast.makeText(getApplicationContext(),date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
-
-        //  Preference에 설정한 값 저장
-        SharedPreferences.Editor editor = getSharedPreferences("daily alarm", MODE_PRIVATE).edit();
-        editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
-        editor.apply();
-
-        diaryNotification(calendar);
-        //알림부분 끝
 
         addTaskDialog.show();
     }
@@ -319,10 +323,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 String strt = (String) startTimeButton.getText();
                 String endt = (String) endTimeButton.getText();
 
-                String start_times[] = strt.split(" : ");
+                start_times = strt.split(" : ");
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
 
-                String end_times[] = endt.split(" : ");
+                end_times = endt.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
