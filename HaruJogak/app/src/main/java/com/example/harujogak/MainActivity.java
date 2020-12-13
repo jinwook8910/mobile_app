@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("TAG", "Firebase error");
             }
         });
+
     }
 
     class Listener implements View.OnClickListener{

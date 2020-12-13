@@ -31,6 +31,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,16 +76,27 @@ public class TableByDateEditActivity extends AppCompatActivity {
     private int flag_time, flag_template;
     public String start_times[], end_times[];
 
+    public String fb_date,fb_strt,fb_endt,fb_task,fb_long,UserID;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
     // yValues -> PieDataSet -> PieData
     private ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
     private DateSetListener dateSetListener = new DateSetListener();
     private TimeSetListener timeSetListener = new TimeSetListener();
 
+    MainActivity main=new MainActivity();
+    Login2 user=new Login2();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_edit_date);
+
+        //firebase 정의
+        database =FirebaseDatabase.getInstance();
+        myRef=database.getReference();
 
         Intent intent = getIntent();
         int position = (int)intent.getIntExtra("byDate", -1);
@@ -180,7 +193,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             month+=1;
             dateButton.setText(year + " / " + month + " / " + dayOfMonth);
-
+            fb_date=year+"년 "+month+"월 "+dayOfMonth+"일";
             Description description = new Description();
             description.setText(year + " / " + month + " / " + dayOfMonth);
             description.setTextSize(15);
@@ -242,11 +255,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
         });
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
-        //ArrayList<String> GoalList = user.getGoalList(); ????????
-        ArrayList<String> GoalList = new ArrayList<>();
-        GoalList.add("토익 시험");
-        GoalList.add("다이어트");
-        GoalList.add("코딩테스트");
+        //골 리스트 가져옴
+       ArrayList<String> GoalList = new ArrayList<>();
+        GoalList=main.getGoal_list();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, GoalList);
         Spinner s = (Spinner) addTaskDialog.findViewById(R.id.goalSpinner);
@@ -258,6 +269,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
                                        int position, long id) {
                 System.out.println("!!position : " + position +
                         parent.getItemAtPosition(position));
+                fb_long=parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -305,6 +317,13 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 diaryNotification(calendar);
                 //알림부분 끝
 
+                //일정 정보 firebase 추가
+                UserID=user.getUserID();
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("시작시간").setValue(fb_strt);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("종료시간").setValue(fb_endt);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("평가").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("장기목표").setValue(fb_long);
             }
         });
 
@@ -322,6 +341,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 //시간 문자열 => 분으로 계산
                 String strt = (String) startTimeButton.getText();
                 String endt = (String) endTimeButton.getText();
+
+                fb_strt=strt;
+                fb_endt=endt;
+                fb_task=taskLabel.getText().toString().trim();
 
                 start_times = strt.split(" : ");
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);

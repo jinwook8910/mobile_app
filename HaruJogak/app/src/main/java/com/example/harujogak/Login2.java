@@ -20,8 +20,10 @@ public class Login2 extends AppCompatActivity {
     private Button login;
     private EditText email_login;
     private EditText pwd_login;
+    private static String UserID;
+    static String id_split[];
     FirebaseAuth firebaseAuth;
-
+    String email,pwd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,8 @@ public class Login2 extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = email_login.getText().toString().trim();
-                String pwd = pwd_login.getText().toString().trim();
+                email = email_login.getText().toString().trim();
+                pwd = pwd_login.getText().toString().trim();
                 email_login.setText("");
                 pwd_login.setText("");
 
@@ -47,7 +49,8 @@ public class Login2 extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    User user = User.getInstance(email, pwd);
+                                    //User user = User.getInstance(email, pwd);
+                                    UserID=email;
                                     Intent intent = new Intent(Login2.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -58,7 +61,6 @@ public class Login2 extends AppCompatActivity {
 
             }
         });
-
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,5 +68,9 @@ public class Login2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    public static String getUserID(){
+        id_split=UserID.split("@");
+        return id_split[0];
     }
 }
