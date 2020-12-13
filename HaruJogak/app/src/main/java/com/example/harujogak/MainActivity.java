@@ -1,13 +1,13 @@
 package com.example.harujogak;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btn1, btn2, btn3, btn4,btn5;
+    private ImageButton btn1, btn2, btn3, btn4,btn5;
     private TextView date, time;
     private long mNow;
     private Date mDate;
@@ -39,12 +39,11 @@ public class MainActivity extends AppCompatActivity {
         time = findViewById(R.id.main_time);
         PieChart pieChart = findViewById(R.id.todayPieChart);
 
-        btn1 = (Button) findViewById(R.id.main_btn1);
-        btn2 = (Button) findViewById(R.id.main_btn2);
-        btn3 = (Button) findViewById(R.id.main_btn3);
-        btn4 = (Button) findViewById(R.id.main_btn4);
-        btn5 = (Button) findViewById(R.id.main_btn5);
-
+        btn1 = (ImageButton) findViewById(R.id.main_btn1);
+        btn2 = (ImageButton) findViewById(R.id.main_btn2);
+        btn3 = (ImageButton) findViewById(R.id.main_btn3);
+        btn4 = (ImageButton) findViewById(R.id.main_btn4);
+        btn5 = (ImageButton) findViewById(R.id.main_btn5);
 
         btn1.setOnClickListener(listener);
         btn2.setOnClickListener(listener);
