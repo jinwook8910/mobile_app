@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/backColor">
 
     <TextView
         android:id="@+id/goal_text"
@@ -14,29 +15,88 @@
         android:layout_marginTop="20dp"
         android:textSize="20dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <View
+        android:layout_width = "match_parent"
+        android:layout_height = "0.5dp"
+        android:background="@color/white"
+        android:layout_marginTop="25dp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginRight="15dp"
+        android:orientation="vertical">
 
         <ListView
             android:id="@+id/goal_list"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/goal_btn"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="400dp"
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/goal_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/goal_list"
-            android:text="추가"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginTop="30dp"
+            android:text="추가"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity = "bottom">
+        <View
+            android:layout_width = "match_parent"
+            android:layout_height = "0.5dp"
+            android:background="@color/white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:background="#00ff0000"
+            android:gravity="bottom">
+
+            <ImageButton
+                android:id="@+id/main_btn1"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/goal_selected"
+                />
+
+            <ImageButton
+                android:id="@+id/main_btn2"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/static_unselected"
+                />
+
+            <!--지금은 로그인 버튼-->
+            <ImageButton
+                android:id="@+id/main_btn5"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/home_unselected"
+                />
 
 
+            <ImageButton
+                android:id="@+id/main_btn3"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/timetable_unselected"
+                />
+
+            <ImageButton
+                android:id="@+id/main_btn4"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/calendar_unselected"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

@@ -38,17 +38,41 @@ import java.util.Iterator;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
 //import com.jaredrummler.android.colorpicker.ColorPanelView;
 //import com.jaredrummler.android.colorpicker.ColorPickerView;
 
 public class TableByDateEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
-
+    private PieDataSet dataSet;
+    private PieData data;
     private int newTasks = 0;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
+    public String start_times[], end_times[];
 
     // yValues -> PieDataSet -> PieData
     private ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
@@ -63,12 +87,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int position = (int)intent.getIntExtra("byDate", -1);
-
-        Log.i("intent", position+"");
-        //Todo : 리스트액티비티에서 Intent로 받아서 받은게 없다(=새로 만드는거다)면
-        // myTimeTable = new MyTimeTable(); 하고
-        // Intent로 받은게 있다면(=기존에 있는걸 수정하는거다)면
-        // myTimeTable = Intent.getExtras().getSerializable("TableItemByDate");
+        //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
+        // position 값이 -1이면 새로 만드는 것임.
+        myTimeTable = new MyTimeTable();
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
@@ -78,19 +99,20 @@ public class TableByDateEditActivity extends AppCompatActivity {
         pieChart.getLegend().setEnabled(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(false);
+        pieChart.setDrawMarkers(true);
 
         //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
         yValues.add(new PieEntry(1440f, " "));//일정 없는 것
 
-        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet = new PieDataSet(yValues, "Tasks");
         dataSet.setSliceSpace(0.5f);
         dataSet.setSelectionShift(0f);
-//        table_background.add(Color.rgb(250, 250, 250));
-//        dataSet.setColors(table_background);
+        dataSet.setColors(myTimeTable.getMyBackground());
 
-        PieData data = new PieData((dataSet));
+        data = new PieData((dataSet));
         data.setValueTextSize(0f);
 
+        myTimeTable.setPieData(data);
         pieChart.setData(data);
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -104,8 +126,52 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onNothingSelected() {
             }
         });
-        //
 
+    }
+
+    //노티피케이션(푸시알림)
+    void diaryNotification(Calendar calendar)
+    {
+//        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//        Boolean dailyNotify = sharedPref.getBoolean(SettingsActivity.KEY_PREF_DAILY_NOTIFICATION, true);
+        Boolean dailyNotify = true; // 무조건 알람을 사용
+
+        PackageManager pm = this.getPackageManager();
+        ComponentName receiver = new ComponentName(this, DeviceBootReceiver.class);
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+
+        // 사용자가 매일 알람을 허용했다면
+        if (dailyNotify) {
+
+            if (alarmManager != null) {
+
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, pendingIntent);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                }
+            }
+
+            // 부팅 후 실행되는 리시버 사용가능하게 설정
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+
+        }
+//        else { //Disable Daily Notifications
+//            if (PendingIntent.getBroadcast(this, 0, alarmIntent, 0) != null && alarmManager != null) {
+//                alarmManager.cancel(pendingIntent);
+//                //Toast.makeText(this,"Notifications were disabled",Toast.LENGTH_SHORT).show();
+//            }
+//            pm.setComponentEnabledSetting(receiver,
+//                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//                    PackageManager.DONT_KILL_APP);
+//        }
     }
 
     //리스너
@@ -202,27 +268,79 @@ public class TableByDateEditActivity extends AppCompatActivity {
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                add_task_thread(taskLabel);
+                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
+                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+
+                //알림 부분
+                SharedPreferences sharedPreferences = getSharedPreferences("daily alarm", MODE_PRIVATE);
+                long millis = sharedPreferences.getLong("nextNotifyTime", Calendar.getInstance().getTimeInMillis());
+
+                Calendar nextNotifyTime = new GregorianCalendar();
+                nextNotifyTime.setTimeInMillis(millis);
+
+                int Alarm_hour = Integer.parseInt(start_times[0]);
+                int Alarm_min = Integer.parseInt(start_times[1]);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.HOUR_OF_DAY, Alarm_hour);
+                calendar.set(Calendar.MINUTE, Alarm_min);
+                calendar.set(Calendar.SECOND, 0);
+
+                // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
+                if (calendar.before(Calendar.getInstance())) {
+                    calendar.add(Calendar.DATE, 1);
+                }
+
+                Date currentDateTime = calendar.getTime();
+                String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
+                Toast.makeText(getApplicationContext(),date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
+
+                //  Preference에 설정한 값 저장
+                SharedPreferences.Editor editor = getSharedPreferences("daily alarm", MODE_PRIVATE).edit();
+                editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
+                editor.apply();
+
+                diaryNotification(calendar);
+                //알림부분 끝
+
+            }
+        });
+
+        addTaskDialog.show();
+    }
+
+    public void add_task_thread(EditText taskLabel){
+        Runnable task = new Runnable(){
+            @Override
+            public void run(){
                 PieEntry yValues_entry;
                 int background_entry;
+                int order = 0;
 
                 //시간 문자열 => 분으로 계산
                 String strt = (String) startTimeButton.getText();
                 String endt = (String) endTimeButton.getText();
 
-                String start_times[] = strt.split(" : ");
+                start_times = strt.split(" : ");
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
 
-                String end_times[] = endt.split(" : ");
+                end_times = endt.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
+
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
                 Iterator<PieEntry> yValues_entries = yValues.iterator();
                 ArrayList<Integer> table_background_new = new ArrayList<>();
+                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 int total_time = 0;
+
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
+                    background_entry = backgrounds_entries.next();
                     total_time += yValues_entry.getValue();
 
                     if (!done && total_time >= start_time && total_time >= end_time) {//선택한 시간
@@ -248,13 +366,14 @@ public class TableByDateEditActivity extends AppCompatActivity {
                         }
                     } else {//나머지 시간
                         yValues_new.add(yValues_entry);
-                        //table_background_new.add(table_background);
+                        table_background_new.add(background_entry);
                     }
+                    order++;
                 }
                 yValues = yValues_new;
                 myTimeTable.setMyBackground(table_background_new);
-
                 PieDataSet dataSet = new PieDataSet(yValues_new, "Tasks");
+
                 dataSet.setSliceSpace(0.5f);
                 dataSet.setSelectionShift(0f);
                 dataSet.setColors(table_background_new);
@@ -262,15 +381,14 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 PieData data = new PieData((dataSet));
                 data.setValueTextSize(0f);
 
-                myTimeTable.setPieData(data);
+                pieChart.notifyDataSetChanged();
                 pieChart.setData(data);
-
-                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
-                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+                pieChart.invalidate();
+                myTimeTable.setPieData(data);
             }
-        });
-
-        addTaskDialog.show();
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     //버튼 클릭시 decorate task 다이얼로그 띄우는 함수

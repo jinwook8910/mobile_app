@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/mapoflowerisland"
         android:textSize="20dp"
+        android:textColor="@color/black"
         android:layout_marginTop="60dp"
         />
 
@@ -25,13 +26,14 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/mapoflowerisland"
         android:textSize="35dp"
+        android:textColor="@color/black"
         android:layout_marginTop="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="70dp">
 
          <com.github.mikephil.charting.charts.PieChart
              android:id="@+id/todayPieChart"
@@ -43,10 +45,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity = "bottom">
+    <View
+        android:layout_width = "match_parent"
+        android:layout_height = "0.5dp"
+        android:background="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
         android:orientation="horizontal"
         android:background="#00ff0000"
         android:gravity="bottom">
 
+        <!--
         <Button
             android:id="@+id/main_btn1"
             android:layout_width="220px"
@@ -55,18 +68,21 @@
             android:fontFamily="@font/woman_flower"
             android:textSize="16dp"
             tools:visibility="visible"
-            android:textColor="@color/buttonColor"
-            android:text="목표" />
+            android:textColor="@color/navi_unclicked"
+            android:text="목표" />-->
+        <ImageButton
+            android:id="@+id/main_btn1"
+            android:layout_width="220px"
+            android:layout_height="100px"
+            android:background="@drawable/goal_unselected"
+            />
 
-        <Button
+        <ImageButton
             android:id="@+id/main_btn2"
             android:layout_width="220px"
-            android:layout_height="wrap_content"
-            android:background="#00ff0000"
-            android:fontFamily="@font/woman_flower"
-            android:textSize="16dp"
-            android:textColor="@color/buttonColor"
-            android:text="평가" />
+            android:layout_height="100px"
+            android:background="@drawable/static_unselected"
+            />
 
 <!--        <<<<<<< HEAD
             android:backgroundTint="@color/themeColor"
@@ -79,37 +95,28 @@
         >>>>>>> 41d9cc1cbf49b577b52cd6c68ee3a9721ce4bd34-->
 
         <!--지금은 로그인 버튼-->
-        <Button
+        <ImageButton
             android:id="@+id/main_btn5"
             android:layout_width="220px"
-            android:layout_height="wrap_content"
-            android:background="#00ff0000"
-            android:fontFamily="@font/woman_flower"
-            android:textSize="16dp"
-            android:textColor="@color/buttonColor"
-            android:text="홈"
+            android:layout_height="100px"
+            android:background="@drawable/home_selected"
             />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/main_btn3"
             android:layout_width="220px"
-            android:layout_height="wrap_content"
-            android:background="#00ff0000"
-            android:fontFamily="@font/woman_flower"
-            android:textSize="16dp"
-            android:textColor="@color/buttonColor"
-            android:text="시간표" />
+            android:layout_height="100px"
+            android:background="@drawable/timetable_unselected"
+            />
 
-        <Button
+        <ImageButton
             android:id="@+id/main_btn4"
             android:layout_width="220px"
-            android:layout_height="wrap_content"
-            android:background="#00ff0000"
-            android:fontFamily="@font/woman_flower"
-            android:textSize="16dp"
-            android:textColor="@color/buttonColor"
-            android:text="캘린더" />
-
+            android:layout_height="100px"
+            android:background="@drawable/calendar_unselected"
+            />
+        </LinearLayout>
 
     </LinearLayout>
 
