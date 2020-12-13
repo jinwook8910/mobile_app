@@ -10,4 +10,10 @@
 <!--임시-->
     <color name="themeColor">#DA7F7F</color>
     <color name="textColor">#ffffff</color>
+    <!--1차 디자인-->
+    <color name="backColor">#EDECE7</color>
+    <color name="navi_unclicked">#A2958C</color>
+    <color name="navi_clicked">#685048</color>
+    <color name="buttonColor">#685048</color>
+    <color name="lineColor">#C5BEB7</color>
 </resources>
