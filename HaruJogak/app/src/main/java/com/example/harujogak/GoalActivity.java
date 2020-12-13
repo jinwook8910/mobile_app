@@ -2,7 +2,6 @@ package com.example.harujogak;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,20 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-<<<<<<< HEAD
-=======
-import java.util.Date;
-import java.util.Locale;
->>>>>>> 98b60534f93159b0743fed05f5b1ad4d8350f7e6
+
 
 public class GoalActivity extends AppCompatActivity {
     Button btn;
