@@ -1,16 +1,21 @@
 package com.example.harujogak;
 
-import android.content.Intent;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class GoalActivity extends AppCompatActivity {
     Button btn;
@@ -46,15 +51,72 @@ public class GoalActivity extends AppCompatActivity {
                 //listview 객체 클릭할 때 이벤트
             }
         });
+    }
 
-        //'추가'버튼
-        btn=(Button) findViewById(R.id.goal_btn);
-        btn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent intent = new Intent(GoalActivity.this, GoalAddActivity.class);
-                startActivity(intent);
+    //추가 버튼
+    public void onClickAddGoalButton(View v){
+        Dialog addGoalDialog = new Dialog(this);
+
+        addGoalDialog.setContentView(R.layout.goal_add);
+        addGoalDialog.setTitle("일정 추가");
+
+        CalendarView goal_calendar = addGoalDialog.findViewById(R.id.goal_add_calendar);
+        TextView goal_text = addGoalDialog.findViewById(R.id.goal_add_text);
+        EditText goal_input = addGoalDialog.findViewById(R.id.goal_add_input);
+        TextView goal_result = addGoalDialog.findViewById(R.id.goal_add_result);
+        Button goal_btn = findViewById(R.id.calendar_btn);
+        Button goal_add_btn=addGoalDialog.findViewById(R.id.goal_add_btn);
+
+        goal_text.setText("나의 목표는");
+        goal_result.setText("D-day");
+
+        goal_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
+                String goal_date; //선택한 날짜 문자열로 저장
+                int dday;
+                int tYear, tMonth, tDay;
+                long t, d;
+
+                Calendar tcalendar = Calendar.getInstance();
+                Calendar dcalendar = Calendar.getInstance();
+
+                //오늘 날짜
+                tYear = tcalendar.get(Calendar.YEAR);
+                tMonth = tcalendar.get(Calendar.MONTH);
+                tDay = tcalendar.get(Calendar.DAY_OF_MONTH);
+
+                //목표 날짜
+                dcalendar.set(year, month, dayOfMonth);
+                String date=Integer.toString(year)+"년 "+Integer.toString(month+1)+"월 "+Integer.toString(dayOfMonth)+"일";
+                goal_date= String.format("%d / %d / %d",year,month+1,dayOfMonth);
+
+                //날짜 초단위로 변경
+                t=tcalendar.getTimeInMillis()/(24*60*60*1000);
+                d=dcalendar.getTimeInMillis()/(24*60*60*1000);
+                dday=(int)(t-d);
+                if(dday>0)
+                    goal_result.setText("D+"+Integer.toString(dday));
+                else if(dday==0)
+                    goal_result.setText("D-day");
+                else
+                    goal_result.setText("D"+Integer.toString(dday));
             }
         });
+
+        goal_add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //class에 저장
+                //Goal new_goal = new Goal(goal_input.getText().toString(), goal_date); //goal class에 생성자 만들기
+                //User user = User.getInstance(); //현재 사용중인 사용자
+                //user.getGoalList().add(new_goal);
+
+                //이전 Activity로 돌아가기
+                addGoalDialog.dismiss();
+            }
+        });
+
+        addGoalDialog.show();
     }
 
 }
