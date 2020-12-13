@@ -44,7 +44,8 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 public class TableByDateEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
-
+    private PieDataSet dataSet;
+    private PieData data;
     private int newTasks = 0;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
@@ -63,12 +64,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int position = (int)intent.getIntExtra("byDate", -1);
-
-        Log.i("intent", position+"");
-        //Todo : 리스트액티비티에서 Intent로 받아서 받은게 없다(=새로 만드는거다)면
-        // myTimeTable = new MyTimeTable(); 하고
-        // Intent로 받은게 있다면(=기존에 있는걸 수정하는거다)면
-        // myTimeTable = Intent.getExtras().getSerializable("TableItemByDate");
+        //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
+        // position 값이 -1이면 새로 만드는 것임.
+        myTimeTable = new MyTimeTable();
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
@@ -78,19 +76,20 @@ public class TableByDateEditActivity extends AppCompatActivity {
         pieChart.getLegend().setEnabled(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(false);
+        pieChart.setDrawMarkers(true);
 
         //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
         yValues.add(new PieEntry(1440f, " "));//일정 없는 것
 
-        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet = new PieDataSet(yValues, "Tasks");
         dataSet.setSliceSpace(0.5f);
         dataSet.setSelectionShift(0f);
-//        table_background.add(Color.rgb(250, 250, 250));
-//        dataSet.setColors(table_background);
+        dataSet.setColors(myTimeTable.getMyBackground());
 
-        PieData data = new PieData((dataSet));
+        data = new PieData((dataSet));
         data.setValueTextSize(0f);
 
+        myTimeTable.setPieData(data);
         pieChart.setData(data);
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -104,7 +103,6 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onNothingSelected() {
             }
         });
-        //
 
     }
 
@@ -204,6 +202,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PieEntry yValues_entry;
                 int background_entry;
+                int order = 0;
 
                 //시간 문자열 => 분으로 계산
                 String strt = (String) startTimeButton.getText();
@@ -214,15 +213,18 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
                 String end_times[] = endt.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
+
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
                 Iterator<PieEntry> yValues_entries = yValues.iterator();
                 ArrayList<Integer> table_background_new = new ArrayList<>();
+                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 int total_time = 0;
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
+                    background_entry = backgrounds_entries.next();
                     total_time += yValues_entry.getValue();
 
                     if (!done && total_time >= start_time && total_time >= end_time) {//선택한 시간
@@ -246,15 +248,16 @@ public class TableByDateEditActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "schedule already exists", Toast.LENGTH_LONG).show();
                             total_time += yValues_entry.getValue();
                         }
-                    } else {//나머지 시간
+                    }else {//나머지 시간
                         yValues_new.add(yValues_entry);
-                        //table_background_new.add(table_background);
+                        table_background_new.add(background_entry);
                     }
+                    order++;
                 }
                 yValues = yValues_new;
                 myTimeTable.setMyBackground(table_background_new);
-
                 PieDataSet dataSet = new PieDataSet(yValues_new, "Tasks");
+
                 dataSet.setSliceSpace(0.5f);
                 dataSet.setSelectionShift(0f);
                 dataSet.setColors(table_background_new);
@@ -262,8 +265,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 PieData data = new PieData((dataSet));
                 data.setValueTextSize(0f);
 
-                myTimeTable.setPieData(data);
+                pieChart.notifyDataSetChanged();
                 pieChart.setData(data);
+                pieChart.invalidate();
+                myTimeTable.setPieData(data);
 
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
                 addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐

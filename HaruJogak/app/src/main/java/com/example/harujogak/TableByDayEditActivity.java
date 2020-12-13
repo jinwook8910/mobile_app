@@ -44,7 +44,8 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 public class TableByDayEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
-
+    private PieDataSet dataSet;
+    private PieData data;
     private int newTasks = 0;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
@@ -76,16 +77,17 @@ public class TableByDayEditActivity extends AppCompatActivity {
         pieChart.getLegend().setEnabled(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(false);
+        pieChart.setDrawMarkers(true);
 
         //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
         yValues.add(new PieEntry(1440f, " "));//일정 없는 것
 
-        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet = new PieDataSet(yValues, "Tasks");
         dataSet.setSliceSpace(0.5f);
         dataSet.setSelectionShift(0f);
         dataSet.setColors(myTimeTable.getMyBackground());
 
-        PieData data = new PieData((dataSet));
+        data = new PieData((dataSet));
         data.setValueTextSize(0f);
 
         myTimeTable.setPieData(data);
@@ -95,8 +97,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-                if(x%2==0)
-                    onClickDecoTaskButton(pieChart, x);
+                onClickDecoTaskButton(pieChart, x);
             }
 
             @Override
@@ -104,6 +105,31 @@ public class TableByDayEditActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+//////////////////
+    public void setExample(MyTimeTable exT){
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(60f, "잠"));
+        yValues.add(new PieEntry(10f, "아침식사"));
+        yValues.add(new PieEntry(35f, "공부"));
+        yValues.add(new PieEntry(20f, "휴식"));
+        yValues.add(new PieEntry(10f, "점심식사"));
+        yValues.add(new PieEntry(35f, "운동"));
+        yValues.add(new PieEntry(20f, "휴식"));
+        yValues.add(new PieEntry(10f, "저녁식사"));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(0f);
+
+        exT.setPieData(data);
+        exT.setDate("2020-12-12");
     }
 
     //리스너
@@ -193,7 +219,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
             }
         });
 
-        //Todo : 파이 색깔
+        //Todo :
         // 중복되는거 계속 이상하게 됨..
 
         add_task_done.setOnClickListener(new View.OnClickListener() {
@@ -201,6 +227,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PieEntry yValues_entry;
                 int background_entry;
+                int order = 0;
 
                 //시간 문자열 => 분으로 계산
                 String strt = (String) startTimeButton.getText();
@@ -212,8 +239,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 String end_times[] = endt.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
 
-                PieEntry newPieEntry = new PieEntry(end_time - start_time, taskLabel.getText());
-
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
@@ -222,13 +247,14 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 int total_time = 0;
+
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
                     background_entry = backgrounds_entries.next();
                     total_time += yValues_entry.getValue();
 
                     if (!done && total_time >= start_time && total_time >= end_time) {//선택한 시간
-                        if (yValues_entry.getLabel().equals("일정이 없습니다")||yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
+                        if (yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
                             total_time -= yValues_entry.getValue();
 
                             //빈칸 -> 흰색
@@ -252,11 +278,12 @@ public class TableByDayEditActivity extends AppCompatActivity {
                         yValues_new.add(yValues_entry);
                         table_background_new.add(background_entry);
                     }
+                    order++;
                 }
                 yValues = yValues_new;
                 myTimeTable.setMyBackground(table_background_new);
-
                 PieDataSet dataSet = new PieDataSet(yValues_new, "Tasks");
+
                 dataSet.setSliceSpace(0.5f);
                 dataSet.setSelectionShift(0f);
                 dataSet.setColors(table_background_new);
@@ -264,8 +291,15 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 PieData data = new PieData((dataSet));
                 data.setValueTextSize(0f);
 
-                myTimeTable.setPieData(data);
+                pieChart.notifyDataSetChanged();
                 pieChart.setData(data);
+                pieChart.invalidate();
+                myTimeTable.setPieData(data);
+
+//                for(int i=0;i<7;i++){
+//                    if(week[i]==1)
+//                      user.setWeekTable(i, myTimeTable);
+//                }
 
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
                 addTaskDialog.dismiss();
