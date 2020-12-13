@@ -267,6 +267,50 @@ public class TableByDateEditActivity extends AppCompatActivity {
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                add_task_thread(taskLabel);
+                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
+                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
+            }
+        });
+
+
+//알림 부분
+        SharedPreferences sharedPreferences = getSharedPreferences("daily alarm", MODE_PRIVATE);
+        long millis = sharedPreferences.getLong("nextNotifyTime", Calendar.getInstance().getTimeInMillis());
+
+        Calendar nextNotifyTime = new GregorianCalendar();
+        nextNotifyTime.setTimeInMillis(millis);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
+        calendar.set(Calendar.MINUTE, 14);
+        calendar.set(Calendar.SECOND, 0);
+
+        // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1);
+        }
+
+        Date currentDateTime = calendar.getTime();
+        String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
+        Toast.makeText(getApplicationContext(),date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
+
+        //  Preference에 설정한 값 저장
+        SharedPreferences.Editor editor = getSharedPreferences("daily alarm", MODE_PRIVATE).edit();
+        editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
+        editor.apply();
+
+        diaryNotification(calendar);
+        //알림부분 끝
+
+        addTaskDialog.show();
+    }
+
+    public void add_task_thread(EditText taskLabel){
+        Runnable task = new Runnable(){
+            @Override
+            public void run(){
                 PieEntry yValues_entry;
                 int background_entry;
                 int order = 0;
@@ -289,6 +333,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 int total_time = 0;
+
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
                     background_entry = backgrounds_entries.next();
@@ -315,7 +360,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "schedule already exists", Toast.LENGTH_LONG).show();
                             total_time += yValues_entry.getValue();
                         }
-                    }else {//나머지 시간
+                    } else {//나머지 시간
                         yValues_new.add(yValues_entry);
                         table_background_new.add(background_entry);
                     }
@@ -336,46 +381,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 pieChart.setData(data);
                 pieChart.invalidate();
                 myTimeTable.setPieData(data);
-
-                Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
-                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
-        });
-
-
-//알림 부분
-        SharedPreferences sharedPreferences = getSharedPreferences("daily alarm", MODE_PRIVATE);
-        long millis = sharedPreferences.getLong("nextNotifyTime", Calendar.getInstance().getTimeInMillis());
-
-        Calendar nextNotifyTime = new GregorianCalendar();
-        nextNotifyTime.setTimeInMillis(millis);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 14);
-        calendar.set(Calendar.SECOND, 0);
-
-        
-
-        // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
-
-        Date currentDateTime = calendar.getTime();
-        String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
-        Toast.makeText(getApplicationContext(),date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
-
-        //  Preference에 설정한 값 저장
-        SharedPreferences.Editor editor = getSharedPreferences("daily alarm", MODE_PRIVATE).edit();
-        editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
-        editor.apply();
-
-        diaryNotification(calendar);
-        //알림부분 끝
-
-        addTaskDialog.show();
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     //버튼 클릭시 decorate task 다이얼로그 띄우는 함수
