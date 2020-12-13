@@ -2,6 +2,7 @@ package com.example.harujogak;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,17 +15,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+<<<<<<< HEAD
+=======
+import java.util.Date;
+import java.util.Locale;
+>>>>>>> 98b60534f93159b0743fed05f5b1ad4d8350f7e6
 
 public class GoalActivity extends AppCompatActivity {
     Button btn;
-    ArrayList<String> goal_list = new ArrayList<>();
+    ArrayList<String> goal_list=new ArrayList<>();
+    MainActivity main=new MainActivity();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goal);
-
+        goal_list=MainActivity.getGoal_list();
 //        //목표 리스트 출력
 //        System.out.println("목표리스트 출력");
 //        User user = User.getInstance();
@@ -34,14 +48,8 @@ public class GoalActivity extends AppCompatActivity {
 //            goal_list.add(goal.getGoal_name() + goal.getDeadline());
 //            System.out.println(goal.getGoal_name() + goal.getDeadline());
 //        }
-
-        //test data
-        ArrayList<String> goal_list1 = new ArrayList<>();
-        goal_list1.add("hello1");
-        goal_list1.add("hello2");
-
         //listview
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list1);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list);
         ListView listview = (ListView) findViewById(R.id.goal_list);
         listview.setAdapter(adapter);
 
@@ -49,6 +57,7 @@ public class GoalActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 //listview 객체 클릭할 때 이벤트
+
             }
         });
     }
@@ -118,5 +127,4 @@ public class GoalActivity extends AppCompatActivity {
 
         addGoalDialog.show();
     }
-
 }

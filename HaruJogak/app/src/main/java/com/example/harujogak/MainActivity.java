@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -17,6 +18,11 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private MyTimeTable todaysTimeTable;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년MM월dd일");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+    //firebase
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private DatabaseReference data;
+    private ValueEventListener dataListener;
+    private static ArrayList<String> goal_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,30 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
 
         pieChart.setData(todaysTimeTable.getPieData());
+
+        //firebase - 목표 통계
+        database = FirebaseDatabase.getInstance();
+        myRef=database.getReference();
+        data=myRef.child("UserID").child("목표리스트");
+        dataListener = data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getValue() != null) {
+                            String goal = ds.getKey().toString();
+                            goal_list.add(goal);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
     }
 
     class Listener implements View.OnClickListener{
@@ -151,5 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
         exT.setPieData(data);
         exT.setDate("2020-12-12");
+    }
+    public static ArrayList<String> getGoal_list(){
+        return goal_list;
     }
 }

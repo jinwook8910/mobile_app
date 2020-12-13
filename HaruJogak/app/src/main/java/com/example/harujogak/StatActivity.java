@@ -103,6 +103,7 @@ public class StatActivity extends AppCompatActivity {
             cal.add(Calendar.DAY_OF_MONTH, -i);
             Date week_ago_date = cal.getTime();
             String weekago_text = new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(week_ago_date);
+            cal.add(Calendar.DAY_OF_MONTH,+i);//원상복구
             DatabaseReference week_data;
             week_data = myRef.child("UserID").child("날짜별 일정").child(weekago_text);
             week_data.addValueEventListener(new ValueEventListener() {
@@ -138,33 +139,42 @@ public class StatActivity extends AppCompatActivity {
                 result2.setText("이번 주 달성률은 "+re2+"%입니다.");
             }
         });
-        //방해요소 통계
-        DatabaseReference data_interrupt;
-        data_interrupt=myRef.child("UserID").child("날짜별 일정").child(input_today);
-        data.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue() == null) {
-                } else {
-                    for (DataSnapshot ds : snapshot.getChildren()) { //map value값 초기화
-                        if (ds.getValue() != null) {
-                            String rat = ds.child("방해요소").getValue().toString();
-                            interr.put(rat,0);
+
+        //방해요소 통계(한달간?)
+        for(i=0;i<30;i++) {
+            cal.add(Calendar.DAY_OF_MONTH, -i);
+            Date week_ago_date = cal.getTime();
+            String monthago_text = new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(week_ago_date);
+            cal.add(Calendar.DAY_OF_MONTH,+i);//원상복
+            DatabaseReference week_data;
+            week_data = myRef.child("UserID").child("날짜별 일정").child(monthago_text);
+            week_data.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    sum_week = 0;
+                    count_week = 0;
+                    if (snapshot.getValue() == null) {
+                    } else {
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.getValue() != null) {
+                                String rat = ds.child("방해요소").getValue().toString();
+                                interr.put(rat,0);
+                            }
                         }
-                    }
-                    for(DataSnapshot ds:snapshot.getChildren()){
-                        if(ds.getValue()!=null){
-                            String key=ds.child("방해요소").getValue().toString();
-                            interr.put(key,interr.get(key)+1);
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.getValue() != null) {
+                                String key = ds.child("방해요소").getValue().toString();
+                                interr.put(key,interr.get(key)+1);
+                            }
                         }
                     }
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "Firebase error");
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("TAG", "Firebase error");
+                }
+            });
+        }
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,9 +184,5 @@ public class StatActivity extends AppCompatActivity {
                 System.out.println("");
             }
         });
-
     }
-
-
-
 }
