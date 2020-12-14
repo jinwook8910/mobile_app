@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -51,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
         time = findViewById(R.id.main_time);
         PieChart pieChart = findViewById(R.id.todayPieChart);
 
-        btn1 = (ImageButton) findViewById(R.id.main_btn1);
-        btn2 = (ImageButton) findViewById(R.id.main_btn2);
-        btn3 = (ImageButton) findViewById(R.id.main_btn3);
-        btn4 = (ImageButton) findViewById(R.id.main_btn4);
-        btn5 = (ImageButton) findViewById(R.id.main_btn5);
+        btn1 = (ImageButton) findViewById(R.id.main_navi_btn1);
+        btn2 = (ImageButton) findViewById(R.id.main_navi_btn2);
+        btn3 = (ImageButton) findViewById(R.id.main_navi_btn3);
+        btn4 = (ImageButton) findViewById(R.id.main_navi_btn4);
+        btn5 = (ImageButton) findViewById(R.id.main_navi_btn5);
 
         btn1.setOnClickListener(listener);
         btn2.setOnClickListener(listener);

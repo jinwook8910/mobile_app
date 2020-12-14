@@ -71,14 +71,14 @@
             android:textColor="@color/navi_unclicked"
             android:text="목표" />-->
         <ImageButton
-            android:id="@+id/main_btn1"
+            android:id="@+id/main_navi_btn1"
             android:layout_width="220px"
             android:layout_height="100px"
             android:background="@drawable/goal_unselected"
             />
 
         <ImageButton
-            android:id="@+id/main_btn2"
+            android:id="@+id/main_navi_btn2"
             android:layout_width="220px"
             android:layout_height="100px"
             android:background="@drawable/static_unselected"
@@ -96,7 +96,7 @@
 
         <!--지금은 로그인 버튼-->
         <ImageButton
-            android:id="@+id/main_btn5"
+            android:id="@+id/main_navi_btn5"
             android:layout_width="220px"
             android:layout_height="100px"
             android:background="@drawable/home_selected"
@@ -104,14 +104,14 @@
 
 
         <ImageButton
-            android:id="@+id/main_btn3"
+            android:id="@+id/main_navi_btn3"
             android:layout_width="220px"
             android:layout_height="100px"
             android:background="@drawable/timetable_unselected"
             />
 
         <ImageButton
-            android:id="@+id/main_btn4"
+            android:id="@+id/main_navi_btn4"
             android:layout_width="220px"
             android:layout_height="100px"
             android:background="@drawable/calendar_unselected"

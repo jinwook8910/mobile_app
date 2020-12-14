@@ -1,13 +1,16 @@
 package com.example.harujogak;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ import java.util.Calendar;
 
 public class GoalActivity extends AppCompatActivity {
     Button btn;
+    ImageButton btn1, btn2, btn3, btn4, btn5;
     ArrayList<String> goal_list=new ArrayList<>();
     MainActivity main=new MainActivity();
     @Override
@@ -36,6 +40,18 @@ public class GoalActivity extends AppCompatActivity {
 //            goal_list.add(goal.getGoal_name() + goal.getDeadline());
 //            System.out.println(goal.getGoal_name() + goal.getDeadline());
 //        }
+        //navigation button
+        btn1 = (ImageButton) findViewById(R.id.goal_navi_btn1);
+        btn2 = (ImageButton) findViewById(R.id.goal_navi_btn2);
+        btn3 = (ImageButton) findViewById(R.id.goal_navi_btn3);
+        btn4 = (ImageButton) findViewById(R.id.goal_navi_btn4);
+        btn5 = (ImageButton) findViewById(R.id.goal_navi_btn5);
+
+        btn1.setOnClickListener(listener);
+        btn2.setOnClickListener(listener);
+        btn3.setOnClickListener(listener);
+        btn4.setOnClickListener(listener);
+        btn5.setOnClickListener(listener);
         //listview
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list);
         ListView listview = (ListView) findViewById(R.id.goal_list);
@@ -54,17 +70,17 @@ public class GoalActivity extends AppCompatActivity {
     public void onClickAddGoalButton(View v){
         Dialog addGoalDialog = new Dialog(this);
 
-        addGoalDialog.setContentView(R.layout.goal_add);
-        addGoalDialog.setTitle("일정 추가");
+        addGoalDialog.setContentView(R.layout.goal_add_dialog);
+        addGoalDialog.setTitle("목표 추가");
 
+        ImageButton goal_exit_btn = addGoalDialog.findViewById(R.id.goal_exit_btn);
         CalendarView goal_calendar = addGoalDialog.findViewById(R.id.goal_add_calendar);
         TextView goal_text = addGoalDialog.findViewById(R.id.goal_add_text);
         EditText goal_input = addGoalDialog.findViewById(R.id.goal_add_input);
         TextView goal_result = addGoalDialog.findViewById(R.id.goal_add_result);
-        Button goal_btn = findViewById(R.id.calendar_btn);
-        Button goal_add_btn=addGoalDialog.findViewById(R.id.goal_add_btn);
+        ImageButton goal_add_btn=addGoalDialog.findViewById(R.id.goal_add_btn);
 
-        goal_text.setText("나의 목표는");
+        goal_text.setText("목표 추가");
         goal_result.setText("D-day");
 
         goal_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
@@ -113,6 +129,41 @@ public class GoalActivity extends AppCompatActivity {
             }
         });
 
+        goal_exit_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                addGoalDialog.dismiss();
+            }
+        });
+
         addGoalDialog.show();
     }
+
+    //navigation button
+    class Listener implements View.OnClickListener{
+        public void onClick(View view){
+            if(view==btn1){
+                Intent intent = new Intent(GoalActivity.this, GoalActivity.class);
+                startActivity(intent);
+            }
+            else if(view==btn2){
+                Intent intent =new Intent(GoalActivity.this,Rating.class);
+                startActivity(intent);
+            }
+            else if(view==btn3){
+                Log.i("MainActivity", "onClickButton");
+                Intent intent = new Intent(GoalActivity.this, TimeTableListActivity.class);
+                startActivity(intent);
+            }
+            else if(view==btn4) {
+                Intent intent = new Intent(GoalActivity.this, ScheduleActivity.class);
+                startActivity(intent);
+            }
+            else if(view==btn5){
+                Intent intent =new Intent(GoalActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
+    GoalActivity.Listener listener = new GoalActivity.Listener();
 }

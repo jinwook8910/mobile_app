@@ -26,7 +26,7 @@ public class GoalAddActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.goal_add);
+        setContentView(R.layout.goal_add_dialog);
 
         //firebase 정의
         database = FirebaseDatabase.getInstance();
