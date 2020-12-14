@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 
 public class TimeTableListActivity extends AppCompatActivity {
+    //navigation button
+    ImageButton btn1, btn2, btn3, btn4, btn5;
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
     // 나중에 사용자 정보에 저장된 ArrayList를 가져와서 동작시켜야함
     private ArrayList<MyTimeTable> week = new ArrayList<>(7);
@@ -107,6 +110,19 @@ public class TimeTableListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_list);
+
+        //navigation button
+        btn1 = (ImageButton) findViewById(R.id.goal_navi_btn1);
+        btn2 = (ImageButton) findViewById(R.id.goal_navi_btn2);
+        btn3 = (ImageButton) findViewById(R.id.goal_navi_btn3);
+        btn4 = (ImageButton) findViewById(R.id.goal_navi_btn4);
+        btn5 = (ImageButton) findViewById(R.id.goal_navi_btn5);
+
+        btn1.setOnClickListener(listener);
+        btn2.setOnClickListener(listener);
+        btn3.setOnClickListener(listener);
+        btn4.setOnClickListener(listener);
+        btn5.setOnClickListener(listener);
 
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1) ;
@@ -285,7 +301,34 @@ public class TimeTableListActivity extends AppCompatActivity {
         public int getItemCount() {
             return weekSchedule.size();
         }
-    }
-} // end of class
+    }// end of class
+    //https://bitsoul.tistory.com/41
 
-//https://bitsoul.tistory.com/41
+    //navigation button
+    class Listener implements View.OnClickListener{
+        public void onClick(View view){
+            if(view==btn1){
+                Intent intent = new Intent(TimeTableListActivity.this, GoalActivity.class);
+                startActivity(intent);
+            }
+            else if(view==btn2){
+                Intent intent =new Intent(TimeTableListActivity.this,Rating.class);
+                startActivity(intent);
+            }
+            else if(view==btn3){
+                Log.i("MainActivity", "onClickButton");
+                Intent intent = new Intent(TimeTableListActivity.this, TimeTableListActivity.class);
+                startActivity(intent);
+            }
+            else if(view==btn4) {
+                Intent intent = new Intent(TimeTableListActivity.this, ScheduleActivity.class);
+                startActivity(intent);
+            }
+            else if(view==btn5){
+                Intent intent =new Intent(TimeTableListActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
+    TimeTableListActivity.Listener listener = new TimeTableListActivity.Listener();
+}
