@@ -9,7 +9,8 @@
         android:layout_width = "match_parent"
         android:layout_height = "0.5dp"
         android:background="@color/white"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"/>
+<!--    이거 margin 으로밖에 조절 못하나여.. avd 화면 비율 다르면 깨지는디-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="주간 시간표"
             android:textSize="15dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_margin="5dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler1"
@@ -37,7 +38,7 @@
 
     <View
         android:layout_width = "match_parent"
-        android:layout_height = "15dp"
+        android:layout_height = "1dp"
         android:background="@color/lineColor"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="8dp"/>
@@ -53,9 +54,9 @@
             android:id="@+id/view_label2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="특정날"
+            android:text="일일 시간표"
             android:textSize="15dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_margin="5dp"/>
 
         <GridView
             android:id="@+id/gridView1"

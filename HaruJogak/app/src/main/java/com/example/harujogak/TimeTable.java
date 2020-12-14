@@ -14,13 +14,17 @@ class MyTimeTable {
     private ArrayList<Integer> MyBackground = new ArrayList<>();
 
     public MyTimeTable(){
+        PieDataSet dataSet;
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-        /* init */
-        MyBackground.add(Color.rgb(250,250,250));
-        yValues.add(new PieEntry(1440f, "일정이 없습니다"));
-        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+
+        yValues.add(new PieEntry(1440f, " "));
+        dataSet = new PieDataSet(yValues, "Tasks");
+
         dataSet.setSliceSpace(0.5f);
         dataSet.setSelectionShift(0f);
+        this.MyBackground.add(Color.rgb(250,250,250));
+        dataSet.setColors(this.MyBackground);
+
         pieData = new PieData((dataSet));
         pieData.setValueTextSize(0f);
     }

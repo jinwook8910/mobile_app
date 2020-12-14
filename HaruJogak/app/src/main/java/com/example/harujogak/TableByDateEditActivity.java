@@ -74,20 +74,17 @@ public class TableByDateEditActivity extends AppCompatActivity {
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
-    public String start_times[], end_times[];
+    private String start_times[], end_times[];
 
-    public String fb_date,fb_strt,fb_endt,fb_task,fb_long,UserID;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
-
-    // yValues -> PieDataSet -> PieData
-    private ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+    private String fb_date, fb_strt, fb_endt, fb_task, fb_long, UserID;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     private DateSetListener dateSetListener = new DateSetListener();
     private TimeSetListener timeSetListener = new TimeSetListener();
 
-    MainActivity main=new MainActivity();
-    Login2 user=new Login2();
+    MainActivity main = new MainActivity();
+    Login2 user = new Login2();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +92,11 @@ public class TableByDateEditActivity extends AppCompatActivity {
         setContentView(R.layout.timetable_edit_date);
 
         //firebase 정의
-        database =FirebaseDatabase.getInstance();
-        myRef=database.getReference();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         Intent intent = getIntent();
-        int position = (int)intent.getIntExtra("byDate", -1);
+        int position = (int) intent.getIntExtra("byDate", -1);
         //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
         // position 값이 -1이면 새로 만드는 것임.
         myTimeTable = new MyTimeTable();
@@ -114,19 +111,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
         pieChart.setDrawMarkers(true);
 
-        //24시간 = 1440분 //TimePicker로 시간을 분으로 받으니까 파이차트를 분단위로 계산
-        yValues.add(new PieEntry(1440f, " "));//일정 없는 것
-
-        dataSet = new PieDataSet(yValues, "Tasks");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(myTimeTable.getMyBackground());
-
-        data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-
-        myTimeTable.setPieData(data);
-        pieChart.setData(data);
+        pieChart.setData(myTimeTable.getPieData());
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -143,8 +128,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
     }
 
     //노티피케이션(푸시알림)
-    void diaryNotification(Calendar calendar)
-    {
+    void diaryNotification(Calendar calendar) {
 //        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 //        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 //        Boolean dailyNotify = sharedPref.getBoolean(SettingsActivity.KEY_PREF_DAILY_NOTIFICATION, true);
@@ -191,9 +175,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
     class DateSetListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            month+=1;
+            month += 1;
             dateButton.setText(year + " / " + month + " / " + dayOfMonth);
-            fb_date=year+"년 "+month+"월 "+dayOfMonth+"일";
+            fb_date = year + "년 " + month + "월 " + dayOfMonth + "일";
             Description description = new Description();
             description.setText(year + " / " + month + " / " + dayOfMonth);
             description.setTextSize(15);
@@ -256,8 +240,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
         //골 리스트 가져옴
-       ArrayList<String> GoalList = new ArrayList<>();
-        GoalList=main.getGoal_list();
+        ArrayList<String> GoalList = new ArrayList<>();
+        GoalList = main.getGoal_list();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, GoalList);
         Spinner s = (Spinner) addTaskDialog.findViewById(R.id.goalSpinner);
@@ -265,11 +249,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                System.out.println("!!position : " + position +
-                        parent.getItemAtPosition(position));
-                fb_long=parent.getItemAtPosition(position).toString();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("!!position : " + position + parent.getItemAtPosition(position));
+                fb_long = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -307,18 +289,18 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
                 Date currentDateTime = calendar.getTime();
                 String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
-                Toast.makeText(getApplicationContext(),date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
 
                 //  Preference에 설정한 값 저장
                 SharedPreferences.Editor editor = getSharedPreferences("daily alarm", MODE_PRIVATE).edit();
-                editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
+                editor.putLong("nextNotifyTime", (long) calendar.getTimeInMillis());
                 editor.apply();
 
                 diaryNotification(calendar);
                 //알림부분 끝
 
                 //일정 정보 firebase 추가
-                UserID=user.getUserID();
+                UserID = user.getUserID();
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("시작시간").setValue(fb_strt);
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("종료시간").setValue(fb_endt);
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);
@@ -330,21 +312,27 @@ public class TableByDateEditActivity extends AppCompatActivity {
         addTaskDialog.show();
     }
 
-    public void add_task_thread(EditText taskLabel){
-        Runnable task = new Runnable(){
+    public void add_task_thread(EditText taskLabel) {
+        //시간 문자열 => 분으로 계산
+        String strt = (String) startTimeButton.getText();
+        String endt = (String) endTimeButton.getText();
+
+        //기존의 파이차트 정보와 추가할 일정 정보 합치기
+        ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
+        PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
+        Iterator<PieEntry> yValues_entries = dataSet.getValues().iterator();
+        ArrayList<Integer> table_background_new = new ArrayList<>();
+        Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
+
+        Runnable task = new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 PieEntry yValues_entry;
                 int background_entry;
-                int order = 0;
 
-                //시간 문자열 => 분으로 계산
-                String strt = (String) startTimeButton.getText();
-                String endt = (String) endTimeButton.getText();
-
-                fb_strt=strt;
-                fb_endt=endt;
-                fb_task=taskLabel.getText().toString().trim();
+                fb_strt = strt;
+                fb_endt = endt;
+                fb_task = taskLabel.getText().toString().trim();
 
                 start_times = strt.split(" : ");
                 int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
@@ -352,51 +340,42 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 end_times = endt.split(" : ");
                 int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
 
-                //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 boolean done = false;
-                ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
-                Iterator<PieEntry> yValues_entries = yValues.iterator();
-                ArrayList<Integer> table_background_new = new ArrayList<>();
-                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
-
-                int total_time = 0;
+                int blank_str = 0, blank_end = 0;
 
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
                     background_entry = backgrounds_entries.next();
-                    total_time += yValues_entry.getValue();
+                    blank_str = blank_end;
+                    blank_end += yValues_entry.getValue();
 
-                    if (!done && total_time >= start_time && total_time >= end_time) {//선택한 시간
-                        if (yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
-                            total_time -= yValues_entry.getValue();
+                    if (!done && blank_str <= start_time && start_time <= end_time && end_time <= blank_end) {//선택한 시간
+                            if (yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
+                                //빈칸 -> 흰색
+                                yValues_new.add(new PieEntry(start_time - blank_str, " "));
+                                table_background_new.add(Color.rgb(250, 250, 250));
+                                //추가된 태스크 -> 조이풀
+                                yValues_new.add(new PieEntry(end_time - start_time, taskLabel.getText().toString()));
+                                table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks % 5]);
+                                newTasks++;
+                                //빈칸 -> 흰색
+                                yValues_new.add(new PieEntry(blank_end - end_time, " "));
+                                table_background_new.add(Color.rgb(250, 250, 250));
 
-                            //빈칸 -> 흰색
-                            yValues_new.add(new PieEntry(start_time - total_time, " "));
-                            table_background_new.add(Color.rgb(250, 250, 250));
-                            //추가된 태스크 -> 조이풀
-                            yValues_new.add(new PieEntry(end_time - start_time, taskLabel.getText().toString()));
-                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks%5]);
-                            newTasks++;
-                            //빈칸 -> 흰색
-                            yValues_new.add(new PieEntry(yValues_entry.getValue() - (end_time - total_time), " "));
-                            table_background_new.add(Color.rgb(250, 250, 250));
-
-                            total_time += yValues_entry.getValue();
-                            done = true; //추가 완료함을 표시
-                        } else {//선택한 시간에 일정이 있는 경우
-                            Toast.makeText(getApplicationContext(), "schedule already exists", Toast.LENGTH_LONG).show();
-                            total_time += yValues_entry.getValue();
+                                done = true; //추가 완료함을 표시
+                            } else {//선택한 시간에 일정이 있는 경우
+                                Toast.makeText(getApplicationContext(), "schedule already exists", Toast.LENGTH_LONG).show();
+                                blank_end += yValues_entry.getValue();
+                            }
                         }
-                    } else {//나머지 시간
-                        yValues_new.add(yValues_entry);
-                        table_background_new.add(background_entry);
-                    }
-                    order++;
+                    else {//나머지 시간
+                            yValues_new.add(yValues_entry);
+                            table_background_new.add(background_entry);
+                        }
                 }
-                yValues = yValues_new;
+//                yValues = yValues_new;
                 myTimeTable.setMyBackground(table_background_new);
                 PieDataSet dataSet = new PieDataSet(yValues_new, "Tasks");
-
                 dataSet.setSliceSpace(0.5f);
                 dataSet.setSelectionShift(0f);
                 dataSet.setColors(table_background_new);
@@ -426,17 +405,21 @@ public class TableByDateEditActivity extends AppCompatActivity {
         TextView startTime = (TextView) decoTaskDialog.findViewById(R.id.start_time);
         TextView endTime = (TextView) decoTaskDialog.findViewById(R.id.end_time);
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
-        Button showTemplate = (Button) decoTaskDialog.findViewById(R.id.show_adapted_task);
+        Button template = (Button) decoTaskDialog.findViewById(R.id.show_adapted_task);
         TextView backgroundColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_background);
         TextView textColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_text_color);
 
-        taskLabelLine.setText(yValues.get(index).getLabel());
+        PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
+        taskLabelLine.setText(dataSet.getValues().get(index).getLabel());
+        template.setBackgroundColor(myTimeTable.getMyBackground().get(index));
 
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_SHORT).show();
+                pieChart.notifyDataSetChanged();
                 pieChart.setData(myTimeTable.getPieData());
+                pieChart.invalidate();
                 decoTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
         });
@@ -446,7 +429,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_SHORT).show();
                 flag_template = 1;
-                showColorPicker(showTemplate, index);
+                showColorPicker(template, index);
 
             }
         });
@@ -455,7 +438,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "textColorButton done", Toast.LENGTH_SHORT).show();
                 flag_template = 2;
-                showColorPicker(showTemplate, index);
+                showColorPicker(template, index);
             }
         });
 
@@ -479,7 +462,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
             mTime = (String) startTimeButton.getText();
             times = mTime.split(" : ");
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                    timeSetListener, Integer.parseInt(times[0]),Integer.parseInt(times[1]), true);
+                    timeSetListener, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true);
             timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show();
 
@@ -488,7 +471,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
             mTime = (String) endTimeButton.getText();
             times = mTime.split(" : ");
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                    timeSetListener, Integer.parseInt(times[0]),Integer.parseInt(times[1]), true);
+                    timeSetListener, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true);
             timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show();
         }
