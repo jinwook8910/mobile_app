@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -327,55 +328,88 @@ public class TableByDateEditActivity extends AppCompatActivity {
         Runnable task = new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 PieEntry yValues_entry;
                 int background_entry;
-
-                fb_strt = strt;
-                fb_endt = endt;
-                fb_task = taskLabel.getText().toString().trim();
+                String start_times[], end_times[];
 
                 start_times = strt.split(" : ");
-                int start_time = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
+                int new_str = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
 
                 end_times = endt.split(" : ");
-                int end_time = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
+                int new_end = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
 
                 boolean done = false;
-                int blank_str = 0, blank_end = 0;
+                int entry_str = 0, entry_end = 0;
+
+                //기존의 파이차트 정보와 추가할 일정 정보 합치기
+                ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
+                PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
+                Iterator<PieEntry> yValues_entries = dataSet.getValues().iterator();
+                ArrayList<Integer> table_background_new = new ArrayList<>();
+                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
                     background_entry = backgrounds_entries.next();
-                    blank_str = blank_end;
-                    blank_end += yValues_entry.getValue();
+                    entry_str = entry_end;
+                    entry_end += yValues_entry.getValue();
 
-                    if (!done && blank_str <= start_time && start_time <= end_time && end_time <= blank_end) {//선택한 시간
-                            if (yValues_entry.getLabel().equals(" ")) {//선택한 시간에 일정이 없는 경우
-                                //빈칸 -> 흰색
-                                yValues_new.add(new PieEntry(start_time - blank_str, " "));
-                                table_background_new.add(Color.rgb(250, 250, 250));
-                                //추가된 태스크 -> 조이풀
-                                yValues_new.add(new PieEntry(end_time - start_time, taskLabel.getText().toString()));
-                                table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks % 5]);
-                                newTasks++;
-                                //빈칸 -> 흰색
-                                yValues_new.add(new PieEntry(blank_end - end_time, " "));
-                                table_background_new.add(Color.rgb(250, 250, 250));
+                    if (new_end <= new_str){
+                        Toast.makeText(getApplicationContext(), "종료 시각은 시작 시각보다 반드시 커야 합니다.", Toast.LENGTH_LONG).show();
+                        Log.i("add task :", "type 0 시각 조건 불일치");
+                        yValues_new = (ArrayList)dataSet.getValues();
+                        break;
+                    }
 
-                                done = true; //추가 완료함을 표시
-                            } else {//선택한 시간에 일정이 있는 경우
-                                Toast.makeText(getApplicationContext(), "schedule already exists", Toast.LENGTH_LONG).show();
-                                blank_end += yValues_entry.getValue();
-                            }
-                        }
-                    else {//나머지 시간
+                    //새로운 일정 추가/폐기 이후의 기존 일정 추가
+                    if(done) {
+                        yValues_new.add(yValues_entry);
+                        table_background_new.add(background_entry);
+                        continue;
+                    }
+
+                    //새로운 일정과 겹치지 않는 이전의 기존 일정 추가
+                    if (entry_end <= new_str && entry_end <= new_end) {
+                        Log.i("add task :", "type 1 이전 일정");
+                        yValues_new.add(yValues_entry);
+                        table_background_new.add(background_entry);
+                    }
+                    //새로운 일정이 하나의 기존 일정과 겹칠 때
+                    else if (entry_str <= new_str && new_end <= entry_end) {
+                        if (yValues_entry.getLabel().equals(" ")) {//기존 일정이 빈칸일 경우 -> 해당 일정을 [빈칸, 새로운 일정, 빈칸] 으로 바꿔 추가
+                            Log.i("add task :", "type 2 정상적으로 추가");
+                            //빈칸 -> 흰색
+                            yValues_new.add(new PieEntry(new_str - entry_str, " "));
+                            table_background_new.add(Color.rgb(250, 250, 250));
+                            //추가된 태스크 -> 조이풀
+                            yValues_new.add(new PieEntry(new_end - new_str, taskLabel.getText().toString()));
+                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks % 5]);
+                            newTasks++;
+                            //빈칸 -> 흰색
+                            yValues_new.add(new PieEntry(entry_end - new_end, " "));
+                            table_background_new.add(Color.rgb(250, 250, 250));
+                            done = true;
+                        } else {//기존 일정에 내용이 있을 경우 -> 새로운 일정을 폐기
+                            Log.i("add task :", "type 3 일정 완전히 겹침");
+                            Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_LONG).show();
                             yValues_new.add(yValues_entry);
                             table_background_new.add(background_entry);
+                            entry_end += yValues_entry.getValue();
                         }
+                    }
+                    //새로운 일정이 여러 일정과 겹칠 때 -> 무조건 새로운 일정 폐기
+                    else {
+                        Log.i("add task :", "type 4 일정 부분 겹침");
+                        Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_LONG).show();
+                        yValues_new.add(yValues_entry);
+                        table_background_new.add(background_entry);
+                        entry_end += yValues_entry.getValue();
+                    }
                 }
-//                yValues = yValues_new;
+
                 myTimeTable.setMyBackground(table_background_new);
-                PieDataSet dataSet = new PieDataSet(yValues_new, "Tasks");
+                dataSet = new PieDataSet(yValues_new, "Tasks");
                 dataSet.setSliceSpace(0.5f);
                 dataSet.setSelectionShift(0f);
                 dataSet.setColors(table_background_new);
