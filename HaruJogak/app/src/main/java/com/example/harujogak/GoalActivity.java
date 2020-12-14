@@ -1,16 +1,20 @@
 package com.example.harujogak;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,6 +30,8 @@ public class GoalActivity extends AppCompatActivity {
     ImageButton btn1, btn2, btn3, btn4, btn5;
     ArrayList<String> goal_list=new ArrayList<>();
     MainActivity main=new MainActivity();
+    private ListViewAdapter adapter =  new ListViewAdapter();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +59,12 @@ public class GoalActivity extends AppCompatActivity {
         btn4.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
         //listview
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list);
+        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list);
         ListView listview = (ListView) findViewById(R.id.goal_list);
         listview.setAdapter(adapter);
+        //리스트뷰 아이템 추가
+        adapter.addItem("토익시험", "D-12");
+        adapter.addItem("발표", "D-5");
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -137,6 +146,61 @@ public class GoalActivity extends AppCompatActivity {
         });
 
         addGoalDialog.show();
+    }
+
+    //listview Adapter
+    public class ListViewAdapter extends BaseAdapter {
+        private ArrayList<Goal> listViewItemList = new ArrayList<Goal>();
+
+        @Override
+        public int getCount(){
+            return listViewItemList.size();
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final int pos = position;
+            final Context context = parent.getContext();
+
+            // "listview_item" Layout을 inflate하여 convertView 참조 획득.
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.calendar_listview_item, parent, false);
+            }
+            TextView item_name = (TextView)convertView.findViewById(R.id.listview_item_name);
+            TextView item_dday = (TextView)convertView.findViewById(R.id.listview_item_dday);
+            View item_chart = (View)convertView.findViewById(R.id.listview_item_chart);
+
+            Goal g = listViewItemList.get(position);
+            item_name.setText(g.getGoal_name());
+            item_dday.setText(g.getDeadline());
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(100, 25);
+            item_chart.setLayoutParams(param);
+            //item_chart.getLayoutParams().width=200;
+
+            return convertView;
+        }
+        // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
+        @Override
+        public long getItemId(int position) {
+            return position ;
+        }
+
+        // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
+        @Override
+        public Object getItem(int position) {
+            return listViewItemList.get(position) ;
+        }
+
+        // 아이템 데이터 추가를 위한 함수.
+        public void addItem(String name, String dday) {
+            Goal item = new Goal(name, dday);
+
+            item.setGoal_name(name);
+            item.setDeadline(dday);
+
+            listViewItemList.add(item);
+        }
+
     }
 
     //navigation button

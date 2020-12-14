@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:orientation="horizontal"
+    android:layout_marginLeft="35dp"
+    android:layout_marginRight="35dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/listview_item_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:fontFamily="@font/mapoflowerisland"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/listview_item_dday"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:fontFamily="@font/mapoflowerisland"
+        android:layout_marginLeft="5dp"
+        />
+    <LinearLayout
+        android:layout_height="8dp"
+        android:layout_width="170dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/white">
+        <View
+            android:id="@+id/listview_item_chart"
+            android:layout_width = "0dp"
+            android:layout_height = "0dp"
+            android:background="@color/barChartColor"
+            />
+    </LinearLayout>
+</LinearLayout>

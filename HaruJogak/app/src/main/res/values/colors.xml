@@ -16,4 +16,5 @@
     <color name="navi_clicked">#685048</color>
     <color name="buttonColor">#685048</color>
     <color name="lineColor">#C5BEB7</color>
+    <color name="barChartColor">#96877D</color>
 </resources>
