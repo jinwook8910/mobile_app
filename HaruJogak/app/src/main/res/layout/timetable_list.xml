@@ -9,8 +9,10 @@
         android:layout_width = "match_parent"
         android:layout_height = "0.5dp"
         android:background="@color/white"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="50dp"/>
 <!--    이거 margin 으로밖에 조절 못하나여.. avd 화면 비율 다르면 깨지는디-->
+    <!--선이라서 padding넣으면 선이 굵어져요ㅠㅠ 영상찍을 때 그 기기기에 맞춰서 해야할 것같습니다
+    title bar없애서 공간이 남을거같은데 지금도 깨지나요??-->
 
     <LinearLayout
         android:layout_width="match_parent"

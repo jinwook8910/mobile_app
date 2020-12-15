@@ -17,7 +17,7 @@
         android:fontFamily="@font/mapoflowerisland"
         android:textSize="20dp"
         android:textColor="@color/black"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="70dp">
+        android:layout_marginTop="80dp">
 
          <com.github.mikephil.charting.charts.PieChart
              android:id="@+id/todayPieChart"

@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -110,6 +111,10 @@ public class TimeTableListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_list);
+
+        //title bar 제거하기
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //navigation button
         btn1 = (ImageButton) findViewById(R.id.goal_navi_btn1);

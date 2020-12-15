@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -46,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //title bar 제거하기
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
         date = findViewById(R.id.main_date);
         time = findViewById(R.id.main_time);
         PieChart pieChart = findViewById(R.id.todayPieChart);

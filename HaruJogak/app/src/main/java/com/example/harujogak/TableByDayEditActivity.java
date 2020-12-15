@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -73,6 +74,10 @@ public class TableByDayEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_edit_day);
+
+        //title bar 제거하기
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         Intent intent = getIntent();
         int position = (int) intent.getIntExtra("byDate", -1);

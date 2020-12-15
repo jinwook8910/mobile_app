@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,6 +32,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        //title bar 제거하기
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
 //        TextView tvContents = (TextView)findViewById(R.id.tv_contents);
 //        ImageView ivGlide = (ImageView)findViewById(R.id.iv_glide);

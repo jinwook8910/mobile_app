@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,10 @@ public class ScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
+
+        //title bar 제거하기
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //navigation button
         btn1 = (ImageButton) findViewById(R.id.goal_navi_btn1);

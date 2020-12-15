@@ -16,7 +16,7 @@
         android:id="@+id/calendar"
         android:layout_width="280dp"
         android:layout_height="300dp"
-        android:layout_marginTop="0dp"/>
+        android:layout_marginTop="10dp"/>
 
     <ListView
         android:id="@+id/calendar_list"
@@ -30,7 +30,7 @@
         android:layout_height="130dp"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="55dp"
         >
 
         <TextView
