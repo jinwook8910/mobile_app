@@ -24,13 +24,13 @@
         <activity android:label="TableByDayEdit" android:name=".TableByDayEditActivity"/>
         <activity android:label="TableByDateEdit" android:name=".TableByDateEditActivity"/>
         <activity android:label="GoalActivity" android:name=".GoalActivity"/>
-        <activity android:label="GoalAddActivity" android:name=".GoalAddActivity"/>
         <activity android:label="CalendarActivity" android:name=".ScheduleActivity"/>
         <activity android:label="LoginActivity" android:name=".LoginActivity"></activity>
         <activity android:label="Rating" android:name=".Rating" />
         <activity android:label="SignUpActivity" android:name=".SignUpActivity"/>
         <activity android:label="Login2" android:name=".Login2"/>
         <activity android:label="StatActivity" android:name=".StatActivity"/>
+        <activity android:label="StatWeekActivity" android:name=".StatWeekActivity"/>
 
         <receiver android:name=".DeviceBootReceiver"
             android:enabled="false">

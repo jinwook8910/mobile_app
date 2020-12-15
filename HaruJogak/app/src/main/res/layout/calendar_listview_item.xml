@@ -37,4 +37,5 @@
             android:background="@color/barChartColor"
             />
     </LinearLayout>
+
 </LinearLayout>

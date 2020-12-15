@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backColor"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width = "match_parent"
+        android:layout_height = "0.5dp"
+        android:background="@color/white"
+        android:layout_marginTop="50dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp"
+        >
+        <ImageButton
+            android:id="@+id/week_left_btn"
+            android:layout_width="5dp"
+            android:layout_height="30dp"
+            android:background="@drawable/slide_left_button"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주간 통계"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/woman_flower"
+            android:layout_weight="5"
+            android:gravity="center"
+            />
+        <ImageButton
+            android:id="@+id/week_right_btn"
+            android:layout_width="5dp"
+            android:layout_height="30dp"
+            android:background="@drawable/slide_right_button"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/goal_list"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_weight="1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity = "bottom"
+        android:layout_weight="6">
+        <View
+            android:layout_width = "match_parent"
+            android:layout_height = "0.5dp"
+            android:background="@color/white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:background="#00ff0000"
+            android:gravity="bottom">
+
+            <ImageButton
+                android:id="@+id/goal_navi_btn1"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/goal_unselected"
+                />
+
+            <ImageButton
+                android:id="@+id/goal_navi_btn2"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/static_selected"
+                />
+
+            <!--지금은 로그인 버튼-->
+            <ImageButton
+                android:id="@+id/goal_navi_btn5"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/home_unselected"
+                />
+
+
+            <ImageButton
+                android:id="@+id/goal_navi_btn3"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/timetable_unselected"
+                />
+
+            <ImageButton
+                android:id="@+id/goal_navi_btn4"
+                android:layout_width="220px"
+                android:layout_height="100px"
+                android:background="@drawable/calendar_unselected"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
