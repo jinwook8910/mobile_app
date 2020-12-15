@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
@@ -61,10 +62,11 @@ public class TableByDateEditActivity extends AppCompatActivity {
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
     float rotate = 0;
     private Button dateButton;
-    private TextView startTimeButton, endTimeButton;
+    private TextView startTimeButton, endTimeButton, edit_startTime, edit_endTime;
     String start_times[], end_times[];
-    private int flag_time, flag_template;
+    private int flag_time;
 
+    User users = new User();
     private String fb_date, fb_strt, fb_endt, fb_task, fb_long, UserID;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -96,6 +98,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
+        Button DONE = (Button) findViewById(R.id.add_timeTable_done);
 
         pieChart.setUsePercentValues(false);
         pieChart.setRotationEnabled(false);
@@ -118,6 +121,12 @@ public class TableByDateEditActivity extends AppCompatActivity {
             }
         });
 
+        DONE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                users.addDateTable(myTimeTable);
+            }
+        });
     }
 
     //노티피케이션(푸시알림)
@@ -197,6 +206,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 startTimeButton.setText(strHour + " : " + strMinute);
             else if (flag_time == 2)
                 endTimeButton.setText(strHour + " : " + strMinute);
+            else if (flag_time == 3)
+                edit_startTime.setText(strHour + " : " + strMinute);
+            else if (flag_time == 4)
+                edit_endTime.setText(strHour + " : " + strMinute);
         }
 
         int getmHour() {
@@ -447,16 +460,45 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         ImageButton exit = (ImageButton) decoTaskDialog.findViewById(R.id.exit);
         TextView taskLabelLine = (TextView) decoTaskDialog.findViewById(R.id.task_label_show);
-        TextView startTime = (TextView) decoTaskDialog.findViewById(R.id.start_time);
-        TextView endTime = (TextView) decoTaskDialog.findViewById(R.id.end_time);
+        edit_startTime = (TextView) decoTaskDialog.findViewById(R.id.start_time);
+        edit_endTime = (TextView) decoTaskDialog.findViewById(R.id.end_time);
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
         Button template = (Button) decoTaskDialog.findViewById(R.id.show_adapted_task);
-        TextView backgroundColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_background);
-        TextView textColorButton = (TextView) decoTaskDialog.findViewById(R.id.set_text_color);
 
         PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
         taskLabelLine.setText(dataSet.getValues().get(index).getLabel());
         template.setBackgroundColor(myTimeTable.getMyBackground().get(index));
+
+        List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
+        int str_time = (int) (yValues.get(0).getValue() + 4 * rotate);
+        int end_time, i;
+        for (i = 1; i < index; i++) {
+            str_time += (int) yValues.get(i).getValue();
+        }
+
+        String strHour, strMinute;
+        if ((str_time / 60) < 10)
+            strHour = "0" + (str_time / 60);
+        else
+            strHour = "" + (str_time / 60);
+        if ((str_time % 60) < 10)
+            strMinute = "0" + (str_time % 60);
+        else
+            strMinute = "" + (str_time % 60);
+
+        edit_startTime.setText(strHour + " : " + strMinute);
+
+        end_time = str_time + (int) yValues.get(i).getValue();
+        if ((end_time / 60) < 10)
+            strHour = "0" + (end_time / 60);
+        else
+            strHour = "" + (end_time / 60);
+        if ((end_time % 60) < 10)
+            strMinute = "0" + (end_time % 60);
+        else
+            strMinute = "" + (end_time % 60);
+
+        edit_endTime.setText(strHour + " : " + strMinute);
 
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -465,10 +507,47 @@ public class TableByDateEditActivity extends AppCompatActivity {
             }
         });
 
+        int finalStr_time = str_time;
+        int finalEnd_time = end_time;
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_SHORT).show();
+                List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
+                int prev_y = (int) yValues.get(index-1).getY();
+                int y = (int) yValues.get(index).getY();
+                int next_y = (int) yValues.get(index+1).getY();
+                Log.i("onClickDecoTaskButton", prev_y+"/"+y+"/"+next_y);
+
+                String str[];
+                str = edit_startTime.getText().toString().split(" : ");
+                int new_str = (int) (Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1]) + rotate * 4) % 1440;
+                if(finalStr_time!=new_str){
+                    yValues.get(index - 1).setY(prev_y + (new_str - finalStr_time));
+                    y -= (new_str - finalStr_time);
+                }
+
+                str = edit_endTime.getText().toString().split(" : ");
+                int new_end = (int) (Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1]) + rotate * 4) % 1440;
+                if(finalEnd_time!=new_end){
+                    yValues.get(index + 1).setY(next_y + (finalEnd_time- new_end));
+                    y -= (finalEnd_time- new_end);
+                }
+
+                yValues.get(index).setY(y);
+                Log.i("onClickDecoTaskButton", yValues.get(index - 1).getValue()+"/"
+                        +yValues.get(index).getValue()+"/"+yValues.get(index + 1).getValue());
+
+                PieDataSet pieDataSet = new PieDataSet(yValues, "Tasks");
+                pieDataSet.setSliceSpace(0.5f);
+                pieDataSet.setSelectionShift(0f);
+                pieDataSet.setColors(myTimeTable.getMyBackground());
+
+                PieData pieData = new PieData(pieDataSet);
+                pieData.setDataSet(pieDataSet);
+                pieData.setValueTextSize(0f);
+                myTimeTable.setPieData(pieData);
+
                 pieChart.notifyDataSetChanged();
                 pieChart.setData(myTimeTable.getPieData());
                 pieChart.invalidate();
@@ -476,20 +555,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
             }
         });
 
-        backgroundColorButton.setOnClickListener(new View.OnClickListener() {
+        template.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_SHORT).show();
-                flag_template = 1;
-                showColorPicker(template, index);
-
-            }
-        });
-        textColorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "textColorButton done", Toast.LENGTH_SHORT).show();
-                flag_template = 2;
                 showColorPicker(template, index);
             }
         });
@@ -526,6 +595,22 @@ public class TableByDateEditActivity extends AppCompatActivity {
                     timeSetListener, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true);
             timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show();
+        } else if (view == edit_startTime) {
+            flag_time = 3;
+            mTime = (String) edit_startTime.getText();
+            times = mTime.split(" : ");
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                    timeSetListener, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true);
+            timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            timePickerDialog.show();
+        } else if (view == edit_endTime) {
+            flag_time = 4;
+            mTime = (String) edit_endTime.getText();
+            times = mTime.split(" : ");
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                    timeSetListener, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true);
+            timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            timePickerDialog.show();
         }
     }
 
@@ -553,14 +638,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
             @Override
             public void onChooseColor(int position, int color) {
-                if (flag_template == 1) {
-                    showTemplate.setBackgroundColor(color);
-                    // TODO : 백그라운드 색상, 텍스트 색상 변경하도록..
-                    myTimeTable.getMyBackground().set(index, color);
-
-                } else if (flag_template == 2) {
-                    showTemplate.setTextColor(color);
-                }
+                showTemplate.setBackgroundColor(color);
+                myTimeTable.getMyBackground().set(index, color);
             }
 
             @Override
