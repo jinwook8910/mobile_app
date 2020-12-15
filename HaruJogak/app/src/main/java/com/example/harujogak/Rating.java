@@ -44,7 +44,7 @@ public class Rating extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
 
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.rating_main);
+            setContentView(R.layout.rating_dialog);
 
             //firebase 정의
             database = FirebaseDatabase.getInstance();

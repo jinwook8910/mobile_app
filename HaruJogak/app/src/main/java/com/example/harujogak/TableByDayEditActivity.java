@@ -55,8 +55,6 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 public class TableByDayEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
-    private PieDataSet dataSet;
-    private PieData data;
     float rotate = 0;
     private int newTasks = 0;
     private Button dateButton;
@@ -64,9 +62,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private int flag_time, flag_template;
     String start_times[], end_times[];
 
-
-    // yValues -> PieDataSet -> PieData
-//    private ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
     int[] week = {0, 0, 0, 0, 0, 0, 0};
 
     private DateSetListener dateSetListener = new DateSetListener();
@@ -97,7 +92,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
         pieChart.setDrawMarkers(true);
 //        pieChart.setEntryLabelColor(Color.BLACK);
-        pieChart.setRotationAngle(270);
 
         pieChart.setData(myTimeTable.getPieData());
 
@@ -307,7 +301,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 PieEntry yValues_entry;
                 int background_entry;
 
-
                 start_times = strt.split(" : ");
                 float new_str = (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]) + rotate * 4) % 1440;
 
@@ -340,8 +333,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
                     }
                     //0시를 낀 일정 추기
                     if (new_end < new_str) {//맨 첫번째와 마지막의 항목이 모두 빈칸이어야 하고 크기가 맞아야한다
-                        if (dataSet.getValues().get(0).getLabel().equals(" ") && dataSet.getValues().get(0).getValue() >= new_str
-                                && dataSet.getValues().get(dataSet.getEntryCount() - 1).getLabel().equals(" ")
+                        if (dataSet.getValues().get(0).getValue() >= new_str
                                 && dataSet.getValues().get(dataSet.getEntryCount() - 1).getValue() >= 1440 - new_str) {
                             //빈칸 -> 흰색
                             yValues_new.add(new PieEntry(0, " "));
@@ -509,26 +501,19 @@ public class TableByDayEditActivity extends AppCompatActivity {
         int i = 0;
         switch (view.getId()) {
             case R.id.mon_button:
-                i = 0;
-                break;
+                i = 0;                break;
             case R.id.tue_button:
-                i = 1;
-                break;
+                i = 1;                break;
             case R.id.wed_button:
-                i = 2;
-                break;
+                i = 2;                break;
             case R.id.thr_button:
-                i = 3;
-                break;
+                i = 3;                break;
             case R.id.fri_button:
-                i = 4;
-                break;
+                i = 4;                break;
             case R.id.sat_button:
-                i = 5;
-                break;
+                i = 5;                break;
             case R.id.sun_button:
-                i = 6;
-                break;
+                i = 6;                break;
         }
         if (week[i] == 0) {
             week[i] = 1;

@@ -1,5 +1,6 @@
 package com.example.harujogak;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,9 +15,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
 
         pieChart.setData(todaysTimeTable.getPieData());
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+                show_rating(x);
+            }
+
+            @Override
+            public void onNothingSelected() {
+            }
+        });
 
         //firebase - 목표 통계
         database = FirebaseDatabase.getInstance();
@@ -137,6 +152,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     Listener listener = new Listener();
+
+    public void show_rating(int index){
+        Dialog addTaskDialog = new Dialog(this);
+        addTaskDialog.setContentView(R.layout.rating_dialog);
+
+
+    }
 
     private String getDate(){
         mNow = System.currentTimeMillis();
