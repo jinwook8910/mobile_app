@@ -60,9 +60,9 @@ public class Rating extends AppCompatActivity {
             ratingBar = findViewById(R.id.ratingbar);
             ratingBar.setOnRatingBarChangeListener(new Listener());
             interrupt=findViewById(R.id.interrupt);
-            save=findViewById(R.id.button1);
-            stat=findViewById(R.id.button2);
-            result=findViewById(R.id.text3);
+//            save=findViewById(R.id.button1);
+//            stat=findViewById(R.id.button2);
+//            result=findViewById(R.id.text3);
             right=findViewById(R.id.button_right);
             left=findViewById(R.id.button_left);
             schedule=findViewById(R.id.text1);

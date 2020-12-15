@@ -217,7 +217,7 @@ public class GoalActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(GoalActivity.this,Rating.class);
+                Intent intent =new Intent(GoalActivity.this,StatWeekActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){
