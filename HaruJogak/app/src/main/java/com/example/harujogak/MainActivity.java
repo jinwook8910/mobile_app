@@ -197,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
         Button rating_done = (Button) findViewById(R.id.rating_done);
         Button static_button = (Button) findViewById(R.id.static_button);
 
+
+
         rating_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

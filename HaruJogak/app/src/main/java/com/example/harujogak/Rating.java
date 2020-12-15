@@ -65,7 +65,9 @@ public class Rating extends AppCompatActivity {
 //            result=findViewById(R.id.text3);
             right=findViewById(R.id.button_right);
             left=findViewById(R.id.button_left);
-            schedule=findViewById(R.id.text1);
+            schedule=findViewById(R.id.task_label_show);
+            save=findViewById(R.id.rating_done);
+            stat=findViewById(R.id.static_button);
 
 
             save.setOnClickListener(new View.OnClickListener() {
