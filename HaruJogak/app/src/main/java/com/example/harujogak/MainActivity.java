@@ -7,7 +7,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,7 +33,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton btn1, btn2, btn3, btn4,btn5;
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private long mNow;
     private Date mDate;
     private MyTimeTable todaysTimeTable;
+    Integer[] todaysRate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년MM월dd일");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
     //firebase
@@ -46,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference data;
     private ValueEventListener dataListener;
     private static ArrayList<String> goal_list = new ArrayList<>();
+
+    float sum=0;
+    int count=0;
+    int now=0;
+    char[] fb_today =new char[20]; //firebase
+    String[] arr =new String[100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         btn4 = (ImageButton) findViewById(R.id.main_navi_btn4);
         btn5 = (ImageButton) findViewById(R.id.main_navi_btn5);
 
+        HomeListener listener = new HomeListener();
         btn1.setOnClickListener(listener);
         btn2.setOnClickListener(listener);
         btn3.setOnClickListener(listener);
@@ -78,8 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Todo : DB에서 현재 날짜에 해당하는 시간표의 MyTimeTable 정보 가져옴
         // 지금은 그냥 setExample 함수로 예시 정보 저장해서 사용했음
+        // user.dateTable 중에서 오늘 날짜에 해당하는 시간표가 있으면 그거 쓰고 없으면 오늘 요일 시간표 불러옴
         todaysTimeTable = new MyTimeTable();
         setExample(todaysTimeTable); // 나중에 DB로 변경해야할 부분
+
+        todaysRate = new Integer[todaysTimeTable.getTasksCount()];
 
         pieChart.setUsePercentValues(false);
         pieChart.setRotationEnabled(false);
@@ -126,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class Listener implements View.OnClickListener{
+    class HomeListener implements View.OnClickListener{
         public void onClick(View view){
             if(view==btn1){
                 Intent intent = new Intent(MainActivity.this, GoalActivity.class);
@@ -151,14 +168,138 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    Listener listener = new Listener();
 
     public void show_rating(int index){
-        Dialog addTaskDialog = new Dialog(this);
-        addTaskDialog.setContentView(R.layout.rating_dialog);
+        Dialog ratingDialog = new Dialog(this);
+        ratingDialog.setContentView(R.layout.rating_dialog);
 
+        FirebaseDatabase database;
+        DatabaseReference myRef;
 
+        //firebase 정의
+        database = FirebaseDatabase.getInstance();
+        myRef=database.getReference();
+
+        //오늘 날짜 받아오기
+        Date currentTime = Calendar.getInstance().getTime();
+        String today_text=new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(currentTime);
+        fb_today=null;
+        fb_today=today_text.toCharArray();
+        String input_today=String.valueOf(fb_today);
+
+        ImageButton exit = (ImageButton) ratingDialog.findViewById(R.id.exit);
+        TextView schedule=findViewById(R.id.text1);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingbar);
+        ratingBar.setOnRatingBarChangeListener(new RateListener());
+        EditText interrupt = (EditText) findViewById(R.id.interrupt);
+        ImageButton left_button = (ImageButton) findViewById(R.id.button_left);
+        ImageButton right_button = (ImageButton) findViewById(R.id.button_right);
+        Button rating_done = (Button) findViewById(R.id.rating_done);
+        Button static_button = (Button) findViewById(R.id.static_button);
+
+        rating_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(arr[now]==null){}
+                else {
+                    String getInterrupt = interrupt.getText().toString();
+                    myRef.child("UserID").child("날짜별 일정").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
+                    interrupt.setText("");
+                }
+            }
+        });
+
+        right_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(arr[now]==null){}
+                else {
+                    if ((now + 1) < count) {
+                        now = now + 1;
+                    } else {
+                        now = 0;
+                    }
+                    schedule.setText(arr[now]);
+                }
+            }
+        });
+
+        left_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(arr[now]==null){}
+                else {
+                    if ((now - 1) >= 0) {
+                        now = now - 1;
+                    } else {
+                        now = count - 1;
+                    }
+                    schedule.setText(arr[now]);
+                }
+            }
+        });
+
+        //Read data
+        DatabaseReference data;
+        data=myRef.child("UserID").child("날짜별 일정").child(input_today);
+        data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sum = 0;
+                count = 0;
+                if(snapshot.getValue()==null){
+                    schedule.setText("오늘의 일정이 없습니다.");
+                }
+                else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getValue() != null) {
+                            String rat = ds.child("평가").getValue().toString();
+                            String sche = ds.getKey().toString();
+                            arr[count++] = sche;
+                            float temp = Float.parseFloat(rat);
+                            sum += temp;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+
+        static_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),StatActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ratingDialog.show();
     }
+
+    class RateListener implements RatingBar.OnRatingBarChangeListener{
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
+            if(arr[now]==null){}
+            else {
+                String input_today_r = String.valueOf(fb_today);
+                myRef.child("UserID").child("날짜별 일정").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
+            }
+        }
+    }
+
+//    public void rate(){
+//
+//        todaysRate[index] = (int) ratingBar.getRating();
+//        todaysTimeTable.getRating().add(todaysRate);
+//
+//        User user = new User(); //Todo 디비
+//        String str = interrupt.getText().toString();
+//        user.addObstructList(str); //Todo 디비
+//        ratingDialog.dismiss();
+//    }
 
     private String getDate(){
         mNow = System.currentTimeMillis();
