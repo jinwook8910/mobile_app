@@ -35,6 +35,8 @@ public class ScheduleActivity extends AppCompatActivity {
     char[] fb_date =new char[20]; //firebase에 키 값으로 들어갈 날짜
     FirebaseDatabase database;
     DatabaseReference myRef;
+    Login2 user=new Login2();
+    String UserID=user.getUserID();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy / MM / dd");
 
@@ -73,10 +75,10 @@ public class ScheduleActivity extends AppCompatActivity {
 
         //listview
         ListView listview = (ListView) findViewById(R.id.calendar_list);
-        listview.setAdapter(adapter);
+        //listview.setAdapter(adapter);
         //리스트뷰 아이템 추가
-        adapter.addItem("2020/12/20", "2학기 종강");
-        adapter.addItem("2020/12/31", "연말");
+        //adapter.addItem("2020/12/20", "2학기 종강");
+        //adapter.addItem("2020/12/31", "연말");
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
@@ -112,8 +114,11 @@ public class ScheduleActivity extends AppCompatActivity {
                 String input_date=String.valueOf(fb_date);
                 String getDayGoal=calendar_text.getText().toString();
                 calendar_text.setText("");
-                myRef.child("UserID").child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
-                myRef.child("UserID").child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("시작시간").setValue("00 : 00");
+                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("종료시간").setValue("00 : 00");
+                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("장기목표").setValue(0);
             }
         });
     }

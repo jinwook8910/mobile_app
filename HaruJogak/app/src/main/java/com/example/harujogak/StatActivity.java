@@ -34,6 +34,8 @@ public class StatActivity extends AppCompatActivity {
     Button btn1,btn2,btn3,btn4;
     char[] fb_today =new char[20]; //firebase
     Map<String,Integer> interr=new HashMap<String,Integer>();
+    Login2 user=new Login2();
+    String UserID=user.getUserID();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class StatActivity extends AppCompatActivity {
 
         //일일통계
         DatabaseReference data;
-        data=myRef.child("UserID").child("날짜별 일정").child(input_today);
+        data=myRef.child(UserID).child("날짜별 일정").child(input_today);
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -105,7 +107,7 @@ public class StatActivity extends AppCompatActivity {
             String weekago_text = new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(week_ago_date);
             cal.add(Calendar.DAY_OF_MONTH,+i);//원상복구
             DatabaseReference week_data;
-            week_data = myRef.child("UserID").child("날짜별 일정").child(weekago_text);
+            week_data = myRef.child(UserID).child("날짜별 일정").child(weekago_text);
             week_data.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -147,7 +149,7 @@ public class StatActivity extends AppCompatActivity {
             String monthago_text = new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(week_ago_date);
             cal.add(Calendar.DAY_OF_MONTH,+i);//원상복
             DatabaseReference week_data;
-            week_data = myRef.child("UserID").child("날짜별 일정").child(monthago_text);
+            week_data = myRef.child(UserID).child("날짜별 일정").child(monthago_text);
             week_data.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

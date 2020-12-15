@@ -15,7 +15,7 @@ public class User {
     private String id, passWord, eMail;
     private ArrayList<MyTimeTable> weekTable;
     private ArrayList<MyTimeTable> dateTable;
-    private ArrayList<Goal> goalList;
+    private static ArrayList<Goal> goalList=new ArrayList<>();
     private ArrayList<Obstruct> obstructList;
     private ScheduleList scheduleList;
 

@@ -22,27 +22,44 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 
 public class GoalActivity extends AppCompatActivity {
+    //firebase 정의
+    FirebaseDatabase database;
+    DatabaseReference myRef;
     Button btn;
     ImageButton btn1, btn2, btn3, btn4, btn5;
-    ArrayList<String> goal_list=new ArrayList<>();
+    int i;
+    HashMap<String,Integer> goal_list=new HashMap<>();
+    HashMap<String,Float> goal_stat=new HashMap<>();
     MainActivity main=new MainActivity();
+    User user = new User(); //사용자
+    Login2 login=new Login2();
+    String UserID;
     private ListViewAdapter adapter =  new ListViewAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goal);
-
+        //UserID
+        UserID=login.getUserID();
+        database=FirebaseDatabase.getInstance();
+        myRef=database.getReference();
         //title bar 제거하기
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         goal_list=MainActivity.getGoal_list();
+        goal_stat=MainActivity.getGoal_stat();
+
 //        //목표 리스트 출력
 //        System.out.println("목표리스트 출력");
 //        User user = User.getInstance();
@@ -68,8 +85,12 @@ public class GoalActivity extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.goal_list);
         listview.setAdapter(adapter);
         //리스트뷰 아이템 추가
-        adapter.addItem("토익시험", "D-12");
-        adapter.addItem("발표", "D-5");
+        for(String t:goal_list.keySet()){
+            if(goal_list.get(t)<0) {
+                adapter.addItem(t, "D" + goal_list.get(t));
+            }
+            else adapter.addItem(t, "D+" + goal_list.get(t));
+        }
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -94,13 +115,14 @@ public class GoalActivity extends AppCompatActivity {
         TextView goal_result = addGoalDialog.findViewById(R.id.goal_add_result);
         ImageButton goal_add_btn=addGoalDialog.findViewById(R.id.goal_add_btn);
 
+        final String[] goal_date = new String[1];
+        final int[] dday = new int[1];
         goal_text.setText("목표 추가");
         goal_result.setText("D-day");
 
         goal_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
-                String goal_date; //선택한 날짜 문자열로 저장
-                int dday;
+                //선택한 날짜 문자열로 저장
                 int tYear, tMonth, tDay;
                 long t, d;
 
@@ -115,29 +137,33 @@ public class GoalActivity extends AppCompatActivity {
                 //목표 날짜
                 dcalendar.set(year, month, dayOfMonth);
                 String date=Integer.toString(year)+"년 "+Integer.toString(month+1)+"월 "+Integer.toString(dayOfMonth)+"일";
-                goal_date= String.format("%d / %d / %d",year,month+1,dayOfMonth);
+                goal_date[0] = String.format("%d / %d / %d",year,month+1,dayOfMonth);
 
                 //날짜 초단위로 변경
                 t=tcalendar.getTimeInMillis()/(24*60*60*1000);
                 d=dcalendar.getTimeInMillis()/(24*60*60*1000);
-                dday=(int)(t-d);
-                if(dday>0)
-                    goal_result.setText("D+"+Integer.toString(dday));
-                else if(dday==0)
+                dday[0] =(int)(t-d);
+                if(dday[0] >0)
+                    goal_result.setText("D+"+Integer.toString(dday[0]));
+                else if(dday[0] ==0)
                     goal_result.setText("D-day");
                 else
-                    goal_result.setText("D"+Integer.toString(dday));
+                    goal_result.setText("D"+Integer.toString(dday[0]));
             }
         });
 
         goal_add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //class에 저장
-                //Goal new_goal = new Goal(goal_input.getText().toString(), goal_date); //goal class에 생성자 만들기
-                //User user = User.getInstance(); //현재 사용중인 사용자
-                //user.getGoalList().add(new_goal);
+                //class에 저장->왜 저장이 안되지?????ㅜㅜㅜ
+                Goal new_goal = new Goal(goal_input.getText().toString(), goal_date[0]); //goal class에 생성자 만들기
+                ArrayList<Goal> temp=user.getGoalList();
+                temp.add(new_goal);
+                user.setGoalList(temp);
 
+                //여기서 바로 firebase에 추가하는 경우
+                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 D-day").setValue(dday[0]);
+                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 날짜").setValue(goal_date[0]);//바로 화면에 추가되려면?
                 //이전 Activity로 돌아가기
                 addGoalDialog.dismiss();
             }

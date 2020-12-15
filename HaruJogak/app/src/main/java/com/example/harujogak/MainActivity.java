@@ -35,8 +35,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton btn1, btn2, btn3, btn4,btn5;
@@ -52,11 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference data;
     private ValueEventListener dataListener;
-    private static ArrayList<String> goal_list = new ArrayList<>();
+    //private static ArrayList<String> goal_list = new ArrayList<>();
+    public static Map<String,Integer> goal_list=new HashMap<String,Integer>();
+    public static Map<String,Float> goal_stat=new HashMap<String,Float>();
+    Login2 user=new Login2();
+    String UserID=user.getUserID();
 
     float sum=0;
     int count=0;
-    int now=0;
+    int now=0,i;
     char[] fb_today =new char[20]; //firebase
     String[] arr =new String[100];
 
@@ -120,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         //firebase - 목표 통계
         database = FirebaseDatabase.getInstance();
         myRef=database.getReference();
-        data=myRef.child("UserID").child("목표리스트");
+        data=myRef.child(UserID).child("목표리스트");
         dataListener = data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,8 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
-                            String goal = ds.getKey().toString();
-                            goal_list.add(goal);
+                            String goal = ds.getKey();
+                            String dday=ds.child("목표 D-day").getValue().toString();
+                            int day=Integer.parseInt(dday);
+                            goal_list.put(goal,day);
                         }
                     }
                 }
@@ -141,6 +149,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //for(String key:goal_stat.keySet()){ //goal_stat value값으로 장기 목표 통계치 저
+        //    if(goal_list.get(key)>=0) goal_stat.put(key,(float)100);
+        //    else goal_stat.put(key,goal_stat.get(key)/Math.abs(goal_list.get(key)));
+        //}
     }
 
     class HomeListener implements View.OnClickListener{
@@ -359,7 +371,10 @@ public class MainActivity extends AppCompatActivity {
         exT.setPieData(data);
         exT.setDate("2020-12-12");
     }
-    public static ArrayList<String> getGoal_list(){
-        return goal_list;
+    public static HashMap<String,Integer> getGoal_list(){
+        return (HashMap<String, Integer>) goal_list;
+    }
+    public static HashMap<String,Float> getGoal_stat(){
+        return (HashMap<String, Float>) goal_stat;
     }
 }

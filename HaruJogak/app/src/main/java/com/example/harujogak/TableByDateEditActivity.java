@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -232,10 +233,14 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
         //골 리스트 가져옴
-        ArrayList<String> GoalList = new ArrayList<>();
+        HashMap<String, Integer> GoalList = new HashMap<>();
         GoalList = main.getGoal_list();
+        ArrayList<String> goallist_s=new ArrayList<>();
+        for(String t:GoalList.keySet()){
+            goallist_s.add(t);
+        }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, GoalList);
+                android.R.layout.simple_spinner_dropdown_item, goallist_s);
         Spinner s = (Spinner) addTaskDialog.findViewById(R.id.goalSpinner);
         s.setAdapter(arrayAdapter); //adapter를 spinner에 연결
 
@@ -292,7 +297,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 //알림부분 끝
 
                 //일정 정보 firebase 추가
-                UserID = user.getUserID();
+                UserID = user.getUserID(); //로그인안한 경우 비회원으로 저장
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("시작시간").setValue(fb_strt);
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("종료시간").setValue(fb_endt);
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);

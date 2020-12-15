@@ -7,6 +7,7 @@ package com.example.harujogak;
 public class Goal {
     private String goal_name;
     private String deadline;
+    private int result;
 
     public Goal(String gn, String dl){
         this.goal_name = gn;
@@ -34,10 +35,10 @@ public class Goal {
 
         return result;
     }
-
+    public void setPercent(int result){
+        this.result=result;
+    }
     public Integer getPercent(){ //목표 통계 결과
-        Integer result = 100;
-
         return result;
     }
 }

@@ -70,7 +70,13 @@ public class Login2 extends AppCompatActivity {
         });
     }
     public static String getUserID(){
-        id_split=UserID.split("@");
-        return id_split[0];
+        if(UserID==null){
+            UserID="비회원";
+            return UserID;
+        }
+        else {
+            id_split = UserID.split("@");
+            return id_split[0];
+        }
     }
 }
