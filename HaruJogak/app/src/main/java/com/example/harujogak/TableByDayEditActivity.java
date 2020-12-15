@@ -62,6 +62,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
+    String start_times[], end_times[];
+
 
     // yValues -> PieDataSet -> PieData
 //    private ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
@@ -260,10 +262,13 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 Calendar nextNotifyTime = new GregorianCalendar();
                 nextNotifyTime.setTimeInMillis(millis);
 
+                int Alarm_hour = Integer.parseInt(start_times[0]);
+                int Alarm_min = Integer.parseInt(start_times[1]);
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.set(Calendar.HOUR_OF_DAY, 22);
-                calendar.set(Calendar.MINUTE, 14);
+                calendar.set(Calendar.HOUR_OF_DAY, Alarm_hour);
+                calendar.set(Calendar.MINUTE, Alarm_min);
                 calendar.set(Calendar.SECOND, 0);
 
                 // 이미 지난 시간을 지정했다면 다음날 같은 시간으로 설정
@@ -301,7 +306,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 Looper.prepare();
                 PieEntry yValues_entry;
                 int background_entry;
-                String start_times[], end_times[];
+
 
                 start_times = strt.split(" : ");
                 float new_str = (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]) + rotate * 4) % 1440;
