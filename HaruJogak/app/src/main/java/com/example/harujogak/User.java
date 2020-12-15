@@ -20,6 +20,10 @@ public class User {
     public User(){
         init();
         this.weekTable = new ArrayList<>(7);
+        this.dateTable = new ArrayList<>();
+        this.goalList = new ArrayList<>();
+        this.obstructList = new ArrayList<>();
+        this.scheduleList = new ScheduleList();
     } //임시 테스트용
     public User(String user_id, String user_pw){
         this.id = user_id;
@@ -68,6 +72,9 @@ public class User {
     public void setWeekTable(ArrayList<MyTimeTable> weekTable) {
         this.weekTable = weekTable;
     }
+    public void addWeekTable(int i, MyTimeTable table){
+        this.weekTable.set(i, table);
+    }
 
     public ArrayList<MyTimeTable> getDateTable() {
         return dateTable;
@@ -75,6 +82,9 @@ public class User {
 
     public void setDateTable(ArrayList<MyTimeTable> dateTable) {
         this.dateTable = dateTable;
+    }
+    public void addDateTable(MyTimeTable table){
+        this.dateTable.add(table);
     }
 
     public ArrayList<Goal> getGoalList() {

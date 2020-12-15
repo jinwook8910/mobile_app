@@ -63,8 +63,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
     private Button dateButton;
     private TextView startTimeButton, endTimeButton, edit_startTime, edit_endTime;
     String start_times[], end_times[];
-    private int flag_time, flag_template;
+    private int flag_time;
 
+    User users = new User();
     private String fb_date, fb_strt, fb_endt, fb_task, fb_long, UserID;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -96,6 +97,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
+        Button DONE = (Button) findViewById(R.id.add_timeTable_done);
 
         pieChart.setUsePercentValues(false);
         pieChart.setRotationEnabled(false);
@@ -118,6 +120,12 @@ public class TableByDateEditActivity extends AppCompatActivity {
             }
         });
 
+        DONE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                users.addDateTable(myTimeTable);
+            }
+        });
     }
 
     //노티피케이션(푸시알림)
@@ -625,14 +633,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
             @Override
             public void onChooseColor(int position, int color) {
-                if (flag_template == 1) {
-                    showTemplate.setBackgroundColor(color);
-                    // TODO : 백그라운드 색상, 텍스트 색상 변경하도록..
-                    myTimeTable.getMyBackground().set(index, color);
-
-                } else if (flag_template == 2) {
-                    showTemplate.setTextColor(color);
-                }
+                showTemplate.setBackgroundColor(color);
+                myTimeTable.getMyBackground().set(index, color);
             }
 
             @Override

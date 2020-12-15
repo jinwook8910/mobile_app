@@ -41,30 +41,6 @@ public class TimeTableListActivity extends AppCompatActivity {
     private TableAdapter tableAdapter;
 
     MyTimeTable exT = new MyTimeTable();
-    MyTimeTable exTable = new MyTimeTable();
-
-    public void setdata1(){
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(34f, "Japan"));
-        yValues.add(new PieEntry(23f, "USA"));
-        yValues.add(new PieEntry(14f, "UK"));
-        yValues.add(new PieEntry(35f, "India"));
-        yValues.add(new PieEntry(40f, "Russia"));
-        yValues.add(new PieEntry(40f, "Korea"));
-
-        PieDataSet dataSet = new PieDataSet(yValues, "Countries");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-        data.setValueTextColor(Color.YELLOW);
-        exTable.setPieData(data);
-
-        exTable.setDate("월");
-    }
 
     public void setdata2(){
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
@@ -87,6 +63,13 @@ public class TimeTableListActivity extends AppCompatActivity {
 
         exT.setPieData(data);
         exT.setDate("2020-12-12");
+
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
     }
 
     public void addToWeekList(){
@@ -102,12 +85,12 @@ public class TimeTableListActivity extends AppCompatActivity {
     }
     public void addToDateList(Context c){
         tableAdapter = new TableAdapter(c);
-        tableAdapter.addItem(exT);
-        tableAdapter.addItem(exT);
-        tableAdapter.addItem(exT);
-        tableAdapter.addItem(exT);
-        tableAdapter.addItem(exT);
-        tableAdapter.addItem(exT);
+        tableAdapter.addItem(user.getDateTable().get(0));
+        tableAdapter.addItem(user.getDateTable().get(1));
+        tableAdapter.addItem(user.getDateTable().get(2));
+        tableAdapter.addItem(user.getDateTable().get(3));
+        tableAdapter.addItem(user.getDateTable().get(4));
+        tableAdapter.addItem(user.getDateTable().get(5));
     }
 
     @Override
@@ -135,7 +118,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1) ;
 
-        setdata1();
         setdata2();
         addToWeekList();
         addToDateList(this);

@@ -61,6 +61,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private int flag_time;
     String start_times[], end_times[];
 
+    User user = new User();
+
     int[] week = {0, 0, 0, 0, 0, 0, 0};
 
     private DateSetListener dateSetListener = new DateSetListener();
@@ -83,6 +85,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
+        Button DONE = (Button) findViewById(R.id.add_timeTable_done);
 
         pieChart.setUsePercentValues(false);
         pieChart.setRotationEnabled(false);
@@ -103,6 +106,16 @@ public class TableByDayEditActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
+            }
+        });
+
+        DONE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i=0;i<7;i++){
+                    if(week[i]==1)
+                      user.addWeekTable(i, myTimeTable);
+                }
             }
         });
 
@@ -246,10 +259,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 add_task_thread(taskLabel);
-//                for(int i=0;i<7;i++){
-//                    if(week[i]==1)
-//                      user.setWeekTable(i, myTimeTable);
-//                }
                 addTaskDialog.dismiss();
 
                 //알림 부분
