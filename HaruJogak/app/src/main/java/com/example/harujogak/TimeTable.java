@@ -11,14 +11,17 @@ import java.util.ArrayList;
 class MyTimeTable {
     private String date;
     private PieData pieData;
+    private int TasksCount;
     private ArrayList<Integer> MyBackground = new ArrayList<>();
+    private ArrayList<Integer[]> rating = new ArrayList<>();
 
     public MyTimeTable(){
         PieDataSet dataSet;
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
+        TasksCount=0;
         yValues.add(new PieEntry(1440f, " "));
-        dataSet = new PieDataSet(yValues, "Tasks");
+        dataSet = new PieDataSet(yValues, "TasksCount");
 
         dataSet.setSliceSpace(0.5f);
         dataSet.setSelectionShift(0f);
@@ -29,10 +32,24 @@ class MyTimeTable {
         pieData.setValueTextSize(0f);
     }
 
-    public MyTimeTable(String date, PieData pieData){
+    public MyTimeTable(String date){
         this.date = date;
-        this.pieData = pieData;
-        MyBackground.add(Color.rgb(250,250,250));
+    }
+
+    public int getTasksCount() {
+        return TasksCount;
+    }
+
+    public void setTasksCount(int tasksCount) {
+        TasksCount = tasksCount;
+    }
+
+    public void setRating(ArrayList<Integer[]> rating) {
+        this.rating = rating;
+    }
+
+    public ArrayList<Integer[]> getRating() {
+        return rating;
     }
 
     public void setDate(String date) {
@@ -91,7 +108,7 @@ class MyTimeTable {
 //        description.setTextSize(15);
 //        pieChart.setDescription(description);
 //
-//        PieDataSet dataSet = new PieDataSet(MyTasks, "Tasks");
+//        PieDataSet dataSet = new PieDataSet(MyTasks, "TasksCount");
 //        dataSet.setSliceSpace(1f);
 //        dataSet.setSelectionShift(1f);
 ////        dataSet.setColors(MyBackground);

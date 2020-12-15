@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class User {
     private static volatile User instance = null;
@@ -15,7 +16,7 @@ public class User {
     private ArrayList<MyTimeTable> weekTable;
     private ArrayList<MyTimeTable> dateTable;
     private ArrayList<Goal> goalList;
-    private ArrayList<String> obstructList;
+    private ArrayList<Obstruct> obstructList;
     private ScheduleList scheduleList;
 
     public User(){} //임시 테스트용
@@ -83,12 +84,25 @@ public class User {
         this.goalList = goalList;
     }
 
-    public ArrayList<String> getObstructList() {
+    public ArrayList<Obstruct> getObstructList() {
         return obstructList;
     }
 
-    public void setObstructList(ArrayList<String> obstructList) {
+    public void setObstructList(ArrayList<Obstruct> obstructList) {
         this.obstructList = obstructList;
+    }
+
+    public void addObstructList(String str) {
+        boolean isReduplication = false;
+        for (int i = 0; i < obstructList.size(); i++) {
+            if (obstructList.get(i).getObstruction().equals(str)) {
+                isReduplication = true;
+                obstructList.get(i).setFrequency(obstructList.get(i).getFrequency() + 1);
+                break;
+            }
+        }
+        if (!isReduplication)
+            obstructList.add(new Obstruct(str, 1));
     }
 
     public ScheduleList getScheduleList() {
@@ -110,12 +124,41 @@ public class User {
         data.setValueTextSize(14f);
         data.setValueTextColor(Color.BLACK);
 
-        this.weekTable.add(new MyTimeTable("월", data));
-        this.weekTable.add(new MyTimeTable("화", data));
-        this.weekTable.add(new MyTimeTable("수", data));
-        this.weekTable.add(new MyTimeTable("목", data));
-        this.weekTable.add(new MyTimeTable("금", data));
-        this.weekTable.add(new MyTimeTable("토", data));
-        this.weekTable.add(new MyTimeTable("일", data));
+        this.weekTable.add(new MyTimeTable("월"));
+        this.weekTable.add(new MyTimeTable("화"));
+        this.weekTable.add(new MyTimeTable("수"));
+        this.weekTable.add(new MyTimeTable("목"));
+        this.weekTable.add(new MyTimeTable("금"));
+        this.weekTable.add(new MyTimeTable("토"));
+        this.weekTable.add(new MyTimeTable("일"));
+    }
+}
+
+class Obstruct{
+    private String obstruction;
+    private int frequency;
+
+    public Obstruct(){
+
+    }
+    public Obstruct(String ob, int fre){
+        this.obstruction = ob;
+        this.frequency = fre;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setObstruction(String obstruction) {
+        this.obstruction = obstruction;
+    }
+
+    public String getObstruction() {
+        return obstruction;
     }
 }

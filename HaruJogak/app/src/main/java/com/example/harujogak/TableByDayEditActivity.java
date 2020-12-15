@@ -56,7 +56,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
     float rotate = 0;
-    private int newTasks = 0;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
     private int flag_time, flag_template;
@@ -340,8 +339,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
                             table_background_new.add(Color.rgb(250, 250, 250));
                             //추가된 태스크 -> 조이풀
                             yValues_new.add(new PieEntry(1440 - new_str + new_end, taskLabel.getText().toString()));
-                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks % 5]);
-                            newTasks++;
+                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[myTimeTable.getTasksCount()% 5]);
+                            myTimeTable.setTasksCount(myTimeTable.getTasksCount()+1);
                             //빈칸 -> 흰색
                             yValues_new.add(new PieEntry(entry_end - new_end, " "));
                             table_background_new.add(Color.rgb(250, 250, 250));
@@ -370,8 +369,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
                             table_background_new.add(Color.rgb(250, 250, 250));
                             //추가된 태스크 -> 조이풀
                             yValues_new.add(new PieEntry(new_end - new_str, taskLabel.getText().toString()));
-                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks % 5]);
-                            newTasks++;
+                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[myTimeTable.getTasksCount()% 5]);
+                            myTimeTable.setTasksCount(myTimeTable.getTasksCount()+1);
                             //빈칸 -> 흰색
                             yValues_new.add(new PieEntry(entry_end - new_end, " "));
                             table_background_new.add(Color.rgb(250, 250, 250));
@@ -422,6 +421,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         decoTaskDialog.setContentView(R.layout.decorate_dialog);
         decoTaskDialog.setTitle("일정 추가");
 
+        ImageButton exit = (ImageButton) decoTaskDialog.findViewById(R.id.exit);
         TextView taskLabelLine = (TextView) decoTaskDialog.findViewById(R.id.task_label_show);
         TextView startTime = (TextView) decoTaskDialog.findViewById(R.id.start_time);
         TextView endTime = (TextView) decoTaskDialog.findViewById(R.id.end_time);
@@ -433,6 +433,13 @@ public class TableByDayEditActivity extends AppCompatActivity {
         PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
         taskLabelLine.setText(dataSet.getValues().get(index).getLabel());
         template.setBackgroundColor(myTimeTable.getMyBackground().get(index));
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decoTaskDialog.dismiss();
+            }
+        });
 
         decorate_done.setOnClickListener(new View.OnClickListener() {
             @Override
