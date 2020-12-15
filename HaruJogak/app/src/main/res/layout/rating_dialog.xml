@@ -35,13 +35,72 @@
 <!--            android:textColor="#FF696969"-->
 <!--            android:textSize="15dp" />-->
 
-        <TextView
-            android:layout_width="70dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="일정 : "
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/task_label_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="일정입니당"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="별점"
-            android:textSize="20dp" />
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="시간 : "
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickSet"
+                    android:text="00 : 00"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    ~    "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickSet"
+                    android:text="00 : 00"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <RatingBar
             android:id="@+id/ratingbar"
@@ -57,37 +116,22 @@
             android:scaleX="0.8"
             android:scaleY="0.8"/>
 
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="173dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="오늘의 방해 요소"
-            android:textSize="20dp" />
+<!--        <TextView-->
+<!--            android:id="@+id/text2"-->
+<!--            android:layout_width="173dp"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="오늘의 방해 요소"-->
+<!--            android:textSize="20dp" />-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/interrupt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="방해요소를 입력하세요."
-                android:textColorHint="#FF696969" />
-            <Button
-                android:id="@+id/add_interrupt_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="추가"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:backgroundTint="#FFFF0000"
-                android:textColor="#FFFFFFFF" />
-        </LinearLayout>
+        <EditText
+            android:id="@+id/interrupt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="방해요소를 입력하세요."
+            android:textColorHint="#FF696969" />
 
     <!--    <TextView-->
     <!--        android:id="@+id/text3"-->
@@ -101,7 +145,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="20dp"
             android:orientation="horizontal">
             <ImageButton
                 android:id="@+id/button_left"
@@ -112,15 +155,6 @@
                 android:maxHeight="50dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/left"/>
-
-            <Button
-                android:id="@+id/rating_button"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="통계" />
-
             <ImageButton
                 android:id="@+id/button_right"
                 android:layout_width="wrap_content"
@@ -131,5 +165,27 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/right"/>
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/interrupt_list_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="<- 평가 통계 보러 가기" />
+        <Button
+            android:id="@+id/add_interrupt_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="right"
+            android:text="추가" />
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>
