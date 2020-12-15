@@ -34,4 +34,10 @@ public class Goal {
 
         return result;
     }
+
+    public Integer getPercent(){ //목표 통계 결과
+        Integer result = 100;
+
+        return result;
+    }
 }

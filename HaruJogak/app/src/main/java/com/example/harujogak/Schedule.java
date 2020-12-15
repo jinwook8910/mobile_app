@@ -9,6 +9,7 @@ public class Schedule {
 
     public Schedule(String d, String l){
         this.date = d;
+        this.label = new ArrayList<String>();
         this.label.add(l);
     }
 

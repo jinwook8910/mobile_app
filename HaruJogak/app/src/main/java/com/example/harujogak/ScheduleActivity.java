@@ -1,11 +1,15 @@
 package com.example.harujogak;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +29,7 @@ import java.util.Date;
 
 public class ScheduleActivity extends AppCompatActivity {
     ImageButton btn1, btn2, btn3, btn4, btn5;
+    private ScheduleActivity.ListViewAdapter adapter =  new ScheduleActivity.ListViewAdapter();
     long mNow;
     Date mDate;
     char[] fb_date =new char[20]; //firebase에 키 값으로 들어갈 날짜
@@ -62,13 +67,23 @@ public class ScheduleActivity extends AppCompatActivity {
         TextView calendar_date = findViewById(R.id.calender_date);
         EditText calendar_text = findViewById(R.id.calendar_text);
         ImageButton calendar_btn = findViewById(R.id.calendar_btn);
+
+        //오늘 날짜
+        calendar_date.setText(getDate());
+
         //listview
         ListView listview = (ListView) findViewById(R.id.calendar_list);
+        listview.setAdapter(adapter);
+        //리스트뷰 아이템 추가
+        adapter.addItem("2020/12/20", "2학기 종강");
+        adapter.addItem("2020/12/31", "연말");
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id){
+                //listview 객체 클릭할 때 이벤트
 
-        calendar_date.setText(getDate());
-        calendar_text.setText("");
-        //listview설정
-        setListview(calendar_date.getText().toString());
+            }
+        });
 
         //날짜 변경시
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
@@ -79,8 +94,10 @@ public class ScheduleActivity extends AppCompatActivity {
                 fb_date=date.toCharArray();
                 calendar_text.setText("");
                 //listview설정
-                setListview(calendar_date.getText().toString());
-
+                //setListview(calendar_date.getText().toString());
+                //리스트뷰 아이템 추가
+                adapter.addItem("2020/12/20", "2학기 종강");
+                adapter.addItem("2020/12/31", "연말");
             }
         });
         calendar_btn.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +147,51 @@ public class ScheduleActivity extends AppCompatActivity {
         mNow = System.currentTimeMillis();
         mDate = new Date(mNow);
         return dateFormat.format(mDate);
+    }
+
+    //listview Adapter
+    public class ListViewAdapter extends BaseAdapter {
+        private ArrayList<String> listViewItemList = new ArrayList<String>();
+
+        @Override
+        public int getCount(){
+            return listViewItemList.size();
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final Context context = parent.getContext();
+
+            // "listview_item" Layout을 inflate하여 convertView 참조 획득.
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.calendar_listview_item, parent, false);
+            }
+            TextView item_name = (TextView)convertView.findViewById(R.id.calendar_item_text);
+
+            String g = listViewItemList.get(position);
+            item_name.setText(g);
+
+            return convertView;
+        }
+        // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
+        @Override
+        public long getItemId(int position) {
+            return position ;
+        }
+
+        // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
+        @Override
+        public Object getItem(int position) {
+            return listViewItemList.get(position) ;
+        }
+
+        // 아이템 데이터 추가를 위한 함수.
+        public void addItem(String date, String label) {
+            //같은 날짜의 schedule 객체를 찾아서 대입해야함
+
+            listViewItemList.add(label);
+        }
+
     }
 
     //navigation button

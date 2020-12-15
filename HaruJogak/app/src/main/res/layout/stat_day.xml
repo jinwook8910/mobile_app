@@ -19,7 +19,7 @@
         android:layout_marginTop="25dp"
         >
         <ImageButton
-            android:id="@+id/week_left_btn"
+            android:id="@+id/day_left_btn"
             android:layout_width="4dp"
             android:layout_height="25dp"
             android:background="@drawable/slide_left_button"
@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주간 통계"
+            android:text="일일 통계"
             android:textSize="22dp"
             android:textColor="@color/black"
             android:fontFamily="@font/woman_flower"
@@ -38,7 +38,7 @@
             android:layout_marginTop="3dp"
             />
         <ImageButton
-            android:id="@+id/week_right_btn"
+            android:id="@+id/day_right_btn"
             android:layout_width="4dp"
             android:layout_height="25dp"
             android:background="@drawable/slide_right_button"
@@ -48,7 +48,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/stat_week_list"
+        android:id="@+id/stat_day_list"
         android:layout_width="match_parent"
         android:layout_height="550dp"
         android:layout_marginTop="12dp"
@@ -75,36 +75,35 @@
             android:gravity="bottom">
 
             <ImageButton
-                android:id="@+id/stat_week_navi_btn1"
+                android:id="@+id/stat_day_navi_btn1"
                 android:layout_width="220px"
                 android:layout_height="100px"
                 android:background="@drawable/goal_unselected"
                 />
 
             <ImageButton
-                android:id="@+id/stat_week_navi_btn2"
+                android:id="@+id/stat_day_navi_btn2"
                 android:layout_width="220px"
                 android:layout_height="100px"
                 android:background="@drawable/static_selected"
                 />
 
             <ImageButton
-                android:id="@+id/stat_week_navi_btn5"
+                android:id="@+id/stat_day_navi_btn5"
                 android:layout_width="220px"
                 android:layout_height="100px"
                 android:background="@drawable/home_unselected"
                 />
 
-
             <ImageButton
-                android:id="@+id/stat_week_navi_btn3"
+                android:id="@+id/stat_day_navi_btn3"
                 android:layout_width="220px"
                 android:layout_height="100px"
                 android:background="@drawable/timetable_unselected"
                 />
 
             <ImageButton
-                android:id="@+id/stat_week_navi_btn4"
+                android:id="@+id/stat_day_navi_btn4"
                 android:layout_width="220px"
                 android:layout_height="100px"
                 android:background="@drawable/calendar_unselected"
@@ -112,4 +111,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

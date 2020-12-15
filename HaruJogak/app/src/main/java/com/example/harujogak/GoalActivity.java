@@ -65,7 +65,6 @@ public class GoalActivity extends AppCompatActivity {
         btn4.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
         //listview
-        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, goal_list);
         ListView listview = (ListView) findViewById(R.id.goal_list);
         listview.setAdapter(adapter);
         //리스트뷰 아이템 추가
@@ -164,24 +163,30 @@ public class GoalActivity extends AppCompatActivity {
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final int pos = position;
             final Context context = parent.getContext();
 
             // "listview_item" Layout을 inflate하여 convertView 참조 획득.
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.calendar_listview_item, parent, false);
+                convertView = inflater.inflate(R.layout.goal_listview_item, parent, false);
             }
-            TextView item_name = (TextView)convertView.findViewById(R.id.listview_item_name);
-            TextView item_dday = (TextView)convertView.findViewById(R.id.listview_item_dday);
-            View item_chart = (View)convertView.findViewById(R.id.listview_item_chart);
+            TextView item_name = (TextView)convertView.findViewById(R.id.goal_item_name);
+            TextView item_dday = (TextView)convertView.findViewById(R.id.goal_item_dday);
+            View item_chart = (View)convertView.findViewById(R.id.goal_item_chart);
+            View item_blank = (View)convertView.findViewById(R.id.goal_blank);
+            TextView item_percent = (TextView)convertView.findViewById(R.id.goal_item_percent);
 
             Goal g = listViewItemList.get(position);
             item_name.setText(g.getGoal_name());
             item_dday.setText(g.getDeadline());
+            item_percent.setText(g.getPercent().toString()+"%");
+
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(100, 25);
             item_chart.setLayoutParams(param);
-            //item_chart.getLayoutParams().width=200;
+            item_chart.getLayoutParams().width=g.getPercent()*630/100;
+            LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(100, 1);
+            item_blank.setLayoutParams(param2);
+            item_blank.getLayoutParams().width=g.getPercent()*470/100;
 
             return convertView;
         }
@@ -217,7 +222,7 @@ public class GoalActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(GoalActivity.this,StatWeekActivity.class);
+                Intent intent =new Intent(GoalActivity.this,StatDayActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){

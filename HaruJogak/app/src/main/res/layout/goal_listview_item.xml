@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:orientation="horizontal"
+    android:layout_marginLeft="35dp"
+    android:layout_marginRight="35dp"
+    android:paddingTop="12dp">
+
+    <TextView
+        android:id="@+id/goal_item_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:fontFamily="@font/mapoflowerisland"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/goal_item_dday"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:fontFamily="@font/mapoflowerisland"
+        android:textColor="@color/black"
+        android:layout_marginLeft="5dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_height="8dp"
+            android:layout_width="170dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/white">
+            <View
+                android:id="@+id/goal_item_chart"
+                android:layout_width = "0dp"
+                android:layout_height = "0dp"
+                android:background="@color/barChartColor"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+            <View
+                android:id="@+id/goal_blank"
+                android:layout_width = "match_parent"
+                android:layout_height = "0.5dp"
+                android:background="#00ff0000"
+                />
+            <TextView
+                android:id="@+id/goal_item_percent"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/mapoflowerisland"
+                android:layout_marginLeft="5dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
