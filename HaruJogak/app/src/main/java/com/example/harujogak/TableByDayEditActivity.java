@@ -56,6 +56,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
     private PieDataSet dataSet;
     private PieData data;
+    float rotate = 0;
     private int newTasks = 0;
     private Button dateButton;
     private TextView startTimeButton, endTimeButton;
@@ -89,6 +90,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
         pieChart.setDrawMarkers(true);
 //        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setRotationAngle(270);
 
         pieChart.setData(myTimeTable.getPieData());
 
@@ -227,10 +229,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
 
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                System.out.println("!!position : " + position +
-                        parent.getItemAtPosition(position));
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                System.out.println("!!position : " + position + parent.getItemAtPosition(position));
             }
 
             @Override
@@ -238,8 +238,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
             }
         });
 
-        //Todo :
-        // 중복되는거 계속 이상하게 됨..
         add_task_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,10 +299,10 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 String start_times[], end_times[];
 
                 start_times = strt.split(" : ");
-                int new_str = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
+                float new_str = (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]) + rotate * 4) % 1440;
 
                 end_times = endt.split(" : ");
-                int new_end = Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]);
+                float new_end = (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]) + rotate * 4) % 1440;
 
                 boolean done = false;
                 int entry_str = 0, entry_end = 0;
@@ -312,9 +310,10 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
                 PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
+                PieData data = (PieData) myTimeTable.getPieData();
+                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
                 Iterator<PieEntry> yValues_entries = dataSet.getValues().iterator();
                 ArrayList<Integer> table_background_new = new ArrayList<>();
-                Iterator<Integer> backgrounds_entries = myTimeTable.getMyBackground().iterator();
 
                 while (yValues_entries.hasNext()) {
                     yValues_entry = yValues_entries.next();
@@ -322,22 +321,40 @@ public class TableByDayEditActivity extends AppCompatActivity {
                     entry_str = entry_end;
                     entry_end += yValues_entry.getValue();
 
-                    if (new_end <= new_str){
-                        Toast.makeText(getApplicationContext(), "종료 시각은 시작 시각보다 반드시 커야 합니다.", Toast.LENGTH_LONG).show();
-                        Log.i("add task :", "type 0 시각 조건 불일치");
-                        yValues_new = (ArrayList)dataSet.getValues();
-                        break;
-                    }
-
+                    //Todo : 0시를 낀 일정 rotate 값 계산 -> pieChart.setRotateAngle()..
                     //새로운 일정 추가/폐기 이후의 기존 일정 추가
-                    if(done) {
+                    if (done) {
                         yValues_new.add(yValues_entry);
                         table_background_new.add(background_entry);
                         continue;
                     }
-
+                    //0시를 낀 일정 추기
+                    if (new_end < new_str) {//맨 첫번째와 마지막의 항목이 모두 빈칸이어야 하고 크기가 맞아야한다
+                        if (dataSet.getValues().get(0).getLabel().equals(" ") && dataSet.getValues().get(0).getValue() >= new_str
+                                && dataSet.getValues().get(dataSet.getEntryCount() - 1).getLabel().equals(" ")
+                                && dataSet.getValues().get(dataSet.getEntryCount() - 1).getValue() >= 1440 - new_str) {
+                            //빈칸 -> 흰색
+                            yValues_new.add(new PieEntry(0, " "));
+                            table_background_new.add(Color.rgb(250, 250, 250));
+                            //추가된 태스크 -> 조이풀
+                            yValues_new.add(new PieEntry(1440 - new_str + new_end, taskLabel.getText().toString()));
+                            table_background_new.add(ColorTemplate.JOYFUL_COLORS[newTasks % 5]);
+                            newTasks++;
+                            //빈칸 -> 흰색
+                            yValues_new.add(new PieEntry(entry_end - new_end, " "));
+                            table_background_new.add(Color.rgb(250, 250, 250));
+                            done = true;
+                            rotate = (1440 - new_str) / 4;
+                            pieChart.setRotationAngle(270 - rotate);
+                        } else {//기존 일정에 내용이 있을 경우 -> 새로운 일정을 폐기
+                            Log.i("add task :", "type 32 0시낀 일정 겹침");
+                            Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_LONG).show();
+                            yValues_new = (ArrayList)dataSet.getValues();
+                            entry_end += yValues_entry.getValue();
+                        }
+                    }
                     //새로운 일정과 겹치지 않는 이전의 기존 일정 추가
-                    if (entry_end <= new_str && entry_end <= new_end) {
+                    else if (entry_end <= new_str && entry_end <= new_end) {
                         Log.i("add task :", "type 1 이전 일정");
                         yValues_new.add(yValues_entry);
                         table_background_new.add(background_entry);
@@ -379,15 +396,16 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 dataSet = new PieDataSet(yValues_new, "Tasks");
                 dataSet.setSliceSpace(0.5f);
                 dataSet.setSelectionShift(0f);
-                dataSet.setColors(table_background_new);
+                dataSet.setColors(myTimeTable.getMyBackground());
 
-                PieData data = new PieData((dataSet));
+                data.setDataSet(dataSet);
+                myTimeTable.setPieData(data);
                 data.setValueTextSize(0f);
 
                 pieChart.notifyDataSetChanged();
-                pieChart.setData(data);
+                pieChart.setData(myTimeTable.getPieData());
                 pieChart.invalidate();
-                myTimeTable.setPieData(data);
+                Log.i("add Tasks : ", "done");
             }
         };
         Thread thread = new Thread(task);
@@ -481,19 +499,26 @@ public class TableByDayEditActivity extends AppCompatActivity {
         int i = 0;
         switch (view.getId()) {
             case R.id.mon_button:
-                i = 0;                break;
+                i = 0;
+                break;
             case R.id.tue_button:
-                i = 1;                break;
+                i = 1;
+                break;
             case R.id.wed_button:
-                i = 2;                break;
+                i = 2;
+                break;
             case R.id.thr_button:
-                i = 3;                break;
+                i = 3;
+                break;
             case R.id.fri_button:
-                i = 4;                break;
+                i = 4;
+                break;
             case R.id.sat_button:
-                i = 5;                break;
+                i = 5;
+                break;
             case R.id.sun_button:
-                i = 6;                break;
+                i = 6;
+                break;
         }
         if (week[i] == 0) {
             week[i] = 1;

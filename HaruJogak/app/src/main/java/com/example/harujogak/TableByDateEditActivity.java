@@ -333,6 +333,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 int background_entry;
                 String start_times[], end_times[];
 
+                fb_strt = strt;
+                fb_endt = endt;
+                fb_task = taskLabel.getText().toString().trim();
+
                 start_times = strt.split(" : ");
                 int new_str = Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]);
 
