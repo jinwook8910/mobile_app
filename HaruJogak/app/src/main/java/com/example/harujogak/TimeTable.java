@@ -34,6 +34,20 @@ class MyTimeTable {
 
     public MyTimeTable(String date){
         this.date = date;
+        PieDataSet dataSet;
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        TasksCount=0;
+        yValues.add(new PieEntry(1440f, " "));
+        dataSet = new PieDataSet(yValues, "TasksCount");
+
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        this.MyBackground.add(Color.rgb(250,250,250));
+        dataSet.setColors(this.MyBackground);
+
+        pieData = new PieData((dataSet));
+        pieData.setValueTextSize(0f);
     }
 
     public int getTasksCount() {

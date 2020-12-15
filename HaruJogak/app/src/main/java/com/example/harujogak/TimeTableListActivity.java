@@ -36,7 +36,8 @@ public class TimeTableListActivity extends AppCompatActivity {
     ImageButton btn1, btn2, btn3, btn4, btn5;
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
     // 나중에 사용자 정보에 저장된 ArrayList를 가져와서 동작시켜야함
-    private ArrayList<MyTimeTable> week = new ArrayList<>(7);
+    private ArrayList<MyTimeTable> week;
+    User user=new User();
     private TableAdapter tableAdapter;
 
     MyTimeTable exT = new MyTimeTable();
@@ -89,13 +90,15 @@ public class TimeTableListActivity extends AppCompatActivity {
     }
 
     public void addToWeekList(){
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
-        week.add(exTable);
+        user.getWeekTable().add(new MyTimeTable("월"));
+        user.getWeekTable().add(new MyTimeTable("화"));
+        user.getWeekTable().add(new MyTimeTable("수"));
+        user.getWeekTable().add(new MyTimeTable("목"));
+        user.getWeekTable().add(new MyTimeTable("금"));
+        user.getWeekTable().add(new MyTimeTable("토"));
+        user.getWeekTable().add(new MyTimeTable("일"));
+
+        week = user.getWeekTable();
     }
     public void addToDateList(Context c){
         tableAdapter = new TableAdapter(c);

@@ -2,13 +2,11 @@ package com.example.harujogak;
 
 import android.graphics.Color;
 
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class User {
     private static volatile User instance = null;
@@ -19,7 +17,10 @@ public class User {
     private ArrayList<Obstruct> obstructList;
     private ScheduleList scheduleList;
 
-    public User(){} //임시 테스트용
+    public User(){
+        init();
+        this.weekTable = new ArrayList<>(7);
+    } //임시 테스트용
     public User(String user_id, String user_pw){
         this.id = user_id;
         this.passWord = user_pw;
@@ -30,7 +31,7 @@ public class User {
         this.goalList = new ArrayList<>();
         this.obstructList = new ArrayList<>();
         this.scheduleList = new ScheduleList();
-        init_Week();
+        init();
     }
 
     public static User getInstance(String user_id, String user_pw){
@@ -113,7 +114,7 @@ public class User {
         this.scheduleList = scheduleList;
     }
 
-    private void init_Week(){
+    private void init(){
         ArrayList<PieEntry> temp = new ArrayList<>();
         temp.add(new PieEntry(1440f, " "));
 
@@ -123,14 +124,6 @@ public class User {
         PieData data = new PieData((dataSet));
         data.setValueTextSize(14f);
         data.setValueTextColor(Color.BLACK);
-
-        this.weekTable.add(new MyTimeTable("월"));
-        this.weekTable.add(new MyTimeTable("화"));
-        this.weekTable.add(new MyTimeTable("수"));
-        this.weekTable.add(new MyTimeTable("목"));
-        this.weekTable.add(new MyTimeTable("금"));
-        this.weekTable.add(new MyTimeTable("토"));
-        this.weekTable.add(new MyTimeTable("일"));
     }
 }
 
