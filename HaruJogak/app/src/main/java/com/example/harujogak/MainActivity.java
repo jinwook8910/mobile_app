@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Date mDate;
     private MyTimeTable todaysTimeTable;
     Integer[] todaysRate;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년MM월dd일");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
     //firebase
     private FirebaseDatabase database;
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         //   ㄴ ArrayList<Integer> MyBackground;    //파이차트 그리는데 사용되는 정보. 파이 배경색을 저장함
         //   ㄴ ArrayList<Integer[]> rating;         //해당 시간표의 일정을 저장해 놓는 integer 배열. 그 배열에 대한 어레이리스트
         todaysTimeTable = new MyTimeTable();
+
         setExample(todaysTimeTable); // 나중에 DB로 변경해야할 부분
 
         todaysRate = new Integer[todaysTimeTable.getTasksCount()];
@@ -203,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("TAG", "Firebase error");
             }
         });
-        //result=sum/Math.abs(dday)*20;
         User.load();
     }
 
@@ -400,27 +400,80 @@ public class MainActivity extends AppCompatActivity {
 
     public void setExample(MyTimeTable exT) {
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(60f, "잠"));
-        yValues.add(new PieEntry(10f, "아침식사"));
-        yValues.add(new PieEntry(35f, "공부"));
-        yValues.add(new PieEntry(20f, "휴식"));
-        yValues.add(new PieEntry(10f, "점심식사"));
-        yValues.add(new PieEntry(35f, "운동"));
-        yValues.add(new PieEntry(20f, "휴식"));
-        yValues.add(new PieEntry(10f, "저녁식사"));
-
-        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-
-        exT.setPieData(data);
-        exT.setDate("2020-12-12");
+        //오늘 날짜 받아오기
+        String today=this.getDate();
+        int start,end;
+        //firebase에서 일정 가져오기
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        DatabaseReference fb_data;
+        fb_data = myRef.child(UserID).child("날짜별 일정").child(today);
+        fb_data.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                    //showTable(exT,yValues);
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getValue() != null) {
+                            String sche=ds.getKey();
+                            String strt=ds.child("시작시간").getValue().toString();
+                            String endt=ds.child("종료시간").getValue().toString();
+                            String[] start_times = strt.split(" : ");
+                            int new_str = (int) (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1])) % 1440;
+                            String[] end_times=endt.split(" : ");
+                            int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
+                            yValues.add(new PieEntry((new_end-new_str), sche));
+//                            PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+//                            dataSet.setSliceSpace(0.5f);
+//                            dataSet.setSelectionShift(0f);
+//                            dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//                            PieData data = new PieData((dataSet));
+//                            data.setValueTextSize(0f);
+//                            exT.setPieData(data);
+//                            exT.setDate(today);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+//        yValues.add(new PieEntry(60f, "잠"));
+//        yValues.add(new PieEntry(10f, "아침식사"));
+//        yValues.add(new PieEntry(35f, "공부"));
+//        yValues.add(new PieEntry(20f, "휴식"));
+//        yValues.add(new PieEntry(10f, "점심식사"));
+//        yValues.add(new PieEntry(35f, "운동"));
+//        yValues.add(new PieEntry(20f, "휴식"));
+//        yValues.add(new PieEntry(10f, "저녁식사"));
+//        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+//        dataSet.setSliceSpace(0.5f);
+//        dataSet.setSelectionShift(0f);
+//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//
+//        PieData data = new PieData((dataSet));
+//        data.setValueTextSize(0f);
+//
+//        exT.setPieData(data);
+//        exT.setDate("2020-12-12");
     }
+//    public void showTable(MyTimeTable exT,ArrayList<PieEntry> temp){
+//        ArrayList<PieEntry> yValues = temp;
+//        String today=this.getDate();
+//        PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+//        dataSet.setSliceSpace(0.5f);
+//        dataSet.setSelectionShift(0f);
+//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//
+//        PieData data = new PieData((dataSet));
+//        data.setValueTextSize(0f);
+//
+//        exT.setPieData(data);
+//        exT.setDate(today);
+//    }
 
         public ArrayList<Goal> getGoal_list () {
             return this.goal_list;
