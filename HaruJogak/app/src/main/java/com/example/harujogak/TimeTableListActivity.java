@@ -291,7 +291,7 @@ public class TimeTableListActivity extends AppCompatActivity {
                 Intent intent = new Intent(TimeTableListActivity.this, GoalActivity.class);
                 startActivity(intent);
             } else if (view == btn2) {
-                Intent intent = new Intent(TimeTableListActivity.this, Rating.class);
+                Intent intent = new Intent(TimeTableListActivity.this, RatingActivity.class);
                 startActivity(intent);
             } else if (view == btn3) {
                 Log.i("MainActivity", "onClickButton");
