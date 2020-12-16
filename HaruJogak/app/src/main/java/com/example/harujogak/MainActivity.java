@@ -56,13 +56,16 @@ public class MainActivity extends AppCompatActivity {
     //private static ArrayList<String> goal_list = new ArrayList<>();
     public static ArrayList<Goal> goal_list=new ArrayList<>();
     public static ArrayList<String> goal_list_1=new ArrayList<>();
+    public static HashMap<String,Integer> goal_stat=new HashMap<>();
     //public static Map<String,Float> goal_stat=new HashMap<String,Float>();
     Login2 user=new Login2();
     String UserID=user.getUserID();
 
     float sum=0;
-    int count=0;
+    int count=0,day;
     int now=0,i;
+    int result;
+    int sump=0;
     char[] fb_today =new char[20]; //firebase
     String[] arr =new String[100];
 
@@ -143,15 +146,27 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     goal_list_1.clear();
                     User.getGoalList().clear();
+                    goal_stat.clear();
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
                             String goal = ds.getKey();
-                            String dday=ds.child("목표 날짜").getValue().toString();
+                            String deadline=ds.child("목표 날짜").getValue().toString();
                             String start=ds.child("시작 날짜").getValue().toString();
-                            //int day=Integer.parseInt(dday);
-                            //goal_list.put(goal,day);
+                            //dday
+                            Calendar scalendar = Calendar.getInstance();//시작일
+                            Calendar ecalendar = Calendar.getInstance();//마감일
+                            //시작 날짜
+                            String[] start_date = start.split(" / ");
+                            scalendar.set(Integer.parseInt(start_date[0]), Integer.parseInt(start_date[1]), Integer.parseInt(start_date[2]));
+                            //마감 날짜
+                            String[] end_date = deadline.split(" / ");
+                            ecalendar.set(Integer.parseInt(end_date[0]), Integer.parseInt(end_date[1]), Integer.parseInt(end_date[2]));
+                            //날짜 초단위로 변경
+                            long s=scalendar.getTimeInMillis()/(24*60*60*1000);
+                            long e=ecalendar.getTimeInMillis()/(24*60*60*1000);
+                            day =(int)(s-e);
                             goal_list_1.add(goal);
-                            Goal goal_1 = new Goal(goal,dday);
+                            Goal goal_1 = new Goal(goal,deadline);
                             goal_1.setStartday(start);
                             User.getGoalList().add(goal_1);
                         }
@@ -164,6 +179,32 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("TAG", "Firebase error");
             }
         });
+        DatabaseReference data;
+        data = myRef.child(UserID).child("날짜별 일정");
+        data.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds:snapshot.getChildren()){
+                    for(DataSnapshot ds1:ds.getChildren()){
+                        String key=ds1.child("장기목표").getValue().toString();
+                        goal_stat.put(key,0);
+                    }
+                }
+                for(DataSnapshot ds:snapshot.getChildren()){
+                    for(DataSnapshot ds1:ds.getChildren()){
+                        String key=ds1.child("장기목표").getValue().toString();
+                        String value = ds1.child("평가").getValue().toString();
+                        int temp = Integer.parseInt(value);
+                        goal_stat.put(key,goal_stat.get(key)+temp);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+        //result=sum/Math.abs(dday)*20;
     }
 
     class HomeListener implements View.OnClickListener{
@@ -361,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setExample(MyTimeTable exT){
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
+        
         yValues.add(new PieEntry(60f, "잠"));
         yValues.add(new PieEntry(10f, "아침식사"));
         yValues.add(new PieEntry(35f, "공부"));
@@ -389,7 +430,5 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<String> getGoal_list_1(){
         return goal_list_1;
     }
-//    public static HashMap<String,Float> getGoal_stat(){
-//        return (HashMap<String, Float>) goal_stat;
-//    }
+    public static HashMap<String,Integer> getGoal_stat(){return goal_stat;}
 }

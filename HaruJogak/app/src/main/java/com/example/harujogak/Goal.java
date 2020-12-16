@@ -20,9 +20,12 @@ import java.util.HashMap;
 public class Goal {
     FirebaseDatabase database;
     DatabaseReference myRef;
+    int sum=0;
+    int count1=0,count2=0; //for percent
     private String goal_name; //목표 이름
     private String startday; //"2020 / 00 / 00" 형태 날짜로 저장 - 시작일(통계를 위한 값)
     private String deadline; //"2020 / 00 / 00" 형태 날짜로 저장 - 마감일
+    private int percent;
 
     public Goal(String gn, String dl){
         this.goal_name = gn;
@@ -84,16 +87,17 @@ public class Goal {
 
         return dday;
     }
-
-    public Integer getPercent(){ //목표 통계 결과
-        Integer result = 0;
+    public void setPercent(int percent){
+        this.percent=percent;
+    }
+    public Integer getDday(){ //목표 통계 결과
+        int result;
         int dday;
         long s, e;
-        final int[] sum = {0};
+        sum=0;
         String UserID=Login2.getUserID();
-        //HashMap<String,Float> stat=new HashMap<>();
-        database = FirebaseDatabase.getInstance();
-        myRef=database.getReference();
+//        database = FirebaseDatabase.getInstance();
+//        myRef=database.getReference();
 
         Calendar scalendar = Calendar.getInstance();//시작일
         Calendar ecalendar = Calendar.getInstance();//마감일
@@ -110,32 +114,34 @@ public class Goal {
         s=scalendar.getTimeInMillis()/(24*60*60*1000);
         e=ecalendar.getTimeInMillis()/(24*60*60*1000);
         dday =(int)(s-e);
+        return dday;
 
-        //통계 계산
-        //목표에 해당하는 별점 모두 가져오기
-        //날짜마다 목표에 대한 별점의 평균 * (1/dday)해서 오늘 날짜까지 더하기
-        DatabaseReference data;
-        data = myRef.child(UserID).child("날짜별 일정");
-        data.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds:snapshot.getChildren()){
-                    for(DataSnapshot ds1:ds.getChildren()){
-                        String key=ds1.child("장기목표").getValue().toString();
-                        if(key==getGoal_name()) {
-                            String value = ds1.child("평가").getValue().toString();
-                            float temp = Float.parseFloat(value);
-                            sum[0] += temp;
-                        }
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "Firebase error");
-            }
-        });
-        result=sum[0]/dday*20;
-        return result;
+//        //통계 계산
+//        //목표에 해당하는 별점 모두 가져오기
+//        //날짜마다 목표에 대한 별점의 평균 * (1/dday)해서 오늘 날짜까지 더하기
+//        DatabaseReference data;
+//        data = myRef.child(UserID).child("날짜별 일정");
+//        data.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                //long count=snapshot.getChildrenCount();
+//                for(DataSnapshot ds:snapshot.getChildren()){
+//                    for(DataSnapshot ds1:ds.getChildren()){
+//                        String key=ds1.child("장기목표").getValue().toString();
+//                        if(getGoal_name().equals(key)) {
+//                            String value = ds1.child("평가").getValue().toString();
+//                            float temp = Float.parseFloat(value);
+//                            sum += temp;
+//                        }
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.w("TAG", "Firebase error");
+//            }
+//        });
+//        result=sum/Math.abs(dday)*20;
+//        return result;
     }
 }

@@ -37,9 +37,8 @@ public class GoalActivity extends AppCompatActivity {
     Button btn;
     ImageButton btn1, btn2, btn3, btn4, btn5;
     int i;
-    //HashMap<String,Integer> goal_list=new HashMap<>();
+    HashMap<String,Integer> goal_stat=MainActivity.getGoal_stat();
     ArrayList<Goal> goal_list=new ArrayList<>();
-    HashMap<String,Float> goal_stat=new HashMap<>();
     MainActivity main=new MainActivity();
     //User user = new User(); //사용자
     //Login2 login=new Login2();
@@ -149,6 +148,7 @@ public class GoalActivity extends AppCompatActivity {
                 t=tcalendar.getTimeInMillis()/(24*60*60*1000);
                 d=dcalendar.getTimeInMillis()/(24*60*60*1000);
                 dday[0] =(int)(t-d);
+
                 if(dday[0] >0)
                     goal_result.setText("D+"+Integer.toString(dday[0]));
                 else if(dday[0] ==0)
@@ -199,7 +199,7 @@ public class GoalActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final Context context = parent.getContext();
-
+            int percent;
             // "listview_item" Layout을 inflate하여 convertView 참조 획득.
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -212,16 +212,37 @@ public class GoalActivity extends AppCompatActivity {
             TextView item_percent = (TextView)convertView.findViewById(R.id.goal_item_percent);
 
             Goal g = listViewItemList.get(position);
+
             item_name.setText(g.getGoal_name());
-            item_dday.setText(g.getDeadline());
-            item_percent.setText(g.getPercent().toString()+"%");
+
+            if(g.getDday() >0)
+                item_dday.setText("D+"+Integer.toString(g.getDday()));
+            else if(g.getDday() ==0)
+                item_dday.setText("D-day");
+            else
+                item_dday.setText("D"+Integer.toString(g.getDday()));
+
+            int d_day=Math.abs(g.getDday());
+            if(d_day==0){percent=100;}
+            else {
+                if (goal_stat.get(g.getGoal_name()) != null) {
+                    percent = goal_stat.get(g.getGoal_name()) / d_day * 20;
+                    if (percent > 100) percent = 100;
+                    item_percent.setText(percent + "%");
+                } else {
+                    goal_stat.put(g.getGoal_name(), 0);
+                    percent = goal_stat.get(g.getGoal_name()) / d_day * 20;
+                    if (percent > 100) percent = 100;
+                    item_percent.setText(percent + "%");
+                }
+            }
 
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(100, 25);
             item_chart.setLayoutParams(param);
-            item_chart.getLayoutParams().width=g.getPercent()*630/100;
+            item_chart.getLayoutParams().width=percent*630/100;
             LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(100, 1);
             item_blank.setLayoutParams(param2);
-            item_blank.getLayoutParams().width=g.getPercent()*470/100;
+            item_blank.getLayoutParams().width=percent*470/100;
 
             return convertView;
         }
