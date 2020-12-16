@@ -78,7 +78,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         actionBar.hide();
 
         Intent intent = getIntent();
-        int position = (int) intent.getIntExtra("byDate", -1);
+        int position = (int) intent.getIntExtra("byDay", -1);
 
         //Todo: 사용자 weekTable 리스트에서 position(0~6) 값에 해당하는 시간표 가져옴.
         myTimeTable = user.getWeekTable().get(position);

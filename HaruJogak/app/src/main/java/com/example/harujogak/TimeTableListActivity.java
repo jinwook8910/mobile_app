@@ -33,55 +33,14 @@ import java.util.ArrayList;
 
 public class TimeTableListActivity extends AppCompatActivity {
     //navigation button
-    ImageButton btn1, btn2, btn3, btn4, btn5;
-    // 리사이클러뷰에 표시할 데이터 리스트 생성.
-    // 나중에 사용자 정보에 저장된 ArrayList를 가져와서 동작시켜야함
+    private ImageButton btn1, btn2, btn3, btn4, btn5;
     private TableAdapter tableAdapter;
-    User user = new User();
 
-    MyTimeTable exT = new MyTimeTable();
+    //Todo : 현재 로그인 되어있는 계정의 정보를 user 클래스로 저장해 둠. getInstance??
+    private User user = new User();
 
-    public void setdata2() {
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(40f, "Jan"));
-        yValues.add(new PieEntry(13f, "S"));
-        yValues.add(new PieEntry(17f, "U"));
-        yValues.add(new PieEntry(35f, "I"));
-        yValues.add(new PieEntry(20f, "R"));
-        yValues.add(new PieEntry(40f, "K"));
-
-        PieDataSet dataSet = new PieDataSet(yValues, "temp");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-        data.setValueTextColor(Color.YELLOW);
-
-        exT.setPieData(data);
-        exT.setDate("2020-12-12");
-
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-    }
-
-    public void addToWeekList() {
-        user.getWeekTable();
-    }
-
-    public void addToDateList(Context c) {
-        MyTimeTable empty = new MyTimeTable("새로 만들기");
-        tableAdapter = new TableAdapter(c);
-        for (int i = 0; i < user.getDateTable().size(); i++)
-            tableAdapter.addItem(user.getDateTable().get(i));
-        tableAdapter.addItem(empty);
-    }
+    //테스트용 임시 시간표
+    private MyTimeTable exT = new MyTimeTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +67,7 @@ public class TimeTableListActivity extends AppCompatActivity {
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1);
 
-        setdata2();
+        setdata2(); // 유저 정보 연결되면 삭제될 부분
         addToWeekList();
         addToDateList(this);
 
@@ -118,7 +77,6 @@ public class TimeTableListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(TimeTableListActivity.this, TableByDateEditActivity.class);
-                Log.i("intent", position + "/");
                 if (position == user.getDateTable().size())
                     intent.putExtra("byDate", -1);
                 else
@@ -129,13 +87,54 @@ public class TimeTableListActivity extends AppCompatActivity {
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정.
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
         SimpleTextAdapter adapter = new SimpleTextAdapter(user.getWeekTable());
         recyclerView.setAdapter(adapter);
 
     } // end of onCreate
 
+    public void setdata2() {
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(40f, "Jan"));
+        yValues.add(new PieEntry(13f, "S"));
+        yValues.add(new PieEntry(17f, "U"));
+        yValues.add(new PieEntry(35f, "I"));
+        yValues.add(new PieEntry(20f, "R"));
+        yValues.add(new PieEntry(40f, "K"));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "temp");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(0f);
+        data.setValueTextColor(Color.YELLOW);
+
+        exT.setPieData(data);
+        exT.setDate("2020-12-12");
+
+        //임시로 만든 user에 dateTable 만들어줌
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+        user.getDateTable().add(exT);
+    }
+
+    public void addToWeekList() {
+        user.getWeekTable();
+    }
+
+    public void addToDateList(Context c) {
+        MyTimeTable empty = new MyTimeTable("새로 만들기");
+        tableAdapter = new TableAdapter(c);
+        for (int i = 0; i < user.getDateTable().size(); i++)
+            tableAdapter.addItem(user.getDateTable().get(i));
+        tableAdapter.addItem(empty);
+    }
 
     // 그리드뷰 어댑터
     class TableAdapter extends BaseAdapter {
@@ -195,7 +194,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         }
     }
 
-
     // 리사이클러뷰 어댑터
     class SimpleTextAdapter extends RecyclerView.Adapter<SimpleTextAdapter.ViewHolder> {
         private ArrayList<MyTimeTable> weekSchedule = null;
@@ -223,10 +221,10 @@ public class TimeTableListActivity extends AppCompatActivity {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             MyTimeTable item = (MyTimeTable) user.getWeekTable().get(position);
-                            Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(TimeTableListActivity.this, TableByDayEditActivity.class);
-                            intent.putExtra("byDate", position);
+                            intent.putExtra("byDay", position);
                             startActivity(intent);
                         }
                     }
@@ -237,10 +235,10 @@ public class TimeTableListActivity extends AppCompatActivity {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             MyTimeTable item = (MyTimeTable) user.getWeekTable().get(position);
-                            Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), item.getDate(), Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(getApplicationContext(), TableByDayEditActivity.class);
-                            intent.putExtra("byDate", position);
+                            intent.putExtra("byDay", position);
                             startActivity(intent);
                         }
                     }
@@ -285,7 +283,6 @@ public class TimeTableListActivity extends AppCompatActivity {
             return weekSchedule.size();
         }
     }// end of class
-    //https://bitsoul.tistory.com/41
 
     //navigation button
     class Listener implements View.OnClickListener {
