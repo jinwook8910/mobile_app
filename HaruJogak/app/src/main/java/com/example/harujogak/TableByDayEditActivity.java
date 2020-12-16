@@ -79,8 +79,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int position = (int) intent.getIntExtra("byDate", -1);
-        //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
-        // day List 는 그냥 0~6 숫자만 받아옴
+
+        //Todo: 사용자 weekTable 리스트에서 position(0~6) 값에 해당하는 시간표 가져옴.
         myTimeTable = user.getWeekTable().get(position);
 
         dateButton = (Button) findViewById(R.id.date_set_button);

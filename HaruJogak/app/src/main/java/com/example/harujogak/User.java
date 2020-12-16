@@ -11,14 +11,13 @@ import java.util.ArrayList;
 public class User {
     private static volatile User instance = null;
     private String id, passWord, eMail;
-    private ArrayList<MyTimeTable> weekTable;
-    private ArrayList<MyTimeTable> dateTable;
-    private static ArrayList<Goal> goalList=new ArrayList<>();
-    private ArrayList<Obstruct> obstructList;
-    private ScheduleList scheduleList;
+    private ArrayList<MyTimeTable> weekTable;   //주간 시간표 저장하는 리스트
+    private ArrayList<MyTimeTable> dateTable;   //일일 시간표 저장하는 리스트
+    private static ArrayList<Goal> goalList;  //목표 저장하는 리스트
+    private ArrayList<Obstruct> obstructList;   //방해요소 저장하는 리스트
+    private ScheduleList scheduleList;  //캘린더에 일정 저장하는 리스트
 
     public User(){
-        init();
         this.weekTable = new ArrayList<>(7);
         weekTable.add(new MyTimeTable("월"));
         weekTable.add(new MyTimeTable("화"));
@@ -27,22 +26,37 @@ public class User {
         weekTable.add(new MyTimeTable("금"));
         weekTable.add(new MyTimeTable("토"));
         weekTable.add(new MyTimeTable("일"));
+
         this.dateTable = new ArrayList<>();
         this.goalList = new ArrayList<>();
         this.obstructList = new ArrayList<>();
         this.scheduleList = new ScheduleList();
     } //임시 테스트용
+
     public User(String user_id, String user_pw){
         this.id = user_id;
         this.passWord = user_pw;
+        init();
+    }
 
-        //firebase에서 데이터 로드한 걸 add해야 함.
+    private void init(){
+        //객체 생성하면서
+        //Todo : firebase에 이 사용자 정보가 있으면 불러와서 저장
+        // (...)
+        // 아니면 초기화
         this.weekTable = new ArrayList<>(7);
+        weekTable.add(new MyTimeTable("월"));
+        weekTable.add(new MyTimeTable("화"));
+        weekTable.add(new MyTimeTable("수"));
+        weekTable.add(new MyTimeTable("목"));
+        weekTable.add(new MyTimeTable("금"));
+        weekTable.add(new MyTimeTable("토"));
+        weekTable.add(new MyTimeTable("일"));
+
         this.dateTable = new ArrayList<>();
         this.goalList = new ArrayList<>();
         this.obstructList = new ArrayList<>();
         this.scheduleList = new ScheduleList();
-        init();
     }
 
     public static User getInstance(String user_id, String user_pw){
@@ -60,26 +74,12 @@ public class User {
         return id;
     }
 
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setEMail(String eMail) {
-        this.eMail = eMail;
-    }
-
-    public String getEMail() {
-        return eMail;
-    }
-
     public ArrayList<MyTimeTable> getWeekTable() {
         return weekTable;
     }
 
-    public void setWeekTable(ArrayList<MyTimeTable> weekTable) {
-        this.weekTable = weekTable;
-    }
     public void addWeekTable(int i, MyTimeTable table){
+        //Todo : firebase에 동일하게 저장
         this.weekTable.set(i, table);
     }
 
@@ -87,13 +87,20 @@ public class User {
         return dateTable;
     }
 
-    public void setDateTable(ArrayList<MyTimeTable> dateTable) {
-        this.dateTable = dateTable;
-    }
     public void addDateTable(MyTimeTable table){
-        //Todo : 해당 날짜에 해당하는 시간표가 있으면 덮어씌우고 없으면 리스트에 새로 추가함
-
-        this.dateTable.add(table);
+        boolean isExist = false;
+        for(int i=0; i<dateTable.size(); i++){
+            if(table.getDate().equals(dateTable.get(i).getDate())){
+                //Todo : firebase에 동일하게 저장
+                dateTable.set(i, table);
+                isExist = true;
+            }
+        }
+        // 없으면 리스트에 새로 추가함
+        if(!isExist){
+            //Todo : firebase에 동일하게 저장
+            this.dateTable.add(table);
+        }
     }
 
     public ArrayList<Goal> getGoalList() {
@@ -101,6 +108,7 @@ public class User {
     }
 
     public void setGoalList(ArrayList<Goal> goalList) {
+        //Todo : firebase에 동일하게 저장
         this.goalList = goalList;
     }
 
@@ -109,6 +117,7 @@ public class User {
     }
 
     public void setObstructList(ArrayList<Obstruct> obstructList) {
+        //Todo : firebase에 동일하게 저장
         this.obstructList = obstructList;
     }
 
@@ -117,12 +126,15 @@ public class User {
         for (int i = 0; i < obstructList.size(); i++) {
             if (obstructList.get(i).getObstruction().equals(str)) {
                 isReduplication = true;
+                //Todo : firebase에 동일하게 저장
                 obstructList.get(i).setFrequency(obstructList.get(i).getFrequency() + 1);
                 break;
             }
         }
-        if (!isReduplication)
+        if (!isReduplication){
+            //Todo : firebase에 동일하게 저장
             obstructList.add(new Obstruct(str, 1));
+        }
     }
 
     public ScheduleList getScheduleList() {
@@ -130,47 +142,8 @@ public class User {
     }
 
     public void setScheduleList(ScheduleList scheduleList) {
+        //Todo : firebase에 동일하게 저장
         this.scheduleList = scheduleList;
     }
 
-    private void init(){
-        ArrayList<PieEntry> temp = new ArrayList<>();
-        temp.add(new PieEntry(1440f, " "));
-
-        PieDataSet dataSet = new PieDataSet(temp, "Tasks");
-        dataSet.setSliceSpace(2f);
-        dataSet.setSelectionShift(1f);
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(14f);
-        data.setValueTextColor(Color.BLACK);
-    }
-}
-
-class Obstruct{
-    private String obstruction;
-    private int frequency;
-
-    public Obstruct(){
-
-    }
-    public Obstruct(String ob, int fre){
-        this.obstruction = ob;
-        this.frequency = fre;
-    }
-
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
-    }
-
-    public int getFrequency() {
-        return frequency;
-    }
-
-    public void setObstruction(String obstruction) {
-        this.obstruction = obstruction;
-    }
-
-    public String getObstruction() {
-        return obstruction;
-    }
 }

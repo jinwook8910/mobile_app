@@ -89,7 +89,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int position = (int) intent.getIntExtra("byDate", -1);
-        //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
+
+        //Todo: 사용자 dateTable 리스트에서 position(0~ ) 값에 해당하는 시간표 가져옴.
         // position 값이 -1이면 새로 만드는 것임.
         Log.i("intent", position+"");
         myTimeTable = new MyTimeTable();
