@@ -18,6 +18,7 @@ class MyTimeTable {
     public MyTimeTable(){
         PieDataSet dataSet;
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+        this.date = " ";
 
         TasksCount=0;
         yValues.add(new PieEntry(1440f, " "));

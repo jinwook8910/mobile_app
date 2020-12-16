@@ -54,9 +54,6 @@ import java.util.Locale;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
-//import com.jaredrummler.android.colorpicker.ColorPanelView;
-//import com.jaredrummler.android.colorpicker.ColorPickerView;
-
 public class TableByDateEditActivity extends AppCompatActivity {
     private PieChart pieChart;
     private MyTimeTable myTimeTable; //PieData, MyTask(이름, 시작시간, 끝시간), MyBackground, OnWeek, OnDate
@@ -94,6 +91,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
         int position = (int) intent.getIntExtra("byDate", -1);
         //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
         // position 값이 -1이면 새로 만드는 것임.
+        Log.i("intent", position+"");
         myTimeTable = new MyTimeTable();
 
         dateButton = (Button) findViewById(R.id.date_set_button);
@@ -615,23 +613,6 @@ public class TableByDateEditActivity extends AppCompatActivity {
     }
 
     public void showColorPicker(View view, int index) {
-//        ColorPickerView colorPickerView;
-//        ColorPanelView newColorPanelView;
-
-//        Dialog colorPickerDialog = new Dialog(this);
-//        colorPickerDialog.setContentView(R.layout.color_picker_dialog);
-//        Button colorPickDoneButton = (Button) findViewById(R.id.okButton);
-//
-//        colorPickDoneButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_LONG).show();
-//                colorPickerDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
-//            }
-//        });
-//
-//        colorPickerDialog.show();
-
         final ColorPicker colorPicker = new ColorPicker(TableByDateEditActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             Button showTemplate = (Button) view.findViewById(R.id.show_adapted_task);

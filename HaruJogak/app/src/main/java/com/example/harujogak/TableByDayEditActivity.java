@@ -81,7 +81,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         int position = (int) intent.getIntExtra("byDate", -1);
         //Todo: 사용자 시간표 어레이리스트에서 position 값에 해당하는 시간표 가져옴.
         // day List 는 그냥 0~6 숫자만 받아옴
-        myTimeTable = new MyTimeTable();
+        myTimeTable = user.getWeekTable().get(position);
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
@@ -93,7 +93,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(false);
         pieChart.setDrawMarkers(true);
-//        pieChart.setEntryLabelColor(Color.BLACK);
 
         pieChart.setData(myTimeTable.getPieData());
 

@@ -20,6 +20,13 @@ public class User {
     public User(){
         init();
         this.weekTable = new ArrayList<>(7);
+        weekTable.add(new MyTimeTable("월"));
+        weekTable.add(new MyTimeTable("화"));
+        weekTable.add(new MyTimeTable("수"));
+        weekTable.add(new MyTimeTable("목"));
+        weekTable.add(new MyTimeTable("금"));
+        weekTable.add(new MyTimeTable("토"));
+        weekTable.add(new MyTimeTable("일"));
         this.dateTable = new ArrayList<>();
         this.goalList = new ArrayList<>();
         this.obstructList = new ArrayList<>();
@@ -84,6 +91,8 @@ public class User {
         this.dateTable = dateTable;
     }
     public void addDateTable(MyTimeTable table){
+        //Todo : 해당 날짜에 해당하는 시간표가 있으면 덮어씌우고 없으면 리스트에 새로 추가함
+
         this.dateTable.add(table);
     }
 

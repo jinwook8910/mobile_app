@@ -36,13 +36,12 @@ public class TimeTableListActivity extends AppCompatActivity {
     ImageButton btn1, btn2, btn3, btn4, btn5;
     // 리사이클러뷰에 표시할 데이터 리스트 생성.
     // 나중에 사용자 정보에 저장된 ArrayList를 가져와서 동작시켜야함
-    private ArrayList<MyTimeTable> week;
-    User user=new User();
     private TableAdapter tableAdapter;
+    User user = new User();
 
     MyTimeTable exT = new MyTimeTable();
 
-    public void setdata2(){
+    public void setdata2() {
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
         yValues.add(new PieEntry(40f, "Jan"));
@@ -72,25 +71,16 @@ public class TimeTableListActivity extends AppCompatActivity {
         user.getDateTable().add(exT);
     }
 
-    public void addToWeekList(){
-        user.getWeekTable().add(new MyTimeTable("월"));
-        user.getWeekTable().add(new MyTimeTable("화"));
-        user.getWeekTable().add(new MyTimeTable("수"));
-        user.getWeekTable().add(new MyTimeTable("목"));
-        user.getWeekTable().add(new MyTimeTable("금"));
-        user.getWeekTable().add(new MyTimeTable("토"));
-        user.getWeekTable().add(new MyTimeTable("일"));
-
-        week = user.getWeekTable();
+    public void addToWeekList() {
+        user.getWeekTable();
     }
-    public void addToDateList(Context c){
+
+    public void addToDateList(Context c) {
+        MyTimeTable empty = new MyTimeTable("새로 만들기");
         tableAdapter = new TableAdapter(c);
-        tableAdapter.addItem(user.getDateTable().get(0));
-        tableAdapter.addItem(user.getDateTable().get(1));
-        tableAdapter.addItem(user.getDateTable().get(2));
-        tableAdapter.addItem(user.getDateTable().get(3));
-        tableAdapter.addItem(user.getDateTable().get(4));
-        tableAdapter.addItem(user.getDateTable().get(5));
+        for (int i = 0; i < user.getDateTable().size(); i++)
+            tableAdapter.addItem(user.getDateTable().get(i));
+        tableAdapter.addItem(empty);
     }
 
     @Override
@@ -116,7 +106,7 @@ public class TimeTableListActivity extends AppCompatActivity {
         btn5.setOnClickListener(listener);
 
         GridView gv = (GridView) findViewById(R.id.gridView1);
-        RecyclerView recyclerView = findViewById(R.id.recycler1) ;
+        RecyclerView recyclerView = findViewById(R.id.recycler1);
 
         setdata2();
         addToWeekList();
@@ -127,19 +117,22 @@ public class TimeTableListActivity extends AppCompatActivity {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
                 Intent intent = new Intent(TimeTableListActivity.this, TableByDateEditActivity.class);
-                intent.putExtra("byDate", position);
+                Log.i("intent", position + "/");
+                if (position == user.getDateTable().size())
+                    intent.putExtra("byDate", -1);
+                else
+                    intent.putExtra("byDate", position);
                 startActivity(intent);
             }
         });
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정.
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)) ;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-        SimpleTextAdapter adapter = new SimpleTextAdapter(week) ;
-        recyclerView.setAdapter(adapter) ;
+        SimpleTextAdapter adapter = new SimpleTextAdapter(user.getWeekTable());
+        recyclerView.setAdapter(adapter);
 
     } // end of onCreate
 
@@ -229,7 +222,7 @@ public class TimeTableListActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
+                            MyTimeTable item = (MyTimeTable) user.getWeekTable().get(position);
                             Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(TimeTableListActivity.this, TableByDayEditActivity.class);
@@ -243,7 +236,7 @@ public class TimeTableListActivity extends AppCompatActivity {
                     public void onValueSelected(Entry e, Highlight h) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            MyTimeTable item = (MyTimeTable) tableAdapter.getItem(position);
+                            MyTimeTable item = (MyTimeTable) user.getWeekTable().get(position);
                             Toast.makeText(getApplicationContext(), "선택 :" + item.getDate(), Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(getApplicationContext(), TableByDayEditActivity.class);
@@ -295,30 +288,27 @@ public class TimeTableListActivity extends AppCompatActivity {
     //https://bitsoul.tistory.com/41
 
     //navigation button
-    class Listener implements View.OnClickListener{
-        public void onClick(View view){
-            if(view==btn1){
+    class Listener implements View.OnClickListener {
+        public void onClick(View view) {
+            if (view == btn1) {
                 Intent intent = new Intent(TimeTableListActivity.this, GoalActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn2){
-                Intent intent =new Intent(TimeTableListActivity.this,Rating.class);
+            } else if (view == btn2) {
+                Intent intent = new Intent(TimeTableListActivity.this, Rating.class);
                 startActivity(intent);
-            }
-            else if(view==btn3){
+            } else if (view == btn3) {
                 Log.i("MainActivity", "onClickButton");
                 Intent intent = new Intent(TimeTableListActivity.this, TimeTableListActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn4) {
+            } else if (view == btn4) {
                 Intent intent = new Intent(TimeTableListActivity.this, ScheduleActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn5){
-                Intent intent =new Intent(TimeTableListActivity.this, MainActivity.class);
+            } else if (view == btn5) {
+                Intent intent = new Intent(TimeTableListActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         }
     }
+
     TimeTableListActivity.Listener listener = new TimeTableListActivity.Listener();
 }
