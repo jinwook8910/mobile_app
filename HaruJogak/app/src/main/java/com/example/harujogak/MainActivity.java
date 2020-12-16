@@ -41,7 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageButton btn1, btn2, btn3, btn4,btn5;
+    private ImageButton btn1, btn2, btn3, btn4, btn5;
     private TextView date, time;
     private long mNow;
     private Date mDate;
@@ -54,21 +54,19 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference data;
     private ValueEventListener dataListener;
-    //private static ArrayList<String> goal_list = new ArrayList<>();
-    public static ArrayList<Goal> goal_list=new ArrayList<>();
-    public static ArrayList<String> goal_list_1=new ArrayList<>();
-    public static HashMap<String,Integer> goal_stat=new HashMap<>();
-    //public static Map<String,Float> goal_stat=new HashMap<String,Float>();
-    Login2 user=new Login2();
-    String UserID=user.getUserID();
+    public static ArrayList<Goal> goal_list = new ArrayList<>();
+    public static ArrayList<String> goal_list_1 = new ArrayList<>();
+    public static HashMap<String, Integer> goal_stat = new HashMap<>();
+    Login2 user = new Login2();
+    String UserID = user.getUserID();
 
-    float sum=0;
-    int count=0,day;
-    int now=0,i;
+    float sum = 0;
+    int count = 0, day;
+    int now = 0, i;
     int result;
-    int sump=0;
-    char[] fb_today =new char[20]; //firebase
-    String[] arr =new String[100];
+    int sump = 0;
+    char[] fb_today = new char[20]; //firebase
+    String[] arr = new String[100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,11 +134,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
         //firebase - 목표 통계
         database = FirebaseDatabase.getInstance();
-        myRef=database.getReference();
-        data=myRef.child(UserID).child("목표리스트");
+        myRef = database.getReference();
+        data = myRef.child(UserID).child("목표리스트");
         dataListener = data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -152,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
                             String goal = ds.getKey();
-                            String deadline=ds.child("목표 날짜").getValue().toString();
-                            String start=ds.child("시작 날짜").getValue().toString();
+                            String deadline = ds.child("목표 날짜").getValue().toString();
+                            String start = ds.child("시작 날짜").getValue().toString();
                             //dday
                             Calendar scalendar = Calendar.getInstance();//시작일
                             Calendar ecalendar = Calendar.getInstance();//마감일
@@ -164,12 +161,11 @@ public class MainActivity extends AppCompatActivity {
                             String[] end_date = deadline.split(" / ");
                             ecalendar.set(Integer.parseInt(end_date[0]), Integer.parseInt(end_date[1]), Integer.parseInt(end_date[2]));
                             //날짜 초단위로 변경
-                            long s=scalendar.getTimeInMillis()/(24*60*60*1000);
-                            long e=ecalendar.getTimeInMillis()/(24*60*60*1000);
-                            day =(int)(s-e);
+                            long s = scalendar.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                            long e = ecalendar.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                            day = (int) (s - e);
                             goal_list_1.add(goal);
-                            Goal goal_1 = new Goal(goal,deadline);
-                            goal_1.setStartday(start);
+                            Goal goal_1 = new Goal(goal, deadline, start);
                             User.getGoalList().add(goal_1);
                         }
                     }
@@ -186,59 +182,54 @@ public class MainActivity extends AppCompatActivity {
         data.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds:snapshot.getChildren()){
-                    for(DataSnapshot ds1:ds.getChildren()){
-                        String key=ds1.child("장기목표").getValue().toString();
-                        goal_stat.put(key,0);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    for (DataSnapshot ds1 : ds.getChildren()) {
+                        String key = ds1.child("장기목표").getValue().toString();
+                        goal_stat.put(key, 0);
                     }
                 }
-                for(DataSnapshot ds:snapshot.getChildren()){
-                    for(DataSnapshot ds1:ds.getChildren()){
-                        String key=ds1.child("장기목표").getValue().toString();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    for (DataSnapshot ds1 : ds.getChildren()) {
+                        String key = ds1.child("장기목표").getValue().toString();
                         String value = ds1.child("평가").getValue().toString();
                         int temp = Integer.parseInt(value);
-                        goal_stat.put(key,goal_stat.get(key)+temp);
+                        goal_stat.put(key, goal_stat.get(key) + temp);
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w("TAG", "Firebase error");
             }
         });
         //result=sum/Math.abs(dday)*20;
-=======
         User.load();
->>>>>>> bdcca6440f5776a4c6427dfee697f42c9f7139e0
     }
 
-    class HomeListener implements View.OnClickListener{
-        public void onClick(View view){
-            if(view==btn1){
+    class HomeListener implements View.OnClickListener {
+        public void onClick(View view) {
+            if (view == btn1) {
                 Intent intent = new Intent(MainActivity.this, GoalActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn2){
-                Intent intent =new Intent(MainActivity.this, RatingActivity.class);
+            } else if (view == btn2) {
+                Intent intent = new Intent(MainActivity.this, RatingActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn3){
+            } else if (view == btn3) {
                 Log.i("MainActivity", "onClickButton");
                 Intent intent = new Intent(MainActivity.this, TimeTableListActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn4) {
+            } else if (view == btn4) {
                 Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
                 startActivity(intent);
-            }
-            else if(view==btn5){
-                Intent intent =new Intent(MainActivity.this,Login2.class);
+            } else if (view == btn5) {
+                Intent intent = new Intent(MainActivity.this, Login2.class);
                 startActivity(intent);
             }
         }
     }
 
-    public void show_rating(int index){
+    public void show_rating(int index) {
         Dialog ratingDialog = new Dialog(this);
         ratingDialog.setContentView(R.layout.rating_dialog);
 
@@ -247,17 +238,17 @@ public class MainActivity extends AppCompatActivity {
 
         //firebase 정의
         database = FirebaseDatabase.getInstance();
-        myRef=database.getReference();
+        myRef = database.getReference();
 
         //오늘 날짜 받아오기
         Date currentTime = Calendar.getInstance().getTime();
-        String today_text=new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(currentTime);
-        fb_today=null;
-        fb_today=today_text.toCharArray();
-        String input_today=String.valueOf(fb_today);
+        String today_text = new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(currentTime);
+        fb_today = null;
+        fb_today = today_text.toCharArray();
+        String input_today = String.valueOf(fb_today);
 
         ImageButton exit = (ImageButton) ratingDialog.findViewById(R.id.exit);
-        TextView schedule=findViewById(R.id.text1);
+        TextView schedule = findViewById(R.id.text1);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingbar);
         ratingBar.setOnRatingBarChangeListener(new RateListener());
         EditText interrupt = (EditText) findViewById(R.id.interrupt);
@@ -267,12 +258,11 @@ public class MainActivity extends AppCompatActivity {
         Button static_button = (Button) findViewById(R.id.static_button);
 
 
-
         rating_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(arr[now]==null){}
-                else {
+                if (arr[now] == null) {
+                } else {
                     String getInterrupt = interrupt.getText().toString();
                     myRef.child("UserID").child("날짜별 일정").child(input_today).child(arr[now]).child("방해요소").setValue(getInterrupt);
                     interrupt.setText("");
@@ -283,8 +273,8 @@ public class MainActivity extends AppCompatActivity {
         right_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(arr[now]==null){}
-                else {
+                if (arr[now] == null) {
+                } else {
                     if ((now + 1) < count) {
                         now = now + 1;
                     } else {
@@ -298,8 +288,8 @@ public class MainActivity extends AppCompatActivity {
         left_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(arr[now]==null){}
-                else {
+                if (arr[now] == null) {
+                } else {
                     if ((now - 1) >= 0) {
                         now = now - 1;
                     } else {
@@ -312,16 +302,15 @@ public class MainActivity extends AppCompatActivity {
 
         //Read data
         DatabaseReference data;
-        data=myRef.child("UserID").child("날짜별 일정").child(input_today);
+        data = myRef.child("UserID").child("날짜별 일정").child(input_today);
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sum = 0;
                 count = 0;
-                if(snapshot.getValue()==null){
+                if (snapshot.getValue() == null) {
                     schedule.setText("오늘의 일정이 없습니다.");
-                }
-                else {
+                } else {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
                             String rat = ds.child("평가").getValue().toString();
@@ -333,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w("TAG", "Firebase error");
@@ -342,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
         static_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),StatActivity.class);
+                Intent intent = new Intent(getApplicationContext(), StatActivity.class);
                 startActivity(intent);
             }
         });
@@ -350,11 +340,11 @@ public class MainActivity extends AppCompatActivity {
         ratingDialog.show();
     }
 
-    class RateListener implements RatingBar.OnRatingBarChangeListener{
+    class RateListener implements RatingBar.OnRatingBarChangeListener {
         @Override
-        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
-            if(arr[now]==null){}
-            else {
+        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            if (arr[now] == null) {
+            } else {
                 String input_today_r = String.valueOf(fb_today);
                 myRef.child("UserID").child("날짜별 일정").child(input_today_r).child(arr[now]).child("평가").setValue(rating);
             }
@@ -372,31 +362,34 @@ public class MainActivity extends AppCompatActivity {
 //        ratingDialog.dismiss();
 //    }
 
-    private String getDate(){
+    private String getDate() {
         mNow = System.currentTimeMillis();
         mDate = new Date(mNow);
         return dateFormat.format(mDate);
     }
-    private String getTime(){
+
+    private String getTime() {
         mNow = System.currentTimeMillis();
         mDate = new Date(mNow);
         return timeFormat.format(mDate);
     }
-    public void ShowTimeMethod(){
-        final Handler handler = new Handler(){
+
+    public void ShowTimeMethod() {
+        final Handler handler = new Handler() {
             @Override
-            public void handleMessage(Message msg){
+            public void handleMessage(Message msg) {
                 date.setText(getDate());
                 time.setText(getTime());
             }
         };
-        Runnable task = new Runnable(){
+        Runnable task = new Runnable() {
             @Override
-            public void run(){
-                while(true){
-                    try{
+            public void run() {
+                while (true) {
+                    try {
                         Thread.sleep(1000);
-                    }catch(InterruptedException e){}
+                    } catch (InterruptedException e) {
+                    }
                     handler.sendEmptyMessage(1);//핸들러 호출
                 }
             }
@@ -405,9 +398,9 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-    public void setExample(MyTimeTable exT){
+    public void setExample(MyTimeTable exT) {
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-        
+
         yValues.add(new PieEntry(60f, "잠"));
         yValues.add(new PieEntry(10f, "아침식사"));
         yValues.add(new PieEntry(35f, "공부"));
@@ -428,22 +421,22 @@ public class MainActivity extends AppCompatActivity {
         exT.setPieData(data);
         exT.setDate("2020-12-12");
     }
-    public static ArrayList<Goal> getGoal_list(){
-        goal_list=User.getGoalList();
-        return goal_list;
-    public ArrayList<Goal> getGoal_list(){
-        return this.goal_list;
-    }
-    public static ArrayList<String> getGoal_list_1(){
-        ArrayList<Goal> goalList = User.getInstance().getGoalList();
-        System.out.println("mainActivity!! "+goalList);
-        Iterator it = goalList.iterator();
-        goal_list_1.clear();
-        while(it.hasNext()){
-            Goal goal = (Goal)it.next();
-            goal_list_1.add(goal.getGoal_name());
+
+        public ArrayList<Goal> getGoal_list () {
+            return this.goal_list;
         }
-        return goal_list_1;
+        public static ArrayList<String> getGoal_list_1 () {
+            ArrayList<Goal> goalList = User.getInstance().getGoalList();
+            System.out.println("mainActivity!! " + goalList);
+            Iterator it = goalList.iterator();
+            goal_list_1.clear();
+            while (it.hasNext()) {
+                Goal goal = (Goal) it.next();
+                goal_list_1.add(goal.getGoal_name());
+            }
+            return goal_list_1;
+        }
+        public static HashMap<String, Integer> getGoal_stat () {
+            return goal_stat;
+        }
     }
-    public static HashMap<String,Integer> getGoal_stat(){return goal_stat;}
-}

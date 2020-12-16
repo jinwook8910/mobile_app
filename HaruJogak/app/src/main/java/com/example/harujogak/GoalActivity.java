@@ -54,8 +54,7 @@ public class GoalActivity extends AppCompatActivity {
         //title bar 제거하기
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
-        goal_list=MainActivity.getGoal_list();
+        
        // goal_stat=MainActivity.getGoal_stat();
         goal_list=User.getInstance().getGoalList();
         System.out.println("GoalActivity!! "+goal_list);
@@ -225,7 +224,6 @@ public class GoalActivity extends AppCompatActivity {
             Goal g = listViewItemList.get(position);
 
             item_name.setText(g.getGoal_name());
-<<<<<<< HEAD
 
             if(g.getDday() >0)
                 item_dday.setText("D+"+Integer.toString(g.getDday()));
@@ -248,10 +246,6 @@ public class GoalActivity extends AppCompatActivity {
                     item_percent.setText(percent + "%");
                 }
             }
-=======
-            item_dday.setText(g.getdday());
-            item_percent.setText(g.getPercent().toString()+"%");
->>>>>>> bdcca6440f5776a4c6427dfee697f42c9f7139e0
 
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(100, 25);
             item_chart.setLayoutParams(param);
@@ -276,7 +270,6 @@ public class GoalActivity extends AppCompatActivity {
 
         // 아이템 데이터 추가를 위한 함수.
         public void addItem(String name, String deadline,String start) {
-            Goal item = new Goal(name, deadline);
             Goal item = new Goal(name, start, deadline);
 
             item.setGoal_name(name);
