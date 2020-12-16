@@ -130,6 +130,15 @@ public class User {
         goalList = goalList_r;
     }
 
+    public static void addGoal(Goal new_goal){
+        User.getGoalList().add(new_goal);
+        DatabaseReference data;
+        data = myRef.child(UserID).child("목표리스트");
+        data.child(new_goal.getGoal_name()).child("목표 날짜").setValue(new_goal.getDeadline());
+        data.child(new_goal.getGoal_name()).child("시작 날짜").setValue(new_goal.getStartday());
+        //myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 D-day").setValue(dday[0]);
+    }
+
     public static void loadGoalList() {
         //firebase
         DatabaseReference data;

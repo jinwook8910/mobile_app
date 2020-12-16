@@ -162,17 +162,15 @@ public class GoalActivity extends AppCompatActivity {
         goal_add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                //class에 저장->왜 저장이 안되지?????ㅜㅜㅜ
-//                Goal new_goal = new Goal(goal_input.getText().toString(), goal_date[0]);//goal class에 생성자 만들기
-//                ArrayList<Goal> temp=User.getGoalList();
-//                temp.add(new_goal);
-//                User.setGoalList(temp);
+                adapter.notifyDataSetChanged(); //adapter에 데이터 변경 알림
 
-                //여기서 바로 firebase에 추가하는 경우
-                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 D-day").setValue(dday[0]);
-                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 날짜").setValue(goal_date[0]);
-                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("시작 날짜").setValue(start_day[0]);
-                //바로 화면에 추가되려면?
+//                //여기서 바로 firebase에 추가하는 경우
+//                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 D-day").setValue(dday[0]);
+//                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 날짜").setValue(goal_date[0]);
+//                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("시작 날짜").setValue(start_day[0]);
+                //firebase에 저장
+                Goal new_goal = new Goal(goal_input.getText().toString(), start_day[0], goal_date[0]);
+                User.getInstance().addGoal(new_goal); //왜 메인페이지로 돌아가지..
                 //이전 Activity로 돌아가기
                 addGoalDialog.dismiss();
             }
@@ -213,7 +211,7 @@ public class GoalActivity extends AppCompatActivity {
 
             Goal g = listViewItemList.get(position);
             item_name.setText(g.getGoal_name());
-            item_dday.setText(g.getDeadline());
+            item_dday.setText(g.getdday());
             item_percent.setText(g.getPercent().toString()+"%");
 
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(100, 25);
