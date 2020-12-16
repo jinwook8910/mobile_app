@@ -1,15 +1,11 @@
 package com.example.harujogak;
 
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class Firebase extends AppCompatActivity {
+public class Firebase{
     //???????
     User user=new User();
     private String userID;
@@ -20,16 +16,20 @@ public class Firebase extends AppCompatActivity {
     private ArrayList<Schedule> ScheduleList;
     FirebaseDatabase database;
     DatabaseReference myRef;
+
     int i,j;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-        userID = user.getId();
-        goalList = user.getGoalList();
-        ScheduleList=user.getScheduleList();
-    }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        database = FirebaseDatabase.getInstance();
+//        myRef = database.getReference();
+//        userID = user.getId();
+//        goalList = user.getGoalList();
+//        ScheduleList=user.getScheduleList();
+//    }
+
+
+
     public void addSchedule(ArrayList<Schedule> scheduleList){
         for(i=0;i<ScheduleList.size();i++){
             if(ScheduleList.get(i)!=null&&userID!=null){
