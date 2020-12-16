@@ -98,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
         //Todo : DB에서 현재 날짜에 해당하는 시간표의 MyTimeTable 정보 가져옴
         // 지금은 그냥 setExample 함수로 예시 정보 저장해서 사용했음
         // user.dateTable 중에서 오늘 날짜에 해당하는 시간표가 있으면 그거 쓰고 없으면 오늘 요일 시간표 불러옴
+        //Todo : DB에서 현재 날짜에 해당하는 시간표 정보를 가져옴
+        // (지금은 그냥 setExample 함수로 임시 시간표 저장해서 사용했음)
+        // user.dateTable 중에서 오늘 날짜에 해당하는 일일 시간표가 있으면 그거 쓰고, 없으면 오늘 주간 시간표 불러옴
+        // 1 시간표
+        //   ㄴ String date; -> 스트링
+        //   ㄴ (스트링(일정이름), 시작 시간, 끝 시간)의 배열
+        //   ㄴ int TasksCount;     //이 시간표에 들어가는 (파이조각)일정 개수
+        //   ㄴ ArrayList<Integer> MyBackground;    //파이차트 그리는데 사용되는 정보. 파이 배경색을 저장함
+        //   ㄴ ArrayList<Integer[]> rating;         //해당 시간표의 일정을 저장해 놓는 integer 배열. 그 배열에 대한 어레이리스트
         todaysTimeTable = new MyTimeTable();
         setExample(todaysTimeTable); // 나중에 DB로 변경해야할 부분
 

@@ -360,7 +360,6 @@ public class TableByDateEditActivity extends AppCompatActivity {
                     entry_str = entry_end;
                     entry_end += yValues_entry.getValue();
 
-                    //Todo : 0시를 낀 일정 rotate 값 계산 -> pieChart.setRotateAngle()..
                     //새로운 일정 추가/폐기 이후의 기존 일정 추가
                     if (done) {
                         yValues_new.add(yValues_entry);

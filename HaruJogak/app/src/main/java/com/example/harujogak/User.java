@@ -45,13 +45,13 @@ public class User {
         // (...)
         // 아니면 초기화
         this.weekTable = new ArrayList<>(7);
-        weekTable.add(new MyTimeTable("월"));
-        weekTable.add(new MyTimeTable("화"));
-        weekTable.add(new MyTimeTable("수"));
-        weekTable.add(new MyTimeTable("목"));
-        weekTable.add(new MyTimeTable("금"));
-        weekTable.add(new MyTimeTable("토"));
-        weekTable.add(new MyTimeTable("일"));
+        weekTable.add(new MyTimeTable("월요일"));
+        weekTable.add(new MyTimeTable("화요일"));
+        weekTable.add(new MyTimeTable("수요일"));
+        weekTable.add(new MyTimeTable("목요일"));
+        weekTable.add(new MyTimeTable("금요일"));
+        weekTable.add(new MyTimeTable("토요일"));
+        weekTable.add(new MyTimeTable("일요일"));
 
         this.dateTable = new ArrayList<>();
         this.goalList = new ArrayList<>();
