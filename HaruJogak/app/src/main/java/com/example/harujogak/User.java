@@ -5,6 +5,8 @@ import android.graphics.Color;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -13,9 +15,12 @@ public class User {
     private String id, passWord, eMail;
     private ArrayList<MyTimeTable> weekTable;   //주간 시간표 저장하는 리스트
     private ArrayList<MyTimeTable> dateTable;   //일일 시간표 저장하는 리스트
-    private static ArrayList<Goal> goalList;  //목표 저장하는 리스트
+    private static ArrayList<Goal> goalList=new ArrayList<>();  //목표 저장하는 리스트
     private ArrayList<Obstruct> obstructList;   //방해요소 저장하는 리스트
     private ScheduleList scheduleList;  //캘린더에 일정 저장하는 리스트
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     public User(){
         this.weekTable = new ArrayList<>(7);
@@ -34,6 +39,7 @@ public class User {
     } //임시 테스트용
 
     public User(String user_id, String user_pw){
+
         this.id = user_id;
         this.passWord = user_pw;
         init();
@@ -103,13 +109,13 @@ public class User {
         }
     }
 
-    public ArrayList<Goal> getGoalList() {
+    public static ArrayList<Goal> getGoalList() {
         return goalList;
     }
 
-    public void setGoalList(ArrayList<Goal> goalList) {
+    public static void setGoalList(ArrayList<Goal> goalList_r) {
         //Todo : firebase에 동일하게 저장
-        this.goalList = goalList;
+        goalList = goalList_r;
     }
 
     public ArrayList<Obstruct> getObstructList() {

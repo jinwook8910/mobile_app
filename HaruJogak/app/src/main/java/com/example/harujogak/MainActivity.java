@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference data;
     private ValueEventListener dataListener;
     //private static ArrayList<String> goal_list = new ArrayList<>();
-    public static Map<String,Integer> goal_list=new HashMap<String,Integer>();
-    public static Map<String,Float> goal_stat=new HashMap<String,Float>();
+    public static ArrayList<Goal> goal_list=new ArrayList<>();
+    public static ArrayList<String> goal_list_1=new ArrayList<>();
+    //public static Map<String,Float> goal_stat=new HashMap<String,Float>();
     Login2 user=new Login2();
     String UserID=user.getUserID();
 
@@ -122,36 +123,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        //firebase - 목표 통계
-//        database = FirebaseDatabase.getInstance();
-//        myRef=database.getReference();
-//        data=myRef.child(UserID).child("목표리스트");
-//        dataListener = data.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.getValue() == null) {
-//                } else {
-//                    for (DataSnapshot ds : snapshot.getChildren()) {
-//                        if (ds.getValue() != null) {
-//                            String goal = ds.getKey();
-//                            String dday=ds.child("목표 D-day").getValue().toString();
-//                            int day=Integer.parseInt(dday);
-//                            goal_list.put(goal,day);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.w("TAG", "Firebase error");
-//            }
-//        });
+        //firebase - 목표 통계
+        database = FirebaseDatabase.getInstance();
+        myRef=database.getReference();
+        data=myRef.child(UserID).child("목표리스트");
+        dataListener = data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                } else {
+                    goal_list_1.clear();
+                    User.getGoalList().clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getValue() != null) {
+                            String goal = ds.getKey();
+                            String dday=ds.child("목표 날짜").getValue().toString();
+                            String start=ds.child("시작 날짜").getValue().toString();
+                            //int day=Integer.parseInt(dday);
+                            //goal_list.put(goal,day);
+                            goal_list_1.add(goal);
+                            Goal goal_1 = new Goal(goal,dday);
+                            goal_1.setStartday(start);
+                            User.getGoalList().add(goal_1);
+                        }
+                    }
+                }
+            }
 
-        //for(String key:goal_stat.keySet()){ //goal_stat value값으로 장기 목표 통계치 저
-        //    if(goal_list.get(key)>=0) goal_stat.put(key,(float)100);
-        //    else goal_stat.put(key,goal_stat.get(key)/Math.abs(goal_list.get(key)));
-        //}
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
     }
 
     class HomeListener implements View.OnClickListener{
@@ -370,10 +373,14 @@ public class MainActivity extends AppCompatActivity {
         exT.setPieData(data);
         exT.setDate("2020-12-12");
     }
-    public static HashMap<String,Integer> getGoal_list(){
-        return (HashMap<String, Integer>) goal_list;
+    public static ArrayList<Goal> getGoal_list(){
+        goal_list=User.getGoalList();
+        return goal_list;
     }
-    public static HashMap<String,Float> getGoal_stat(){
-        return (HashMap<String, Float>) goal_stat;
+    public static ArrayList<String> getGoal_list_1(){
+        return goal_list_1;
     }
+//    public static HashMap<String,Float> getGoal_stat(){
+//        return (HashMap<String, Float>) goal_stat;
+//    }
 }

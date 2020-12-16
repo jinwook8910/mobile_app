@@ -4,9 +4,22 @@ package com.example.harujogak;
 //        목표 리스트를 보여주는 화면을 먼저 만들고 거기서 다시 추가, 수정, 삭제 가능하도록
 //        보여주는 것은 목표 이름, D-Day만
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class Goal {
+    FirebaseDatabase database;
+    DatabaseReference myRef;
     private String goal_name; //목표 이름
     private String startday; //"2020 / 00 / 00" 형태 날짜로 저장 - 시작일(통계를 위한 값)
     private String deadline; //"2020 / 00 / 00" 형태 날짜로 저장 - 마감일
@@ -76,6 +89,12 @@ public class Goal {
         Integer result = 0;
         int dday;
         long s, e;
+        final int[] sum = {0};
+        String UserID=Login2.getUserID();
+        //HashMap<String,Float> stat=new HashMap<>();
+        database = FirebaseDatabase.getInstance();
+        myRef=database.getReference();
+
         Calendar scalendar = Calendar.getInstance();//시작일
         Calendar ecalendar = Calendar.getInstance();//마감일
 
@@ -95,7 +114,28 @@ public class Goal {
         //통계 계산
         //목표에 해당하는 별점 모두 가져오기
         //날짜마다 목표에 대한 별점의 평균 * (1/dday)해서 오늘 날짜까지 더하기
-
+        DatabaseReference data;
+        data = myRef.child(UserID).child("날짜별 일정");
+        data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds:snapshot.getChildren()){
+                    for(DataSnapshot ds1:ds.getChildren()){
+                        String key=ds1.child("장기목표").getValue().toString();
+                        if(key==getGoal_name()) {
+                            String value = ds1.child("평가").getValue().toString();
+                            float temp = Float.parseFloat(value);
+                            sum[0] += temp;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+        result=sum[0]/dday*20;
         return result;
     }
 }

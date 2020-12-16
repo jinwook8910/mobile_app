@@ -50,6 +50,7 @@ public class Login2 extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //User user = User.getInstance(email, pwd);
+                                    User user = new User(email,pwd);
                                     UserID=email;
                                     Intent intent = new Intent(Login2.this, MainActivity.class);
                                     startActivity(intent);
