@@ -90,15 +90,15 @@ public class TableByDayEditActivity extends AppCompatActivity {
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
         Button DONE = (Button) findViewById(R.id.add_timeTable_done);
-        ArrayList<CheckBox> box = new ArrayList<>(7);
-        box.add((CheckBox) findViewById(R.id.mon_button));
-        box.add((CheckBox) findViewById(R.id.tue_button));
-        box.add((CheckBox) findViewById(R.id.wed_button));
-        box.add((CheckBox) findViewById(R.id.thr_button));
-        box.add((CheckBox) findViewById(R.id.fri_button));
-        box.add((CheckBox) findViewById(R.id.sat_button));
-        box.add((CheckBox) findViewById(R.id.sun_button));
-        box.get(position).setSelected(true);
+        ArrayList<View> box = new ArrayList<>(7);
+        box.add(findViewById(R.id.mon_button));
+        box.add(findViewById(R.id.tue_button));
+        box.add(findViewById(R.id.wed_button));
+        box.add(findViewById(R.id.thr_button));
+        box.add(findViewById(R.id.fri_button));
+        box.add(findViewById(R.id.sat_button));
+        box.add(findViewById(R.id.sun_button));
+        box.get(position).performClick();
 
         pieChart.setUsePercentValues(false);
         pieChart.setRotationEnabled(false);
@@ -112,13 +112,11 @@ public class TableByDayEditActivity extends AppCompatActivity {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-//                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-//                    onClickDecoTaskButton(pieChart, x);
                 try {
                     int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
                     onClickDecoTaskButton(pieChart, x);
                 }catch (NullPointerException nullPointerException){
-                    Toast.makeText(getApplicationContext(), "예외 발생. 다시 시도해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "오류 발생. 다시 시도해 주세요", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -534,26 +532,19 @@ public class TableByDayEditActivity extends AppCompatActivity {
         int i = 0;
         switch (view.getId()) {
             case R.id.mon_button:
-                i = 0;
-                break;
+                i = 0;                break;
             case R.id.tue_button:
-                i = 1;
-                break;
+                i = 1;                break;
             case R.id.wed_button:
-                i = 2;
-                break;
+                i = 2;                break;
             case R.id.thr_button:
-                i = 3;
-                break;
+                i = 3;                break;
             case R.id.fri_button:
-                i = 4;
-                break;
+                i = 4;                break;
             case R.id.sat_button:
-                i = 5;
-                break;
+                i = 5;                break;
             case R.id.sun_button:
-                i = 6;
-                break;
+                i = 6;                break;
         }
         if (week[i] == 0) {
             week[i] = 1;
@@ -564,8 +555,6 @@ public class TableByDayEditActivity extends AppCompatActivity {
             Log.i("Checkbox i", "unchecked");
             view.setSelected(false);
         }
-//        User user = new User();
-//        user.getWeekTable().set(i, nowMyTimeTable);
     }
 
     public void showColorPicker(View view, int index) {

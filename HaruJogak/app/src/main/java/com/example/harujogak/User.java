@@ -1,6 +1,5 @@
 package com.example.harujogak;
 
-<<<<<<< HEAD
 import android.graphics.Color;
 
 import com.github.mikephil.charting.data.PieData;
@@ -9,8 +8,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-=======
->>>>>>> b0b6441669c91c3e93daacea3917bff306fb44c5
 import java.util.ArrayList;
 
 public class User {
@@ -121,12 +118,8 @@ public class User {
         }
     }
 
-<<<<<<< HEAD
     public static ArrayList<Goal> getGoalList() {
-=======
-    public ArrayList<Goal> getGoalList() {
         //Todo : firebase에서 받아온 데이터 class에 담아서 return
->>>>>>> b0b6441669c91c3e93daacea3917bff306fb44c5
         return goalList;
     }
 
