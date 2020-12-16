@@ -298,7 +298,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
                             table_background_new.add(ColorTemplate.JOYFUL_COLORS[myTimeTable.getTasksCount()% 5]);
                             myTimeTable.setTasksCount(myTimeTable.getTasksCount()+1);
                             //빈칸 -> 흰색
-                            yValues_new.add(new PieEntry(entry_end - new_end, " "));
+                            yValues_new.add(new PieEntry(new_str - new_end, " "));
                             table_background_new.add(Color.rgb(250, 250, 250));
                             done = true;
                             rotate = (1440 - new_str) / 4;
@@ -390,7 +390,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
         int str_time = (int) (yValues.get(0).getValue() - 4 * rotate);
-        int end_time, i;
+        int end_time=0, i;
         for (i = 1; i < index; i++) {
             str_time += (int) yValues.get(i).getValue();
         }
