@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
         //firebase - 목표 통계
         database = FirebaseDatabase.getInstance();
         myRef=database.getReference();
@@ -205,6 +207,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //result=sum/Math.abs(dday)*20;
+=======
+        User.load();
+>>>>>>> bdcca6440f5776a4c6427dfee697f42c9f7139e0
     }
 
     class HomeListener implements View.OnClickListener{
@@ -426,8 +431,18 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Goal> getGoal_list(){
         goal_list=User.getGoalList();
         return goal_list;
+    public ArrayList<Goal> getGoal_list(){
+        return this.goal_list;
     }
     public static ArrayList<String> getGoal_list_1(){
+        ArrayList<Goal> goalList = User.getInstance().getGoalList();
+        System.out.println("mainActivity!! "+goalList);
+        Iterator it = goalList.iterator();
+        goal_list_1.clear();
+        while(it.hasNext()){
+            Goal goal = (Goal)it.next();
+            goal_list_1.add(goal.getGoal_name());
+        }
         return goal_list_1;
     }
     public static HashMap<String,Integer> getGoal_stat(){return goal_stat;}

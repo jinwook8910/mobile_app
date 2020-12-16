@@ -37,7 +37,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="시간 : "
+                android:text="시간  "
                 android:textSize="20dp" />
 
             <LinearLayout
@@ -82,14 +82,14 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="일정 : "
+                android:text="일정  "
                 android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/task_label_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="일정 내용을 입력하세요" />
+                android:hint="일정 내용" />
 
             <requestFocus></requestFocus>
         </LinearLayout>

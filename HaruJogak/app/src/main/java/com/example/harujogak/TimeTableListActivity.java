@@ -41,6 +41,8 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     //테스트용 임시 시간표
     private MyTimeTable exT = new MyTimeTable();
+    private MyTimeTable exT1 = new MyTimeTable();
+    private MyTimeTable exT2 = new MyTimeTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +66,12 @@ public class TimeTableListActivity extends AppCompatActivity {
         btn4.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
 
+
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1);
 
+        setdata1();
+        setdata3();
         setdata2(); // 유저 정보 연결되면 삭제될 부분
         addToWeekList();
         addToDateList(this);
@@ -93,6 +98,40 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     } // end of onCreate
 
+    public void setdata1(){
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(1440, "Jan"));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "temp");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(0f);
+        data.setValueTextColor(Color.YELLOW);
+
+        exT1.setPieData(data);
+        exT1.setDate("2020-12-12");
+    }
+    public void setdata3(){
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(1500, "Jan"));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "temp");
+        dataSet.setSliceSpace(0.5f);
+        dataSet.setSelectionShift(0f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(0f);
+        data.setValueTextColor(Color.YELLOW);
+
+        exT2.setPieData(data);
+        exT2.setDate("2020-12-12");
+    }
     public void setdata2() {
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
@@ -116,8 +155,8 @@ public class TimeTableListActivity extends AppCompatActivity {
         exT.setDate("2020-12-12");
 
         //임시로 만든 user에 dateTable 만들어줌
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
+        user.getDateTable().add(exT1);
+        user.getDateTable().add(exT2);
         user.getDateTable().add(exT);
         user.getDateTable().add(exT);
         user.getDateTable().add(exT);

@@ -15,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-import java.util.HashMap;
 
 public class Goal {
     FirebaseDatabase database;
@@ -27,8 +26,9 @@ public class Goal {
     private String deadline; //"2020 / 00 / 00" 형태 날짜로 저장 - 마감일
     private int percent;
 
-    public Goal(String gn, String dl){
+    public Goal(String gn, String sd, String dl){
         this.goal_name = gn;
+        this.startday = sd;
         this.deadline = dl;
     }
 
