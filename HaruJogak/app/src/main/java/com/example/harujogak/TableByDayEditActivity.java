@@ -32,6 +32,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -112,8 +113,9 @@ public class TableByDayEditActivity extends AppCompatActivity {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
+                PieDataSet temp = (PieDataSet) pieChart.getData().getDataSetForEntry(e);
                 try {
-                    int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+                    int x = temp.getEntryIndex((PieEntry) e);
                     onClickDecoTaskButton(pieChart, x);
                 } catch (NullPointerException nullPointerException) {
                     Toast.makeText(getApplicationContext(), "오류 발생. 다시 시도해 주세요", Toast.LENGTH_SHORT).show();
@@ -261,7 +263,8 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
 
                 boolean done = false;
-                int entry_str = 0, entry_end = 0;
+                int entry_str;
+                int entry_end = (int) (0 - 4 * rotate);
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
@@ -303,7 +306,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
                             pieChart.setRotationAngle(270 - rotate);
                         } else {//기존 일정에 내용이 있을 경우 -> 새로운 일정을 폐기
                             Log.i("add task :", "type 32 0시낀 일정 겹침");
-                            Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_SHORT).show();
                             yValues_new = (ArrayList) dataSet.getValues();
                             entry_end += yValues_entry.getValue();
                         }
@@ -331,7 +334,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
                             done = true;
                         } else {//기존 일정에 내용이 있을 경우 -> 새로운 일정을 폐기
                             Log.i("add task :", "type 3 일정 완전히 겹침");
-                            Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_SHORT).show();
                             yValues_new.add(yValues_entry);
                             table_background_new.add(background_entry);
                             entry_end += yValues_entry.getValue();
@@ -340,7 +343,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
                     //새로운 일정이 여러 일정과 겹칠 때 -> 무조건 새로운 일정 폐기
                     else {
                         Log.i("add task :", "type 4 일정 부분 겹침");
-                        Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "이미 존재하는 일정과 시간이 겹칩니다", Toast.LENGTH_SHORT).show();
                         yValues_new.add(yValues_entry);
                         table_background_new.add(background_entry);
                         entry_end += yValues_entry.getValue();
