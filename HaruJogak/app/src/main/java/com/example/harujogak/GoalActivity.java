@@ -118,7 +118,7 @@ public class GoalActivity extends AppCompatActivity {
         final String[] goal_date = new String[1];
         final int[] dday = new int[1];
         goal_text.setText("목표 추가");
-        goal_result.setText("D-day");
+        goal_result.setText("D-0");
 
         goal_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
@@ -149,6 +149,7 @@ public class GoalActivity extends AppCompatActivity {
                     goal_result.setText("D-day");
                 else
                     goal_result.setText("D"+Integer.toString(dday[0]));
+
             }
         });
 

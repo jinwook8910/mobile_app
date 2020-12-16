@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class Rating extends AppCompatActivity {
+public class RatingActivity extends AppCompatActivity {
         FirebaseDatabase database;
         DatabaseReference myRef;
         private RatingBar ratingBar;
@@ -193,7 +193,7 @@ public class Rating extends AppCompatActivity {
             stat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(Rating.this,StatActivity.class);
+                    Intent intent = new Intent(RatingActivity.this,StatActivity.class);
                     startActivity(intent);
                 }
             });

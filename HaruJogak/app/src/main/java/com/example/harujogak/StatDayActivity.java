@@ -65,7 +65,7 @@ public class StatDayActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(StatDayActivity.this,Rating.class);
+                Intent intent =new Intent(StatDayActivity.this, RatingActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){

@@ -65,7 +65,7 @@ public class StatObstructActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(StatObstructActivity.this,Rating.class);
+                Intent intent =new Intent(StatObstructActivity.this, RatingActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){

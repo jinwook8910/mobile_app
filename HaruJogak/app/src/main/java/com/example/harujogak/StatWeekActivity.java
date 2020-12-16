@@ -175,7 +175,7 @@ public class StatWeekActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(StatWeekActivity.this,Rating.class);
+                Intent intent =new Intent(StatWeekActivity.this, RatingActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){

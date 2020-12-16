@@ -26,7 +26,7 @@
         <activity android:label="GoalActivity" android:name=".GoalActivity"/>
         <activity android:label="CalendarActivity" android:name=".ScheduleActivity"/>
         <activity android:label="LoginActivity" android:name=".LoginActivity"></activity>
-        <activity android:label="Rating" android:name=".Rating" />
+        <activity android:label="Rating" android:name=".RatingActivity" />
         <activity android:label="SignUpActivity" android:name=".SignUpActivity"/>
         <activity android:label="Login2" android:name=".Login2"/>
         <activity android:label="StatActivity" android:name=".StatActivity"/>

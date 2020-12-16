@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -123,31 +122,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //firebase - 목표 통계
-        database = FirebaseDatabase.getInstance();
-        myRef=database.getReference();
-        data=myRef.child(UserID).child("목표리스트");
-        dataListener = data.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue() == null) {
-                } else {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        if (ds.getValue() != null) {
-                            String goal = ds.getKey();
-                            String dday=ds.child("목표 D-day").getValue().toString();
-                            int day=Integer.parseInt(dday);
-                            goal_list.put(goal,day);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "Firebase error");
-            }
-        });
+//        //firebase - 목표 통계
+//        database = FirebaseDatabase.getInstance();
+//        myRef=database.getReference();
+//        data=myRef.child(UserID).child("목표리스트");
+//        dataListener = data.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.getValue() == null) {
+//                } else {
+//                    for (DataSnapshot ds : snapshot.getChildren()) {
+//                        if (ds.getValue() != null) {
+//                            String goal = ds.getKey();
+//                            String dday=ds.child("목표 D-day").getValue().toString();
+//                            int day=Integer.parseInt(dday);
+//                            goal_list.put(goal,day);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.w("TAG", "Firebase error");
+//            }
+//        });
 
         //for(String key:goal_stat.keySet()){ //goal_stat value값으로 장기 목표 통계치 저
         //    if(goal_list.get(key)>=0) goal_stat.put(key,(float)100);
@@ -162,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(MainActivity.this,Rating.class);
+                Intent intent =new Intent(MainActivity.this, RatingActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){

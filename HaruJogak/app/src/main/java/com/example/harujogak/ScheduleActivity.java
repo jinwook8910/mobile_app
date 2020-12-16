@@ -207,7 +207,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(view==btn2){
-                Intent intent =new Intent(ScheduleActivity.this,Rating.class);
+                Intent intent =new Intent(ScheduleActivity.this, RatingActivity.class);
                 startActivity(intent);
             }
             else if(view==btn3){
