@@ -1,11 +1,5 @@
 package com.example.harujogak;
 
-import android.graphics.Color;
-
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-
 import java.util.ArrayList;
 
 public class User {
@@ -75,6 +69,7 @@ public class User {
     }
 
     public ArrayList<MyTimeTable> getWeekTable() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return weekTable;
     }
 
@@ -84,6 +79,7 @@ public class User {
     }
 
     public ArrayList<MyTimeTable> getDateTable() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return dateTable;
     }
 
@@ -104,6 +100,7 @@ public class User {
     }
 
     public ArrayList<Goal> getGoalList() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return goalList;
     }
 
@@ -113,6 +110,7 @@ public class User {
     }
 
     public ArrayList<Obstruct> getObstructList() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return obstructList;
     }
 
@@ -138,6 +136,7 @@ public class User {
     }
 
     public ScheduleList getScheduleList() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return scheduleList;
     }
 
