@@ -27,8 +27,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="390dp"
+            android:gravity="center"
+            android:background="@drawable/eyegold">
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart"
@@ -65,7 +66,6 @@
                 android:backgroundTint="@color/themeColor"
                 android:onClick="onClickSet"
                 android:text="yy / mm / dd" />
-            <!--버튼 색은 Tint로 설정해야 적용되는 듯?? 왜그런거지-->
         </LinearLayout>
 
         <Button
