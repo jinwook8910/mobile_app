@@ -66,6 +66,7 @@ public class TimeTableListActivity extends AppCompatActivity {
         btn4.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
 
+
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1);
 

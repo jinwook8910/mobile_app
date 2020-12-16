@@ -64,6 +64,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        User.load();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_edit_date);
 
