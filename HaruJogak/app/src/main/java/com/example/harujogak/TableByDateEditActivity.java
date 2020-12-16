@@ -156,7 +156,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
             String strHour = hour + "";
             String strMinute = minute + "";
 
-            if (hour < 10)
+            if (hour < 0)
+                strHour = 24 + hour + "";
+            else if (hour < 10)
                 strHour = "0" + strHour;
             if (minute < 10)
                 strMinute = "0" + strMinute;
@@ -266,10 +268,10 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 fb_task = taskLabel.getText().toString().trim();
 
                 start_times = strt.split(" : ");
-                float new_str = (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1]) + rotate * 4) % 1440;
+                int new_str = (int) (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1])) % 1440;
 
                 end_times = endt.split(" : ");
-                float new_end = (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1]) + rotate * 4) % 1440;
+                int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
 
                 boolean done = false;
                 int entry_str = 0, entry_end = 0;
@@ -294,10 +296,11 @@ public class TableByDateEditActivity extends AppCompatActivity {
                         table_background_new.add(background_entry);
                         continue;
                     }
-                    //0시를 낀 일정 추기
+                    //0시를 낀 일정 추가
+                    int index = dataSet.getEntryCount() - 1;
                     if (new_end < new_str) {//맨 첫번째와 마지막의 항목이 모두 빈칸이어야 하고 크기가 맞아야한다
-                        if (dataSet.getValues().get(0).getValue() >= new_str
-                                && dataSet.getValues().get(dataSet.getEntryCount() - 1).getValue() >= 1440 - new_str) {
+                        if (dataSet.getValues().get(0).getValue() >= new_end
+                                && dataSet.getValues().get(index).getValue() >= (1440 - new_str)) {
                             //빈칸 -> 흰색
                             yValues_new.add(new PieEntry(0, " "));
                             table_background_new.add(Color.rgb(250, 250, 250));
@@ -391,18 +394,22 @@ public class TableByDateEditActivity extends AppCompatActivity {
         Button decorate_done = (Button) decoTaskDialog.findViewById(R.id.decorate_done);
         Button template = (Button) decoTaskDialog.findViewById(R.id.show_adapted_task);
 
+        String strHour, strMinute;
         PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
         taskLabelLine.setText(dataSet.getValues().get(index).getLabel());
         template.setBackgroundColor(myTimeTable.getMyBackground().get(index));
 
         List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
-        int str_time = (int) (yValues.get(0).getValue() + 4 * rotate);
+        int str_time = (int) (yValues.get(0).getValue() - 4 * rotate);
         int end_time, i;
         for (i = 1; i < index; i++) {
             str_time += (int) yValues.get(i).getValue();
         }
+        end_time = str_time + (int) yValues.get(i).getValue();
 
-        String strHour, strMinute;
+        if (str_time < 0)
+            str_time += 1440;
+
         if ((str_time / 60) < 10)
             strHour = "0" + (str_time / 60);
         else
@@ -414,7 +421,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         edit_startTime.setText(strHour + " : " + strMinute);
 
-        end_time = str_time + (int) yValues.get(i).getValue();
+        if (end_time < 0)
+            end_time += 1440;
+
         if ((end_time / 60) < 10)
             strHour = "0" + (end_time / 60);
         else
@@ -440,29 +449,29 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "decorating done", Toast.LENGTH_SHORT).show();
                 List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
-                int prev_y = (int) yValues.get(index-1).getY();
+                int prev_y = (int) yValues.get(index - 1).getY();
                 int y = (int) yValues.get(index).getY();
-                int next_y = (int) yValues.get(index+1).getY();
-                Log.i("onClickDecoTaskButton", prev_y+"/"+y+"/"+next_y);
+                int next_y = (int) yValues.get(index + 1).getY();
+                Log.i("onClickDecoTaskButton", prev_y + "/" + y + "/" + next_y);
 
                 String str[];
                 str = edit_startTime.getText().toString().split(" : ");
-                int new_str = (int) (Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1]) + rotate * 4) % 1440;
-                if(finalStr_time!=new_str){
+                int new_str = (int) (Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1])) % 1440;
+                if (finalStr_time != new_str) {
                     yValues.get(index - 1).setY(prev_y + (new_str - finalStr_time));
                     y -= (new_str - finalStr_time);
                 }
 
                 str = edit_endTime.getText().toString().split(" : ");
-                int new_end = (int) (Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1]) + rotate * 4) % 1440;
-                if(finalEnd_time!=new_end){
-                    yValues.get(index + 1).setY(next_y + (finalEnd_time- new_end));
-                    y -= (finalEnd_time- new_end);
+                int new_end = (int) (Integer.parseInt(str[0]) * 60 + Integer.parseInt(str[1])) % 1440;
+                if (finalEnd_time != new_end) {
+                    yValues.get(index + 1).setY(next_y + (finalEnd_time - new_end));
+                    y -= (finalEnd_time - new_end);
                 }
 
                 yValues.get(index).setY(y);
-                Log.i("onClickDecoTaskButton", yValues.get(index - 1).getValue()+"/"
-                        +yValues.get(index).getValue()+"/"+yValues.get(index + 1).getValue());
+                Log.i("onClickDecoTaskButton", yValues.get(index - 1).getValue() + "/"
+                        + yValues.get(index).getValue() + "/" + yValues.get(index + 1).getValue());
 
                 PieDataSet pieDataSet = new PieDataSet(yValues, "Tasks");
                 pieDataSet.setSliceSpace(0.5f);
