@@ -111,8 +111,14 @@ public class TableByDateEditActivity extends AppCompatActivity {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-                onClickDecoTaskButton(pieChart, x);
+//                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+//                onClickDecoTaskButton(pieChart, x);
+                try {
+                    int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+                    onClickDecoTaskButton(pieChart, x);
+                }catch (NullPointerException nullPointerException){
+                    Toast.makeText(getApplicationContext(), "예외 발생. 다시 시도해 주세요", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -361,7 +367,6 @@ public class TableByDateEditActivity extends AppCompatActivity {
                     entry_str = entry_end;
                     entry_end += yValues_entry.getValue();
 
-                    //Todo : 0시를 낀 일정 rotate 값 계산 -> pieChart.setRotateAngle()..
                     //새로운 일정 추가/폐기 이후의 기존 일정 추가
                     if (done) {
                         yValues_new.add(yValues_entry);

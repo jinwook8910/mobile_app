@@ -1,5 +1,6 @@
 package com.example.harujogak;
 
+<<<<<<< HEAD
 import android.graphics.Color;
 
 import com.github.mikephil.charting.data.PieData;
@@ -8,6 +9,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+=======
+>>>>>>> b0b6441669c91c3e93daacea3917bff306fb44c5
 import java.util.ArrayList;
 
 public class User {
@@ -58,6 +61,13 @@ public class User {
         weekTable.add(new MyTimeTable("금"));
         weekTable.add(new MyTimeTable("토"));
         weekTable.add(new MyTimeTable("일"));
+        weekTable.add(new MyTimeTable("월요일"));
+        weekTable.add(new MyTimeTable("화요일"));
+        weekTable.add(new MyTimeTable("수요일"));
+        weekTable.add(new MyTimeTable("목요일"));
+        weekTable.add(new MyTimeTable("금요일"));
+        weekTable.add(new MyTimeTable("토요일"));
+        weekTable.add(new MyTimeTable("일요일"));
 
         this.dateTable = new ArrayList<>();
         this.goalList = new ArrayList<>();
@@ -81,6 +91,7 @@ public class User {
     }
 
     public ArrayList<MyTimeTable> getWeekTable() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return weekTable;
     }
 
@@ -90,6 +101,7 @@ public class User {
     }
 
     public ArrayList<MyTimeTable> getDateTable() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return dateTable;
     }
 
@@ -109,7 +121,12 @@ public class User {
         }
     }
 
+<<<<<<< HEAD
     public static ArrayList<Goal> getGoalList() {
+=======
+    public ArrayList<Goal> getGoalList() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
+>>>>>>> b0b6441669c91c3e93daacea3917bff306fb44c5
         return goalList;
     }
 
@@ -119,6 +136,7 @@ public class User {
     }
 
     public ArrayList<Obstruct> getObstructList() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return obstructList;
     }
 
@@ -144,6 +162,7 @@ public class User {
     }
 
     public ScheduleList getScheduleList() {
+        //Todo : firebase에서 받아온 데이터 class에 담아서 return
         return scheduleList;
     }
 
