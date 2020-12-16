@@ -111,8 +111,14 @@ public class TableByDateEditActivity extends AppCompatActivity {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
-                onClickDecoTaskButton(pieChart, x);
+//                int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+//                onClickDecoTaskButton(pieChart, x);
+                try {
+                    int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+                    onClickDecoTaskButton(pieChart, x);
+                }catch (NullPointerException nullPointerException){
+                    Toast.makeText(getApplicationContext(), "예외 발생. 다시 시도해 주세요", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
