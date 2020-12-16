@@ -35,9 +35,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton btn1, btn2, btn3, btn4,btn5;
@@ -132,38 +131,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //firebase - 목표 통계
-        database = FirebaseDatabase.getInstance();
-        myRef=database.getReference();
-        data=myRef.child(UserID).child("목표리스트");
-        dataListener = data.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue() == null) {
-                } else {
-                    goal_list_1.clear();
-                    User.getGoalList().clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        if (ds.getValue() != null) {
-                            String goal = ds.getKey();
-                            String dday=ds.child("목표 날짜").getValue().toString();
-                            String start=ds.child("시작 날짜").getValue().toString();
-                            //int day=Integer.parseInt(dday);
-                            //goal_list.put(goal,day);
-                            goal_list_1.add(goal);
-                            Goal goal_1 = new Goal(goal,dday);
-                            goal_1.setStartday(start);
-                            User.getGoalList().add(goal_1);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("TAG", "Firebase error");
-            }
-        });
+        User.load();
     }
 
     class HomeListener implements View.OnClickListener{
@@ -382,11 +350,18 @@ public class MainActivity extends AppCompatActivity {
         exT.setPieData(data);
         exT.setDate("2020-12-12");
     }
-    public static ArrayList<Goal> getGoal_list(){
-        goal_list=User.getGoalList();
-        return goal_list;
+    public ArrayList<Goal> getGoal_list(){
+        return this.goal_list;
     }
     public static ArrayList<String> getGoal_list_1(){
+        ArrayList<Goal> goalList = User.getInstance().getGoalList();
+        System.out.println("mainActivity!! "+goalList);
+        Iterator it = goalList.iterator();
+        goal_list_1.clear();
+        while(it.hasNext()){
+            Goal goal = (Goal)it.next();
+            goal_list_1.add(goal.getGoal_name());
+        }
         return goal_list_1;
     }
 //    public static HashMap<String,Float> getGoal_stat(){

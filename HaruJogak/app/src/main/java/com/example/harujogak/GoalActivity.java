@@ -56,8 +56,8 @@ public class GoalActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        goal_list=MainActivity.getGoal_list();
-       // goal_stat=MainActivity.getGoal_stat();
+        goal_list=User.getInstance().getGoalList();
+        System.out.println("GoalActivity!! "+goal_list);
 
 //        //목표 리스트 출력
 //        System.out.println("목표리스트 출력");
@@ -239,7 +239,7 @@ public class GoalActivity extends AppCompatActivity {
 
         // 아이템 데이터 추가를 위한 함수.
         public void addItem(String name, String deadline,String start) {
-            Goal item = new Goal(name, deadline);
+            Goal item = new Goal(name, start, deadline);
 
             item.setGoal_name(name);
             item.setDeadline(deadline);

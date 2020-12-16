@@ -1,17 +1,10 @@
 package com.example.harujogak;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -42,15 +35,10 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -206,13 +194,13 @@ public class TableByDateEditActivity extends AppCompatActivity {
         });
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
-        //골 리스트 가져옴
+        //골 리스트 가져옴 //추가 버튼 한번 닫고 다시 해야지 실행됨..?
         ArrayList<String> goal_list=new ArrayList<>();
-        goal_list=MainActivity.getGoal_list_1();
-//        ArrayList<Goal> GoalList = MainActivity.getGoal_list();
-//        for(int i=0;i<GoalList.size();i++){
-//            goal_list.add(GoalList.get(i).getGoal_name());
-//        }
+//        goal_list=MainActivity.getGoal_list_1();
+        ArrayList<Goal> GoalList = User.getGoalList();
+        for(int i=0;i<GoalList.size();i++){
+            goal_list.add(GoalList.get(i).getGoal_name());
+        }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, goal_list);
