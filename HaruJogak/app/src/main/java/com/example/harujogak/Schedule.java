@@ -5,11 +5,11 @@ import java.util.ArrayList;
 //calender 클래스가 원래 있는거랑 헷갈릴까봐 변경
 public class Schedule {
     String date;
-    ArrayList<String> label; //같은 날에 여러 일정
+    ArrayList<String> label=new ArrayList<String>(); //같은 날에 여러 일정
 
     public Schedule(String d, String l){
         this.date = d;
-        this.label = new ArrayList<String>();
+        //this.label = new ArrayList<String>();
         this.label.add(l);
     }
 

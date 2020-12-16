@@ -37,7 +37,6 @@ public class ScheduleActivity extends AppCompatActivity {
     DatabaseReference myRef;
     Login2 user=new Login2();
     String UserID=user.getUserID();
-
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy / MM / dd");
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,11 +113,12 @@ public class ScheduleActivity extends AppCompatActivity {
                 String input_date=String.valueOf(fb_date);
                 String getDayGoal=calendar_text.getText().toString();
                 calendar_text.setText("");
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("시작시간").setValue("00 : 00");
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("종료시간").setValue("00 : 00");
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("장기목표").setValue(0);
+                Schedule sche=new Schedule(input_date,getDayGoal);
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("시작시간").setValue("00 : 00");
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("종료시간").setValue("00 : 00");
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("장기목표").setValue(0);
             }
         });
     }

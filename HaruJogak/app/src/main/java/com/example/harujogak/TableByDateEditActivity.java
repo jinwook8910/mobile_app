@@ -251,14 +251,15 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
         //골 리스트 가져옴
-        HashMap<String, Integer> GoalList = new HashMap<>();
-        GoalList = main.getGoal_list();
-        ArrayList<String> goallist_s=new ArrayList<>();
-        for(String t:GoalList.keySet()){
-            goallist_s.add(t);
-        }
+        ArrayList<String> goal_list=new ArrayList<>();
+        goal_list=MainActivity.getGoal_list_1();
+//        ArrayList<Goal> GoalList = MainActivity.getGoal_list();
+//        for(int i=0;i<GoalList.size();i++){
+//            goal_list.add(GoalList.get(i).getGoal_name());
+//        }
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, goallist_s);
+                android.R.layout.simple_spinner_dropdown_item, goal_list);
         Spinner s = (Spinner) addTaskDialog.findViewById(R.id.goalSpinner);
         s.setAdapter(arrayAdapter); //adapter를 spinner에 연결
 
