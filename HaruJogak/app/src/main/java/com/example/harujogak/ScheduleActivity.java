@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -37,9 +36,12 @@ public class ScheduleActivity extends AppCompatActivity {
     DatabaseReference myRef;
     Login2 user=new Login2();
     String UserID=user.getUserID();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy / MM / dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy - MM - dd");
+    ScheduleList new_schedule_list;
 
     protected void onCreate(Bundle savedInstanceState) {
+        new_schedule_list= User.getScheduleList();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
@@ -74,10 +76,18 @@ public class ScheduleActivity extends AppCompatActivity {
 
         //listview
         ListView listview = (ListView) findViewById(R.id.calendar_list);
-        //listview.setAdapter(adapter);
+        listview.setAdapter(adapter);
         //리스트뷰 아이템 추가
         //adapter.addItem("2020/12/20", "2학기 종강");
         //adapter.addItem("2020/12/31", "연말");
+        Schedule new_schedule = (Schedule)new_schedule_list.searchObject(calendar_date.getText().toString());//해당 날짜에 대한 schedule객체 가져오기
+        System.out.println("here! "+new_schedule);
+        int i;
+        if(new_schedule!=null){
+            for(i=0;i<new_schedule.getLabel().size();i++){
+                adapter.addItem(new_schedule.getDate(), new_schedule.getLabel().get(i));
+            }
+        }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
@@ -89,16 +99,24 @@ public class ScheduleActivity extends AppCompatActivity {
         //날짜 변경시
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
-                calendar_date.setText(String.format("%d / %d / %d",year,month+1,dayOfMonth));
+                calendar_date.setText(String.format("%d - %d - %d",year,month+1,dayOfMonth));
                 String date=Integer.toString(year)+"년 "+Integer.toString(month+1)+"월 "+Integer.toString(dayOfMonth)+"일";
                 fb_date=null;
                 fb_date=date.toCharArray();
                 calendar_text.setText("");
                 //listview설정
-                //setListview(calendar_date.getText().toString());
                 //리스트뷰 아이템 추가
-                adapter.addItem("2020/12/20", "2학기 종강");
-                adapter.addItem("2020/12/31", "연말");
+                Schedule new_schedule = (Schedule)new_schedule_list.searchObject(calendar_date.getText().toString());//해당 날짜에 대한 schedule객체 가져오기
+                //System.out.println("here! "+new_schedule);
+                int i;
+                adapter.deleteItem();//listview item 초기화
+                if(new_schedule!=null){
+                    for(i=0;i<new_schedule.getLabel().size();i++){
+                        adapter.addItem(new_schedule.getDate(), new_schedule.getLabel().get(i));
+                    }
+                }
+                adapter.notifyDataSetChanged();
+
             }
         });
         calendar_btn.setOnClickListener(new View.OnClickListener() {
@@ -110,43 +128,46 @@ public class ScheduleActivity extends AppCompatActivity {
                 //user.getScheduleList().add(new_schedule);
 
                 //firebase
-                String input_date=String.valueOf(fb_date);
-                String getDayGoal=calendar_text.getText().toString();
-                calendar_text.setText("");
-                //Schedule sche=new Schedule(input_date,getDayGoal);
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("시작시간").setValue("00 : 00");
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("종료시간").setValue("00 : 00");
-                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("장기목표").setValue(0);
+//                String input_date=String.valueOf(fb_date);
+//                String getDayGoal=calendar_text.getText().toString();
+//                calendar_text.setText("");
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("시작시간").setValue("00 : 00");
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("종료시간").setValue("00 : 00");
+//                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("장기목표").setValue(0);
+                Schedule new_schedule = User.getScheduleList().searchObject(calendar_date.getText().toString());
+                if(new_schedule==null){
+                    ArrayList<String> labels = new ArrayList<>();
+                    labels.add(calendar_text.getText().toString());
+                    Schedule schedule = new Schedule(calendar_date.getText().toString() ,labels);
+                    User.addScheduleList(schedule);
+                }
+                else{
+                    new_schedule.getLabel().add(calendar_text.getText().toString());
+                    User.addScheduleList(new_schedule);
+                }
+
+                calendar_text.setText("");//추가 후 editText비우기
             }
         });
     }
 
-    private void setListview(String date){
-        //listView 불러오기
-        ListView listview = (ListView) findViewById(R.id.calendar_list);
-        ArrayList<String> calendar_list = new ArrayList<>();
-//        //real data (해당 날짜의 일정만 가져옴)
-//        User user = User.getInstance();
-//        ScheduleList schedulelist = user.getScheduleList();
-//        calendar_list = schedulelist.search(date);
-
-        //test data
-        calendar_list.add("hello1");
-        calendar_list.add("hello2");
-        calendar_list.add("hello3");
-        calendar_list.add("hello4");
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, calendar_list);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id){
-                //listview 객체 클릭할 때 이벤트
-            }
-        });
-    }
+//    //listview에 data setting
+//    private boolean setListview(String date){
+//        //new_schedule_list = User.getScheduleList();
+//        Schedule new_schedule = (Schedule)new_schedule_list.searchObject(date);
+//        System.out.println("here! "+new_schedule);
+//        int i;
+//        adapter.deleteItem();
+//        if(new_schedule!=null){
+//            for(i=0;i<new_schedule.getLabel().size();i++){
+//                adapter.addItem(new_schedule.getDate(), new_schedule.getLabel().get(i));
+//            }
+//        }
+//
+//        return true;
+//    }
 
     private String getDate(){
         mNow = System.currentTimeMillis();
@@ -195,6 +216,9 @@ public class ScheduleActivity extends AppCompatActivity {
             //같은 날짜의 schedule 객체를 찾아서 대입해야함
 
             listViewItemList.add(label);
+        }
+        public void deleteItem(){
+            listViewItemList = new ArrayList<String>();
         }
 
     }

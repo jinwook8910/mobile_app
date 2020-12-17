@@ -218,8 +218,8 @@ public class User {
                     done = true;
                 }
                 else {
-                    pie_sizes.concat("<>" + pie_size_temp.toString());
-                    pie_labels.concat("<>" + pieEntries.get(i).getLabel());
+                    pie_sizes = pie_sizes.concat("<>" + pie_size_temp.toString());
+                    pie_labels = pie_labels.concat("<>" + pieEntries.get(i).getLabel());
                 }
             }
             data.child(table.getDate()).child("파이크기").setValue(pie_sizes);
@@ -238,7 +238,7 @@ public class User {
                     done2=true;
                 }
                 else{
-                    color.concat("<>"+colors.get(j).toString());
+                    color = color.concat("<>"+colors.get(j).toString());
                 }
             }
             //평가
@@ -252,7 +252,7 @@ public class User {
                     done3=true;
                 }
                 else{
-                    rating.concat(ratings.get(k).toString());
+                    rating = rating.concat(ratings.get(k).toString());
                 }
             }
         }
@@ -470,18 +470,19 @@ public class User {
         Iterator it = labels.iterator();
         while(it.hasNext()){
             String l = (String)it.next();
+            System.out.println("here2! "+l);
             if(!start)
                 label=l;
             else
-                label.concat("<>"+l);
+                label=label.concat("<>"+l);
             start = true;
         }
+        System.out.println("here3! "+label);
 
         String[] date = new String[1];
         String[] label_list = new String[1];
         date[0] = new_schedule.getDate();
         label_list[0] = label;
-        System.out.println("umm... "+new_schedule.getDate());
         data = myRef.child(UserID).child("일정리스트");
         data.child(date[0]).child("일정").setValue(label_list[0]);
     }
