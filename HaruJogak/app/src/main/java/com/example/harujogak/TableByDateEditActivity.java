@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -51,7 +51,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
     String start_times[], end_times[];
     private int flag_time;
 
-//    User users = new User();
+    //    User users = new User();
     private String fb_date, fb_strt, fb_endt, fb_task, fb_long, UserID;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -117,7 +117,9 @@ public class TableByDateEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Todo DB 저장
-//                users.addDateTable(myTimeTable);
+                User.addDateTable(myTimeTable); //편디비
+                startLoading();
+                finish();
             }
         });
     }
@@ -128,7 +130,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             month += 1;
             dateButton.setText(year + " / " + month + " / " + dayOfMonth);
-            myTimeTable.setDate(year + " / " + month + " / " + dayOfMonth);
+            myTimeTable.setDate(year + " - " + month + " - " + dayOfMonth);
             fb_date = year + "년 " + month + "월 " + dayOfMonth + "일";
         }
     }
@@ -224,13 +226,13 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 add_task_thread(taskLabel);
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
 
-                //일정 정보 firebase 추가
-                UserID = user.getUserID(); //로그인안한 경우 비회원으로 저장
-                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("시작시간").setValue(fb_strt);
-                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("종료시간").setValue(fb_endt);
-                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);
-                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("평가").setValue(0);
-                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("장기목표").setValue(fb_long);
+//                //일정 정보 firebase 추가
+//                UserID = user.getUserID(); //로그인안한 경우 비회원으로 저장
+//                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("시작시간").setValue(fb_strt);
+//                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("종료시간").setValue(fb_endt);
+//                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);
+//                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("평가").setValue(0);
+//                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("장기목표").setValue(fb_long);
 
                 addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
@@ -560,4 +562,13 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void startLoading() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 5000);
+    }
 }
