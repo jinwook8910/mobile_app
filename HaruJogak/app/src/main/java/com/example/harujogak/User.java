@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class User {
     private static volatile User instance = null;
@@ -43,7 +44,6 @@ public class User {
     } //임시 테스트용
 
     public User(String user_id, String user_pw){
-
         this.id = user_id;
         this.passWord = user_pw;
         init();
@@ -86,6 +86,8 @@ public class User {
 
     public static void load(){//database에서 정보 가져오기
         loadGoalList();
+        loadObstructList();
+        loadScheduleList();
     }
 
     public ArrayList<MyTimeTable> getWeekTable() {
@@ -119,6 +121,48 @@ public class User {
         }
     }
 
+    public static void loadDateTable(){
+        //firebase
+        DatabaseReference data;
+        ValueEventListener dataListener;
+        ArrayList<MyTimeTable> time_table_list = new ArrayList<>();
+
+//        //firebase - 날짜별 일정
+//        data = myRef.child(UserID).child("날짜별 일정");
+//        dataListener = data.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.getValue() == null) {
+//                } else {
+//                    for (DataSnapshot ds : snapshot.getChildren()) {
+//                        if (ds.getValue() != null) {
+//                            String date = ds.getKey();
+//                            ds.child("파이크기").getValue().toString(); //{"32f/510f/12f"} 형태로 저장
+//                            ds.child("파이라벨").getValue().toString(); //{"라벨1/라벨2/라벨3"} 형태로 저장
+//                            ds.child("일정갯수").getValue().toString();
+//                            ds.child("배경색").getValue().toString(); //{"1321/510/12231"} 형태로 저장
+//
+////                            String dday = ds.child("목표 날짜").getValue().toString();
+////                            String start = ds.child("시작 날짜").getValue().toString();
+//
+//                            Goal goal_1 = new Goal(goal, start, dday);
+//                            System.out.println("waaaa! " + goal_1.getGoal_name());
+//                            //User.getGoalList().add(goal_1);
+//                            goal_list.add(goal_1);
+//                        }
+//                    }
+//                    System.out.println("yaaaaaaaaaaa! " + goal_list);
+//                    User.setGoalList(goal_list);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.w("TAG", "Firebase error");
+//            }
+//        });
+    }
+
     public static ArrayList<Goal> getGoalList() {
         //Todo : firebase에서 받아온 데이터 class에 담아서 return
         User.loadGoalList();
@@ -126,7 +170,6 @@ public class User {
     }
 
     public static void setGoalList(ArrayList<Goal> goalList_r) {
-        //Todo : firebase에 동일하게 저장
         goalList = goalList_r;
     }
 
@@ -136,14 +179,13 @@ public class User {
         data = myRef.child(UserID).child("목표리스트");
         data.child(new_goal.getGoal_name()).child("목표 날짜").setValue(new_goal.getDeadline());
         data.child(new_goal.getGoal_name()).child("시작 날짜").setValue(new_goal.getStartday());
-        //myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 D-day").setValue(dday[0]);
     }
 
     public static void loadGoalList() {
+        //Todo : firebase에 동일하게 저장
         //firebase
         DatabaseReference data;
         ValueEventListener dataListener;
-        //private static ArrayList<String> goal_list = new ArrayList<>();
         ArrayList<Goal> goal_list = new ArrayList<>();
 
         //firebase - 목표 통계
@@ -177,40 +219,148 @@ public class User {
         });
     }
 
-    public ArrayList<Obstruct> getObstructList() {
+    public static ArrayList<Obstruct> getObstructList() {
         //Todo : firebase에서 받아온 데이터 class에 담아서 return
+        User.loadObstructList();
         return obstructList;
     }
 
-    public void setObstructList(ArrayList<Obstruct> obstructList) {
+    public static void setObstructList(ArrayList<Obstruct> obstructlist) {
         //Todo : firebase에 동일하게 저장
-        this.obstructList = obstructList;
+        obstructList = obstructlist;
     }
 
-    public void addObstructList(String str) {
+    public static void addObstructList(String str) {
+        DatabaseReference data;
         boolean isReduplication = false;
-        for (int i = 0; i < obstructList.size(); i++) {
-            if (obstructList.get(i).getObstruction().equals(str)) {
+        ArrayList<Obstruct> obstruct_list = User.getObstructList();
+
+        data = myRef.child(UserID).child("방해요소 리스트");
+        for (int i = 0; i < obstruct_list.size(); i++) {
+            if (obstruct_list.get(i).getObstruction().equals(str)) {
                 isReduplication = true;
                 //Todo : firebase에 동일하게 저장
-                obstructList.get(i).setFrequency(obstructList.get(i).getFrequency() + 1);
+                obstruct_list.get(i).setFrequency(obstruct_list.get(i).getFrequency() + 1);
+                data.child(obstruct_list.get(i).getObstruction()).child("빈도수").setValue(obstruct_list.get(i).getFrequency());
                 break;
             }
         }
         if (!isReduplication){
             //Todo : firebase에 동일하게 저장
-            obstructList.add(new Obstruct(str, 1));
+            //obstructList.add(new Obstruct(str, 1));
+            User.getObstructList().add(new Obstruct(str, 1));
+            data.child(str).child("빈도수").setValue("1");
         }
     }
 
-    public ScheduleList getScheduleList() {
+    public static void loadObstructList(){
+        //firebase
+        DatabaseReference data;
+        ValueEventListener dataListener;
+
+        ArrayList<Obstruct> obstruct_list = new ArrayList<Obstruct>();
+
+        //firebase - 방해요소
+        data = myRef.child(UserID).child("방해요소 리스트");
+        dataListener = data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getValue() != null) {
+                            String obstruction = ds.getKey();
+                            String frequency = ds.child("빈도수").getValue().toString();
+
+                            Obstruct obstruct = new Obstruct(obstruction, Integer.parseInt(frequency));
+
+                            System.out.println("waaaa! " + obstruct.getObstruction());
+                            obstruct_list.add(obstruct);
+                        }
+                    }
+                    System.out.println("yaaaaaaaaaaa! " + obstruct_list);
+                    User.setObstructList(obstruct_list);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+    }
+
+    public static ScheduleList getScheduleList() {
         //Todo : firebase에서 받아온 데이터 class에 담아서 return
+        User.loadScheduleList();
         return scheduleList;
     }
 
-    public void setScheduleList(ScheduleList scheduleList) {
+    public static void setScheduleList(ScheduleList schedulelist) {
         //Todo : firebase에 동일하게 저장
-        this.scheduleList = scheduleList;
+        scheduleList = schedulelist;
+    }
+
+    public static void addScheduleList(Schedule new_schedule){//추가된 후 schedule 객체 넘겨받음
+        DatabaseReference data;
+        ScheduleList sl = User.getScheduleList();
+        Boolean start = false;
+//
+        ArrayList<String> labels = new_schedule.getLabel();
+        String label = new String();
+        Iterator it = labels.iterator();
+        while(it.hasNext()){
+            String l = (String)it.next();
+            if(!start)
+                label=l;
+            else
+                label.concat("/"+l);
+            start = true;
+        }
+
+        data = myRef.child(UserID).child("일정리스트");
+        data.child(new_schedule.getDate()).child("일정").setValue(label);
+    }
+
+    public static void loadScheduleList(){
+        //firebase
+        DatabaseReference data;
+        ValueEventListener dataListener;
+        ScheduleList schedule_list = new ScheduleList();
+
+        //firebase - 캘린더 일정 로드
+        data = myRef.child(UserID).child("일정리스트");
+        dataListener = data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getValue() != null) {
+                            String date = ds.getKey();
+                            ArrayList<String> label = new ArrayList<>();
+                            String temp = ds.child("일정").getValue().toString(); //{"일정1/일정2/일정3"}
+                            String[] temps = temp.split("/");
+                            int i;
+                            for(i=0;i<temps.length;i++){
+                                label.add(temps[i]);
+                            }
+
+                            Schedule new_schedule = new Schedule(date, label);
+                            System.out.println("waaaa! " + new_schedule.getDate());
+                            //User.getGoalList().add(goal_1);
+                            schedule_list.add(new_schedule);
+                        }
+                    }
+                    System.out.println("yaaaaaaaaaaa! " + schedule_list);
+                    User.setScheduleList(schedule_list);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
     }
 
 }
