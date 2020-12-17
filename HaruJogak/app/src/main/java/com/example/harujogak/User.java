@@ -98,6 +98,7 @@ public class User {
 
     public static ArrayList<MyTimeTable> getWeekTable() {
         //Todo : firebase에서 받아온 데이터 class에 담아서 return
+
         loadWeekTable();
         return weekTable;
     }
@@ -283,7 +284,7 @@ public class User {
                             ArrayList<PieEntry> piedatas = new ArrayList<PieEntry>();
                             int i;
                             for(i=0;i<pie_size_temp.length;i++){
-                                piedatas.add(new PieEntry(Float.parseFloat(pie_size_temp[i]), pie_label_temp[i]));
+//                                piedatas.add(new PieEntry(Float.parseFloat(pie_size_temp[i]), pie_label_temp[i]));
                             }
                             PieDataSet dataSet = new PieDataSet(piedatas, "DB_dateTable");
                             PieData piedata = new PieData(dataSet);
@@ -297,7 +298,7 @@ public class User {
 
                             ArrayList<Integer> rating = new ArrayList<>();
                             for(i=0;i<rating_temp.length;i++){
-                                rating.add(Integer.parseInt(rating_temp[i]));
+  //                              rating.add(Integer.parseInt(rating_temp[i]));
                             }
 
                             MyTimeTable new_time_table = new MyTimeTable();

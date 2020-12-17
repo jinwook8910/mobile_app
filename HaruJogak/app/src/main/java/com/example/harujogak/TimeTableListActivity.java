@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,13 +29,29 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class TimeTableListActivity extends AppCompatActivity {
     //navigation button
     private ImageButton btn1, btn2, btn3, btn4, btn5;
     private TableAdapter tableAdapter;
+    int flag=0;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    Calendar cal=Calendar.getInstance();
+    Date currentTime = cal.getTime();
+    String today_text=new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(currentTime);
 
     //Todo : 현재 로그인 되어있는 계정의 정보를 user 클래스로 저장해 둠. getInstance??
     private User user = new User();
@@ -97,34 +114,86 @@ public class TimeTableListActivity extends AppCompatActivity {
     } // end of onCreate
 
     public void setdata2() {
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+        String UserID=Login2.getUserID();
+        ArrayList<PieEntry> yValues=new ArrayList<PieEntry>();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        DatabaseReference fb_data;
+        fb_data = myRef.child(UserID).child("날짜별 일정");
+        fb_data.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long set=snapshot.getChildrenCount();
+                if (snapshot.exists() == false) {
 
-        yValues.add(new PieEntry(60f, "잠"));
-        yValues.add(new PieEntry(10f, "아침식사"));
-        yValues.add(new PieEntry(35f, "공부"));
-        yValues.add(new PieEntry(20f, "휴식"));
-        yValues.add(new PieEntry(10f, "점심식사"));
-        yValues.add(new PieEntry(35f, "운동"));
-        yValues.add(new PieEntry(20f, "휴식"));
-        yValues.add(new PieEntry(10f, "저녁식사"));
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String date=ds.getKey();
+                        if(flag==(int)set)
+                            break;
+                        if (ds.getValue() != null) {
+                            for(DataSnapshot ds1:ds.getChildren()) {
+                                String sche = ds1.getKey();
+                                String strt = ds1.child("시작시간").getValue().toString();
+                                String endt = ds1.child("종료시간").getValue().toString();
 
-        PieDataSet dataSet = new PieDataSet(yValues, "temp");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+                                String[] start_times = strt.split(" : ");
+                                int new_str = (int) (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1])) % 1440;
+                                String[] end_times = endt.split(" : ");
+                                int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
 
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-        data.setValueTextColor(Color.YELLOW);
+                                yValues.add(new PieEntry(new_end - new_str, sche));
+                            }
+                            flag++;
 
-        exT.setPieData(data);
-        exT.setDate("2020-12-12");
+                            PieDataSet dataSet = new PieDataSet(yValues, "temp");
+                            dataSet.setSliceSpace(0.5f);
+                            dataSet.setSelectionShift(0f);
+                            dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
-        //임시로 만든 user에 dateTable 만들어줌
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
-        user.getDateTable().add(exT);
+                            PieData data = new PieData((dataSet));
+                            data.setValueTextSize(0f);
+                            data.setValueTextColor(Color.YELLOW);
+
+                            exT.setPieData(data);
+                            exT.setDate(date);
+                            user.getDateTable().add(exT);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("TAG", "Firebase error");
+            }
+        });
+//        yValues.add(new PieEntry(60f, "잠"));
+//        yValues.add(new PieEntry(10f, "아침식사"));
+//        yValues.add(new PieEntry(35f, "공부"));
+//        yValues.add(new PieEntry(20f, "휴식"));
+//        yValues.add(new PieEntry(10f, "점심식사"));
+//        yValues.add(new PieEntry(35f, "운동"));
+//        yValues.add(new PieEntry(20f, "휴식"));
+//        yValues.add(new PieEntry(10f, "저녁식사"));
+
+
+//        PieDataSet dataSet = new PieDataSet(yValues, "temp");
+//        dataSet.setSliceSpace(0.5f);
+//        dataSet.setSelectionShift(0f);
+//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//
+//        PieData data = new PieData((dataSet));
+//        data.setValueTextSize(0f);
+//        data.setValueTextColor(Color.YELLOW);
+//
+//        exT.setPieData(data);
+//        exT.setDate("2020-12-12");
+//
+//        //임시로 만든 user에 dateTable 만들어줌
+//        user.getDateTable().add(exT);
+//        user.getDateTable().add(exT);
+//        user.getDateTable().add(exT);
+//        user.getDateTable().add(exT);
     }
 
     public void addToWeekList() {
