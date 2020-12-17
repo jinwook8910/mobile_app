@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/sign_up_pwd"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="회원가"
+        android:text="회원가입"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
