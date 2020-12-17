@@ -8,12 +8,12 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 
-class MyTimeTable {
+public class MyTimeTable {
     private String date;    //해당 시간표가 적용될 날짜. (주간 시간표면 월~일, 일일 시간표면 yyyy-mm-dd)
     private PieData pieData;    //파이 차트 그리는데 사용되는 정보. 내부에 일정 정보(이름, 시간)가 들어있음
     private int TasksCount;     //이 시간표에 들어가는 일정 개수
     private ArrayList<Integer> MyBackground;    //파이차트 그리는데 사용되는 정보. 파이 배경색을 저장함
-    private ArrayList<Integer[]> rating;        //해당 시간표의 일정을 저장해 놓는 integer 배열. 그 배열에 대한 어레이리스트
+    private ArrayList<Integer> rating;        //해당 시간표의 일정을 저장해 놓는 integer 배열. 그 배열에 대한 어레이리스트
 
     public MyTimeTable(){
         date = " ";
@@ -51,11 +51,11 @@ class MyTimeTable {
         TasksCount = tasksCount;
     }
 
-    public void setRating(ArrayList<Integer[]> rating) {
+    public void setRating(ArrayList<Integer> rating) {
         this.rating = rating;
     }
 
-    public ArrayList<Integer[]> getRating() {
+    public ArrayList<Integer> getRating() {
         return rating;
     }
 
