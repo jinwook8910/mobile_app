@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton btn1, btn2, btn3, btn4, btn5;
-    private TextView date, time,sche_click;
+    private TextView date, time;
     private long mNow;
     private Date mDate;
     private MyTimeTable todaysTimeTable;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     String UserID = user.getUserID();
 
     float sum = 0;
-    int count = 0, day;
+    int count = 0, flag=0, day;
     int now = 0, i;
     int result;
     int sump = 0;
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         date = findViewById(R.id.main_date);
         time = findViewById(R.id.main_time);
-        Button click=findViewById(R.id.sche_click);
         PieChart pieChart = findViewById(R.id.todayPieChart);
 
         btn1 = (ImageButton) findViewById(R.id.main_navi_btn1);
@@ -103,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
         //time.setText(getTime());
         ShowTimeMethod();
 
-        //Todo : DB에서 현재 날짜에 해당하는 시간표의 MyTimeTable 정보 가져옴
-        // 지금은 그냥 setExample 함수로 예시 정보 저장해서 사용했음
-        // user.dateTable 중에서 오늘 날짜에 해당하는 시간표가 있으면 그거 쓰고 없으면 오늘 요일 시간표 불러옴
         //Todo : DB에서 현재 날짜에 해당하는 시간표 정보를 가져옴
         // (지금은 그냥 setExample 함수로 임시 시간표 저장해서 사용했음)
         // user.dateTable 중에서 오늘 날짜에 해당하는 일일 시간표가 있으면 그거 쓰고, 없으면 오늘 주간 시간표 불러옴
@@ -134,27 +130,43 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     for (DataSnapshot ds : snapshot.getChildren()) {
+                        long set=ds.getChildrenCount();
+                        if(flag==(int)set)
+                            break;
                         if (ds.getValue() != null) {
                             String sche=ds.getKey();
                             String strt=ds.child("시작시간").getValue().toString();
                             String endt=ds.child("종료시간").getValue().toString();
+
                             String[] start_times = strt.split(" : ");
                             int new_str = (int) (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1])) % 1440;
                             String[] end_times=endt.split(" : ");
                             int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
+
                             yValues.add(new PieEntry(new_end-new_str, sche));
-                            PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
-                            dataSet.setDrawValues(true);
-                            dataSet.setSliceSpace(0.5f);
-                            dataSet.setSelectionShift(0f);
-                            dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-                            PieData data = new PieData((dataSet));
-                            data.setValueTextSize(0f);
-                            todaysTimeTable.setPieData(data);
-                            todaysTimeTable.setDate(today);
+                            flag++;
                             //showTable(temp,yValues);
                         }
                     }
+                    PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
+                    dataSet.setDrawValues(true);
+                    dataSet.setSliceSpace(0.5f);
+                    dataSet.setSelectionShift(0f);
+                    dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+                    PieData data = new PieData();
+                    data.setDataSet(dataSet);
+                    data.setValueTextSize(0f);
+
+                    pieChart.setUsePercentValues(false);
+                    pieChart.setRotationEnabled(false);
+                    pieChart.getLegend().setEnabled(false);
+                    pieChart.getDescription().setEnabled(false);
+                    pieChart.setDrawHoleEnabled(false);
+                    pieChart.setDrawMarkers(true);
+
+                    pieChart.notifyDataSetChanged();
+                    pieChart.setData(data);
+                    pieChart.invalidate();
                 }
             }
             @Override
@@ -163,23 +175,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //todaysRate = new Integer[todaysTimeTable.getTasksCount()];
-        click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //showTable(yValues);
-                PieChart pieChart=findViewById(R.id.todayPieChart);
-                PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
-                dataSet.setDrawValues(true);
-                dataSet.setSliceSpace(0.5f);
-                dataSet.setSelectionShift(0f);
-                dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-                PieData data = new PieData((dataSet));
-                data.setValueTextSize(0f);
-
-                pieChart.setData(todaysTimeTable.getPieData());
-            }
-        });
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {

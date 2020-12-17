@@ -44,11 +44,7 @@
 
         </com.github.mikephil.charting.charts.PieChart>
     </LinearLayout>
-    <Button
-        android:id="@+id/sche_click"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="시간표 확인 클릭" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
