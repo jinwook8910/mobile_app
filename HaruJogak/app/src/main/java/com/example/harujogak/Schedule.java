@@ -7,10 +7,15 @@ public class Schedule {
     String date;
     ArrayList<String> label=new ArrayList<String>(); //같은 날에 여러 일정
 
-    public Schedule(String d, String l){
+    public void addSchedule(String d, String l){
         this.date = d;
         //this.label = new ArrayList<String>();
         this.label.add(l);
+    }
+
+    public Schedule(String d, ArrayList<String> l){
+        this.date = d;
+        this.label = l;
     }
 
     public String getDate() {

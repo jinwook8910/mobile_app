@@ -110,10 +110,10 @@ public class ScheduleActivity extends AppCompatActivity {
                 //user.getScheduleList().add(new_schedule);
 
                 //firebase
-                String input_date=String.valueOf(fb_date);
-                String getDayGoal=calendar_text.getText().toString();
-                calendar_text.setText("");
-                Schedule sche=new Schedule(input_date,getDayGoal);
+//                String input_date=String.valueOf(fb_date);
+//                String getDayGoal=calendar_text.getText().toString();
+//                calendar_text.setText("");
+//                Schedule sche=new Schedule(input_date,getDayGoal);
 //                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("방해요소").setValue(0);
 //                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("평가").setValue(0);
 //                myRef.child(UserID).child("날짜별 일정").child(input_date).child(getDayGoal).child("시작시간").setValue("00 : 00");
