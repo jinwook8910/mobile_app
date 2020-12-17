@@ -2,7 +2,6 @@ package com.example.harujogak;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,10 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+<<<<<<< HEAD
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,20 +39,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+=======
+
+import java.util.ArrayList;
+import java.util.Iterator;
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
 
 public class TimeTableListActivity extends AppCompatActivity {
     //navigation button
     private ImageButton btn1, btn2, btn3, btn4, btn5;
     private TableAdapter tableAdapter;
+<<<<<<< HEAD
     int flag=0;
     FirebaseDatabase database;
     DatabaseReference myRef;
     Calendar cal=Calendar.getInstance();
     Date currentTime = cal.getTime();
     String today_text=new SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(currentTime);
+=======
+    ArrayList<MyTimeTable> usertable;
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
 
     //Todo : 현재 로그인 되어있는 계정의 정보를 user 클래스로 저장해 둠. getInstance??
     private User user = new User();
+    //private User user = new User();
+    User user = User.getInstance();
 
     //테스트용 임시 시간표
     private MyTimeTable exT = new MyTimeTable();
@@ -63,6 +72,8 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        User.loadDateTable();
+        usertable = User.getDateTable();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_list);
 
@@ -87,7 +98,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1);
 
-        setdata2(); // 유저 정보 연결되면 삭제될 부분
         addToWeekList();
         addToDateList(this);
 
@@ -113,6 +123,7 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     } // end of onCreate
 
+<<<<<<< HEAD
     public void setdata2() {
         String UserID=Login2.getUserID();
         ArrayList<PieEntry> yValues=new ArrayList<PieEntry>();
@@ -167,6 +178,11 @@ public class TimeTableListActivity extends AppCompatActivity {
                 Log.w("TAG", "Firebase error");
             }
         });
+=======
+//    public void setdata2() {
+//        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+//
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
 //        yValues.add(new PieEntry(60f, "잠"));
 //        yValues.add(new PieEntry(10f, "아침식사"));
 //        yValues.add(new PieEntry(35f, "공부"));
@@ -175,8 +191,12 @@ public class TimeTableListActivity extends AppCompatActivity {
 //        yValues.add(new PieEntry(35f, "운동"));
 //        yValues.add(new PieEntry(20f, "휴식"));
 //        yValues.add(new PieEntry(10f, "저녁식사"));
+<<<<<<< HEAD
 
 
+=======
+//
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
 //        PieDataSet dataSet = new PieDataSet(yValues, "temp");
 //        dataSet.setSliceSpace(0.5f);
 //        dataSet.setSelectionShift(0f);
@@ -194,17 +214,30 @@ public class TimeTableListActivity extends AppCompatActivity {
 //        user.getDateTable().add(exT);
 //        user.getDateTable().add(exT);
 //        user.getDateTable().add(exT);
+<<<<<<< HEAD
     }
+=======
+//    }
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
 
     public void addToWeekList() {
         user.getWeekTable();
     }
 
     public void addToDateList(Context c) {
+//        MyTimeTable empty = new MyTimeTable("새로 만들기");
+//        tableAdapter = new TableAdapter(c);
+//        for (int i = 0; i < user.getDateTable().size(); i++)
+//            tableAdapter.addItem(user.getDateTable().get(i));
+//        tableAdapter.addItem(empty);
         MyTimeTable empty = new MyTimeTable("새로 만들기");
         tableAdapter = new TableAdapter(c);
-        for (int i = 0; i < user.getDateTable().size(); i++)
-            tableAdapter.addItem(user.getDateTable().get(i));
+        Iterator it = usertable.iterator();
+        while(it.hasNext()){
+            MyTimeTable table = (MyTimeTable) it.next();
+            System.out.println("herehere "+table.getDate());
+            tableAdapter.addItem(table);
+        }
         tableAdapter.addItem(empty);
     }
 

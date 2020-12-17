@@ -33,7 +33,7 @@
         android:layout_width="320dp"
         android:layout_height="320dp"
         android:gravity="center"
-        android:background="@drawable/eyegold2"
+        android:background="@drawable/eyegold3"
         android:layout_marginTop="80dp">
 
 

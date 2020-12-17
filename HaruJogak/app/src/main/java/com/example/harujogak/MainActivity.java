@@ -2,6 +2,7 @@ package com.example.harujogak;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,9 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.net.DatagramPacket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +39,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private ImageButton btn1, btn2, btn3, btn4, btn5;
@@ -49,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private long mNow;
     private Date mDate;
     private MyTimeTable todaysTimeTable;
+    int rotate = 0;
     ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
     Integer[] todaysRate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -74,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        User.loadDateTable();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -143,11 +142,17 @@ public class MainActivity extends AppCompatActivity {
                             String[] end_times=endt.split(" : ");
                             int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
 
-                            yValues.add(new PieEntry(new_end-new_str, sche));
+                            if (new_end < new_str) {
+                                yValues.add(new PieEntry(1440 - new_str + new_end, sche));
+                                rotate = (1440 - new_str) / 4;
+                            }
+                            else
+                                yValues.add(new PieEntry(new_end-new_str, sche));
                             flag++;
                             //showTable(temp,yValues);
                         }
                     }
+                    pieChart.setRotationAngle(270 - rotate);
                     PieDataSet dataSet = new PieDataSet(yValues, "Tasks");
                     dataSet.setDrawValues(true);
                     dataSet.setSliceSpace(0.5f);
@@ -163,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     pieChart.getDescription().setEnabled(false);
                     pieChart.setDrawHoleEnabled(false);
                     pieChart.setDrawMarkers(true);
+                    pieChart.setCenterTextSize(0);
 
                     pieChart.notifyDataSetChanged();
                     pieChart.setData(data);

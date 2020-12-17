@@ -19,7 +19,7 @@ import java.util.List;
 
 public class User {
     private static volatile User instance = null;
-    private String id, passWord, eMail;
+    private static String id, passWord, eMail;
     private static ArrayList<MyTimeTable> weekTable = new ArrayList<MyTimeTable>();   //주간 시간표 저장하는 리스트
     private static ArrayList<MyTimeTable> dateTable = new ArrayList<MyTimeTable>();   //일일 시간표 저장하는 리스트
     private static ArrayList<Goal> goalList = new ArrayList<Goal>();  //목표 저장하는 리스트
@@ -84,13 +84,15 @@ public class User {
         return instance;
     }
 
-    public String getId() {
+    public static String getId() {
         return id;
     }
 
+    public static String getUserId(){return UserID; }
+
     public static void load(){//database에서 정보 가져오기
         loadWeekTable();
-        loadDateTable();
+        //loadDateTable();
         loadGoalList();
         loadObstructList();
         loadScheduleList();
@@ -213,15 +215,15 @@ public class User {
             Boolean done=false;
             for(i=0;i<pieEntries.size();i++){
                 Float pie_size_temp = pieEntries.get(i).getValue();
-                if(!done){
-                    pie_sizes = pie_size_temp.toString();
-                    pie_labels = pieEntries.get(i).getLabel();
-                    done = true;
-                }
-                else {
+//                if(!done){
+//                    pie_sizes = pie_size_temp.toString();
+//                    pie_labels = pieEntries.get(i).getLabel();
+//                    done = true;
+//                }
+                //else {
                     pie_sizes = pie_sizes.concat("<>" + pie_size_temp.toString());
                     pie_labels = pie_labels.concat("<>" + pieEntries.get(i).getLabel());
-                }
+                //}
             }
             data.child(table.getDate()).child("파이크기").setValue(pie_sizes);
             data.child(table.getDate()).child("파이라벨").setValue(pie_labels);
@@ -242,6 +244,7 @@ public class User {
                     color = color.concat("<>"+colors.get(j).toString());
                 }
             }
+            data.child(table.getDate()).child("배경색").setValue(color);
             //평가
             ArrayList<Integer> ratings = table.getRating();
             String rating = new String();
@@ -256,6 +259,7 @@ public class User {
                     rating = rating.concat(ratings.get(k).toString());
                 }
             }
+            data.child(table.getDate()).child("평가").setValue(rating);
         }
     }
 
@@ -275,16 +279,25 @@ public class User {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
                             String date = ds.getKey();
-                            String[] pie_size_temp = ds.child("파이크기").getValue().toString().split("<>"); //{"32f<>510f<>12f"} 형태로 저장
-                            String[] pie_label_temp = ds.child("파이라벨").getValue().toString().split("<>"); //{"라벨1<>라벨2<>라벨3"} 형태로 저장
+                            String[] pie_size_temp = ds.child("파이크기").getValue().toString().split("<>"); //{"<>32f<>510f<>12f"} 형태로 저장
+                            System.out.println("here2!! "+ds);
+                            System.out.println("here3!! "+pie_size_temp[3]);
+                            String[] pie_label_temp = ds.child("파이라벨").getValue().toString().split("<>"); //{"<>라벨1<>라벨2<>라벨3"} 형태로 저장
+                            System.out.println("here4!!"+pie_label_temp[3]+"!!");
                             String count_temp = ds.child("일정갯수").getValue().toString();
-                            String[] color_temp = ds.child("배경색").getValue().toString().split("<>"); //{"1321<>510<>12231"} 형태로 저장
-                            String[] rating_temp = ds.child("평가").getValue().toString().split("<>");//{"3<>2<>5<>0"}형태로 저장
+                            String[] color_temp = ds.child("배경색").getValue().toString().split("<>"); //{"<>1321<>510<>12231"} 형태로 저장
+                            String[] rating_temp = ds.child("평가").getValue().toString().split("<>");//{"<>3<>2<>5<>0"}형태로 저장
 
                             ArrayList<PieEntry> piedatas = new ArrayList<PieEntry>();
                             int i;
+<<<<<<< HEAD
                             for(i=0;i<pie_size_temp.length;i++){
 //                                piedatas.add(new PieEntry(Float.parseFloat(pie_size_temp[i]), pie_label_temp[i]));
+=======
+                            for(i=1;i<pie_size_temp.length;i++){//test,,
+                                Float t = Float.parseFloat(pie_size_temp[i]);
+                                piedatas.add(new PieEntry(t, pie_label_temp[i]));
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
                             }
                             PieDataSet dataSet = new PieDataSet(piedatas, "DB_dateTable");
                             PieData piedata = new PieData(dataSet);
@@ -292,14 +305,25 @@ public class User {
                             Integer count = Integer.parseInt(count_temp);
 
                             ArrayList<Integer> color = new ArrayList<>();
-                            for(i=0;i<color_temp.length;i++){
+                            for(i=1;i<color_temp.length;i++){
                                 color.add(Integer.parseInt(color_temp[i]));
                             }
 
                             ArrayList<Integer> rating = new ArrayList<>();
+<<<<<<< HEAD
                             for(i=0;i<rating_temp.length;i++){
   //                              rating.add(Integer.parseInt(rating_temp[i]));
+=======
+                            if(rating!=null) {
+                                for (i = 1; i < rating_temp.length; i++) {
+                                    if(rating_temp[i].equals(""))
+                                        rating.add(0);
+                                    else
+                                        rating.add(Integer.parseInt(rating_temp[i]));
+                                }
+>>>>>>> e6f090478b4f6674c4d7d6815ddd16856ed9f902
                             }
+
 
                             MyTimeTable new_time_table = new MyTimeTable();
                             new_time_table.setDate(date);
