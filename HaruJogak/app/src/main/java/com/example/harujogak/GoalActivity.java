@@ -249,10 +249,10 @@ public class GoalActivity extends AppCompatActivity {
 
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(100, 25);
             item_chart.setLayoutParams(param);
-            item_chart.getLayoutParams().width=percent*630/100;
+            item_chart.getLayoutParams().width=percent*470/100;
             LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(100, 1);
             item_blank.setLayoutParams(param2);
-            item_blank.getLayoutParams().width=percent*470/100;
+            item_blank.getLayoutParams().width=percent*430/100;
 
             return convertView;
         }

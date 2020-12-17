@@ -327,6 +327,7 @@ public class TimeTableListActivity extends AppCompatActivity {
     class Listener implements View.OnClickListener {
         public void onClick(View view) {
             if (view == btn1) {
+                User.getInstance().getGoalList();
                 Intent intent = new Intent(TimeTableListActivity.this, GoalActivity.class);
                 startActivity(intent);
             } else if (view == btn2) {
