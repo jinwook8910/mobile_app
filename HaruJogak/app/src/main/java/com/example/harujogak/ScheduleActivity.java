@@ -203,6 +203,7 @@ public class ScheduleActivity extends AppCompatActivity {
     class Listener implements View.OnClickListener{
         public void onClick(View view){
             if(view==btn1){
+                User.getInstance().getGoalList();
                 Intent intent = new Intent(ScheduleActivity.this, GoalActivity.class);
                 startActivity(intent);
             }
