@@ -40,6 +40,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,17 +66,20 @@ public class TableByDayEditActivity extends AppCompatActivity {
     private int flag_time;
     String start_times[], end_times[];
 
-    //    User user = User.getInstance();
-    User user = new User();
+    User users = new User();
     private String fb_date, fb_strt, fb_endt, fb_task, fb_long, UserID;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     int[] week = {0, 0, 0, 0, 0, 0, 0};
 
-    private DateSetListener dateSetListener = new DateSetListener();
     private TimeSetListener timeSetListener = new TimeSetListener();
+
+    Login2 user = new Login2();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        User.load();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_edit_day);
 
@@ -82,11 +87,17 @@ public class TableByDayEditActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        //firebase 정의
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
         Intent intent = getIntent();
         int position = (int) intent.getIntExtra("byDay", -1);
 
         //Todo: 사용자 weekTable 리스트에서 position(0~6) 값에 해당하는 시간표 가져옴.
-        myTimeTable = user.getWeekTable().get(position);
+        myTimeTable = users.getWeekTable().get(position);
+        String[] day = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
+        fb_date = day[position];
 
         dateButton = (Button) findViewById(R.id.date_set_button);
         pieChart = (PieChart) findViewById(R.id.pieChart);
@@ -131,23 +142,13 @@ public class TableByDayEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < 7; i++) {
-                    if (week[i] == 1)
-                        user.addWeekTable(i, myTimeTable);
+                    if (week[i] == 1) {
+                        users.addWeekTable(i, myTimeTable);
+                    }
                 }
             }
         });
 
-    }
-
-    //리스너
-    class DateSetListener implements DatePickerDialog.OnDateSetListener {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            month += 1;
-            dateButton.setText(year + " / " + month + " / " + dayOfMonth);
-            myTimeTable.setDate(year + " / " + month + " / " + dayOfMonth);
-            Log.i("set Date :", year + " / " + month + " / " + dayOfMonth);
-        }
     }
 
     class TimeSetListener implements TimePickerDialog.OnTimeSetListener {
@@ -210,20 +211,22 @@ public class TableByDayEditActivity extends AppCompatActivity {
         });
 
         //Todo : 나중에 골 설정한거를 어레이리스트로 가져와야 함
-        //ArrayList<String> GoalList = user.getGoalList(); ????????
-        ArrayList<String> GoalList = new ArrayList<>();
-        GoalList.add("토익 시험");
-        GoalList.add("다이어트");
-        GoalList.add("코딩테스트");
+        ArrayList<String> goal_list=new ArrayList<>();
+//        goal_list=MainActivity.getGoal_list_1();
+        ArrayList<Goal> GoalList = User.getGoalList();
+        for(int i=0;i<GoalList.size();i++){
+            goal_list.add(GoalList.get(i).getGoal_name());
+        }
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, GoalList);
+                android.R.layout.simple_spinner_dropdown_item, goal_list);
         Spinner s = (Spinner) addTaskDialog.findViewById(R.id.goalSpinner);
         s.setAdapter(arrayAdapter); //adapter를 spinner에 연결
 
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                System.out.println("!!position : " + position + parent.getItemAtPosition(position));
+                System.out.println("!!position : " + position + parent.getItemAtPosition(position));
                 fb_long = parent.getItemAtPosition(position).toString();
             }
 
@@ -236,6 +239,15 @@ public class TableByDayEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 add_task_thread(taskLabel);
+
+                //일정 정보 firebase 추가
+                UserID = user.getUserID(); //로그인안한 경우 비회원으로 저장
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("시작시간").setValue(fb_strt);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("종료시간").setValue(fb_endt);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("평가").setValue(0);
+                myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("장기목표").setValue(fb_long);
+
                 addTaskDialog.dismiss();
             }
         });
@@ -255,6 +267,10 @@ public class TableByDayEditActivity extends AppCompatActivity {
                 Looper.prepare();
                 PieEntry yValues_entry;
                 int background_entry;
+
+                fb_strt = strt;
+                fb_endt = endt;
+                fb_task = taskLabel.getText().toString().trim();
 
                 start_times = strt.split(" : ");
                 int new_str = (int) (Integer.parseInt(start_times[0]) * 60 + Integer.parseInt(start_times[1])) % 1440;
@@ -387,6 +403,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         String strHour, strMinute;
         PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
         taskLabelLine.setText(dataSet.getValues().get(index).getLabel());
+        template.setText(dataSet.getValues().get(index).getLabel());
         template.setBackgroundColor(myTimeTable.getMyBackground().get(index));
 
         List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
@@ -483,7 +500,7 @@ public class TableByDayEditActivity extends AppCompatActivity {
         template.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "변경되었습니다", Toast.LENGTH_SHORT).show();
                 showColorPicker(template, index);
             }
         });
@@ -494,16 +511,9 @@ public class TableByDayEditActivity extends AppCompatActivity {
     //날짜, 시간 다이얼로그 띄우는 함수
     public void onClickSet(View view) {
         Calendar cal = Calendar.getInstance();
-        int mYear = cal.get(Calendar.YEAR);
-        int mMonth = cal.get(Calendar.MONTH);
-        int mDay = cal.get(Calendar.DAY_OF_MONTH);
         String mTime, times[];
 
-        if (view == dateButton) {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
-            datePickerDialog.show();
-            Log.i("date button", mYear + "/" + mMonth + "/" + mDay);
-        } else if (view == startTimeButton) {
+        if (view == startTimeButton) {
             flag_time = 1;
             mTime = (String) startTimeButton.getText();
             times = mTime.split(" : ");

@@ -51,7 +51,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
     String start_times[], end_times[];
     private int flag_time;
 
-    User users = new User();
+//    User users = new User();
     private String fb_date, fb_strt, fb_endt, fb_task, fb_long, UserID;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -116,7 +116,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
         DONE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                users.addDateTable(myTimeTable);
+                //Todo DB 저장
+//                users.addDateTable(myTimeTable);
             }
         });
     }
@@ -127,11 +128,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             month += 1;
             dateButton.setText(year + " / " + month + " / " + dayOfMonth);
+            myTimeTable.setDate(year + " / " + month + " / " + dayOfMonth);
             fb_date = year + "년 " + month + "월 " + dayOfMonth + "일";
-            Description description = new Description();
-            description.setText(year + " / " + month + " / " + dayOfMonth);
-            description.setTextSize(15);
-            pieChart.setDescription(description);
         }
     }
 
@@ -225,7 +223,6 @@ public class TableByDateEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 add_task_thread(taskLabel);
                 Toast.makeText(getApplicationContext(), "" + taskLabel.getText().toString().trim(), Toast.LENGTH_LONG).show();
-                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
 
                 //일정 정보 firebase 추가
                 UserID = user.getUserID(); //로그인안한 경우 비회원으로 저장
@@ -234,6 +231,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("방해요소").setValue(0);
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("평가").setValue(0);
                 myRef.child(UserID).child("날짜별 일정").child(fb_date).child(fb_task).child("장기목표").setValue(fb_long);
+
+                addTaskDialog.dismiss(); // Cancel 버튼을 누르면 다이얼로그가 사라짐
             }
         });
 
@@ -263,7 +262,8 @@ public class TableByDateEditActivity extends AppCompatActivity {
                 int new_end = (int) (Integer.parseInt(end_times[0]) * 60 + Integer.parseInt(end_times[1])) % 1440;
 
                 boolean done = false;
-                int entry_str = 0, entry_end = 0;
+                int entry_str = 0;
+                int entry_end = (int) (0 - 4 * rotate);
 
                 //기존의 파이차트 정보와 추가할 일정 정보 합치기
                 ArrayList<PieEntry> yValues_new = new ArrayList<PieEntry>();
@@ -374,7 +374,6 @@ public class TableByDateEditActivity extends AppCompatActivity {
 
         Dialog decoTaskDialog = new Dialog(this);
         decoTaskDialog.setContentView(R.layout.decorate_dialog);
-        decoTaskDialog.setTitle("일정 추가");
 
         ImageButton exit = (ImageButton) decoTaskDialog.findViewById(R.id.exit);
         TextView taskLabelLine = (TextView) decoTaskDialog.findViewById(R.id.task_label_show);
@@ -386,6 +385,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
         String strHour, strMinute;
         PieDataSet dataSet = (PieDataSet) myTimeTable.getPieData().getDataSet();
         taskLabelLine.setText(dataSet.getValues().get(index).getLabel());
+        template.setText(dataSet.getValues().get(index).getLabel());
         template.setBackgroundColor(myTimeTable.getMyBackground().get(index));
 
         List<PieEntry> yValues = ((PieDataSet) myTimeTable.getPieData().getDataSet()).getValues();
@@ -482,7 +482,7 @@ public class TableByDateEditActivity extends AppCompatActivity {
         template.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "pieColorButton done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "변경되었습니다", Toast.LENGTH_SHORT).show();
                 showColorPicker(template, index);
             }
         });
