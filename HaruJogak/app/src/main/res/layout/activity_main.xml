@@ -36,13 +36,19 @@
         android:background="@drawable/eyegold2"
         android:layout_marginTop="80dp">
 
-         <com.github.mikephil.charting.charts.PieChart
-             android:id="@+id/todayPieChart"
-             android:layout_width="300dp"
-             android:layout_height="300dp" />
 
-     </LinearLayout>
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/todayPieChart"
+            android:layout_width="320dp"
+            android:layout_height="300dp">
 
+        </com.github.mikephil.charting.charts.PieChart>
+    </LinearLayout>
+    <Button
+        android:id="@+id/sche_click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시간표 확인 클릭" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
