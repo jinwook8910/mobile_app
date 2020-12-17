@@ -21,4 +21,17 @@ public class ScheduleList extends ArrayList<Schedule> {
         }
         return result_label;
     }
+    //해당 날짜 schedule 객체 찾기
+    public Schedule searchObject(String date){
+        User user = User.getInstance();
+        ScheduleList sl = user.getScheduleList();
+        Iterator<Schedule> sl_iter = sl.iterator();
+        while(sl_iter.hasNext()){
+            Schedule schedule = sl_iter.next();
+            if(schedule.date.equals(date)){
+                return schedule;
+            }
+        }
+        return null;
+    }
 }

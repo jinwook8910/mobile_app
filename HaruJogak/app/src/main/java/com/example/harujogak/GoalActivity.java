@@ -142,8 +142,8 @@ public class GoalActivity extends AppCompatActivity {
                 //목표 날짜
                 dcalendar.set(year, month, dayOfMonth);
                 String date=Integer.toString(year)+"년 "+Integer.toString(month+1)+"월 "+Integer.toString(dayOfMonth)+"일";
-                goal_date[0] = String.format("%d / %d / %d",year,month+1,dayOfMonth);
-                start_day[0]=String.format("%d / %d / %d",tYear,tMonth+1,tDay);
+                goal_date[0] = String.format("%d - %d - %d",year,month+1,dayOfMonth);
+                start_day[0]=String.format("%d - %d - %d",tYear,tMonth+1,tDay);
 
                 //날짜 초단위로 변경
                 t=tcalendar.getTimeInMillis()/(24*60*60*1000);
@@ -176,10 +176,6 @@ public class GoalActivity extends AppCompatActivity {
                 //바로 화면에 추가되려면?
                 adapter.notifyDataSetChanged(); //adapter에 데이터 변경 알림
 
-//                //여기서 바로 firebase에 추가하는 경우
-//                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 D-day").setValue(dday[0]);
-//                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("목표 날짜").setValue(goal_date[0]);
-//                myRef.child(UserID).child("목표리스트").child(goal_input.getText().toString()).child("시작 날짜").setValue(start_day[0]);
                 //firebase에 저장
                 Goal new_goal = new Goal(goal_input.getText().toString(), start_day[0], goal_date[0]);
                 User.getInstance().addGoal(new_goal); //왜 메인페이지로 돌아가지..
@@ -285,6 +281,7 @@ public class GoalActivity extends AppCompatActivity {
     class Listener implements View.OnClickListener{
         public void onClick(View view){
             if(view==btn1){
+                User.loadScheduleList();
                 Intent intent = new Intent(GoalActivity.this, GoalActivity.class);
                 startActivity(intent);
             }

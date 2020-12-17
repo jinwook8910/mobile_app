@@ -128,11 +128,11 @@ public class User {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
                             String date = ds.getKey();
-                            String[] pie_size_temp = ds.child("파이크기").getValue().toString().split("/"); //{"32f/510f/12f"} 형태로 저장
-                            String[] pie_label_temp = ds.child("파이라벨").getValue().toString().split("/"); //{"라벨1/라벨2/라벨3"} 형태로 저장
+                            String[] pie_size_temp = ds.child("파이크기").getValue().toString().split("<>"); //{"32f<>510f<>12f"} 형태로 저장
+                            String[] pie_label_temp = ds.child("파이라벨").getValue().toString().split("<>"); //{"라벨1<>라벨2<>라벨3"} 형태로 저장
                             String count_temp = ds.child("일정갯수").getValue().toString();
-                            String[] color_temp = ds.child("배경색").getValue().toString().split("/"); //{"1321/510/12231"} 형태로 저장
-                            String[] rating_temp = ds.child("평가").getValue().toString().split("/");//{"3/2/5/0"}형태로 저장
+                            String[] color_temp = ds.child("배경색").getValue().toString().split("<>"); //{"1321<>510<>12231"} 형태로 저장
+                            String[] rating_temp = ds.child("평가").getValue().toString().split("<>");//{"3<>2<>5<>0"}형태로 저장
 
                             ArrayList<PieEntry> piedatas = new ArrayList<PieEntry>();
                             int i;
@@ -218,8 +218,8 @@ public class User {
                     done = true;
                 }
                 else {
-                    pie_sizes.concat("/" + pie_size_temp.toString());
-                    pie_labels.concat("/" + pieEntries.get(i).getLabel());
+                    pie_sizes.concat("<>" + pie_size_temp.toString());
+                    pie_labels.concat("<>" + pieEntries.get(i).getLabel());
                 }
             }
             data.child(table.getDate()).child("파이크기").setValue(pie_sizes);
@@ -238,7 +238,7 @@ public class User {
                     done2=true;
                 }
                 else{
-                    color.concat("/"+colors.get(j).toString());
+                    color.concat("<>"+colors.get(j).toString());
                 }
             }
             //평가
@@ -274,11 +274,11 @@ public class User {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         if (ds.getValue() != null) {
                             String date = ds.getKey();
-                            String[] pie_size_temp = ds.child("파이크기").getValue().toString().split("/"); //{"32f/510f/12f"} 형태로 저장
-                            String[] pie_label_temp = ds.child("파이라벨").getValue().toString().split("/"); //{"라벨1/라벨2/라벨3"} 형태로 저장
+                            String[] pie_size_temp = ds.child("파이크기").getValue().toString().split("<>"); //{"32f<>510f<>12f"} 형태로 저장
+                            String[] pie_label_temp = ds.child("파이라벨").getValue().toString().split("<>"); //{"라벨1<>라벨2<>라벨3"} 형태로 저장
                             String count_temp = ds.child("일정갯수").getValue().toString();
-                            String[] color_temp = ds.child("배경색").getValue().toString().split("/"); //{"1321/510/12231"} 형태로 저장
-                            String[] rating_temp = ds.child("평가").getValue().toString().split("/");//{"3/2/5/0"}형태로 저장
+                            String[] color_temp = ds.child("배경색").getValue().toString().split("<>"); //{"1321<>510<>12231"} 형태로 저장
+                            String[] rating_temp = ds.child("평가").getValue().toString().split("<>");//{"3<>2<>5<>0"}형태로 저장
 
                             ArrayList<PieEntry> piedatas = new ArrayList<PieEntry>();
                             int i;
@@ -473,12 +473,17 @@ public class User {
             if(!start)
                 label=l;
             else
-                label.concat("/"+l);
+                label.concat("<>"+l);
             start = true;
         }
 
+        String[] date = new String[1];
+        String[] label_list = new String[1];
+        date[0] = new_schedule.getDate();
+        label_list[0] = label;
+        System.out.println("umm... "+new_schedule.getDate());
         data = myRef.child(UserID).child("일정리스트");
-        data.child(new_schedule.getDate()).child("일정").setValue(label);
+        data.child(date[0]).child("일정").setValue(label_list[0]);
     }
 
     public static void loadScheduleList(){
@@ -498,8 +503,8 @@ public class User {
                         if (ds.getValue() != null) {
                             String date = ds.getKey();
                             ArrayList<String> label = new ArrayList<>();
-                            String temp = ds.child("일정").getValue().toString(); //{"일정1/일정2/일정3"}
-                            String[] temps = temp.split("/");
+                            String temp = ds.child("일정").getValue().toString(); //{"일정1.일정2.일정3"}
+                            String[] temps = temp.split("<>");
                             int i;
                             for(i=0;i<temps.length;i++){
                                 label.add(temps[i]);

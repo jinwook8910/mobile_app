@@ -70,8 +70,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         GridView gv = (GridView) findViewById(R.id.gridView1);
         RecyclerView recyclerView = findViewById(R.id.recycler1);
 
-        setdata1();
-        setdata3();
         setdata2(); // 유저 정보 연결되면 삭제될 부분
         addToWeekList();
         addToDateList(this);
@@ -98,49 +96,17 @@ public class TimeTableListActivity extends AppCompatActivity {
 
     } // end of onCreate
 
-    public void setdata1(){
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(1440, "Jan"));
-
-        PieDataSet dataSet = new PieDataSet(yValues, "temp");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-        data.setValueTextColor(Color.YELLOW);
-
-        exT1.setPieData(data);
-        exT1.setDate("2020-12-12");
-    }
-    public void setdata3(){
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(1500, "Jan"));
-
-        PieDataSet dataSet = new PieDataSet(yValues, "temp");
-        dataSet.setSliceSpace(0.5f);
-        dataSet.setSelectionShift(0f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(0f);
-        data.setValueTextColor(Color.YELLOW);
-
-        exT2.setPieData(data);
-        exT2.setDate("2020-12-12");
-    }
     public void setdata2() {
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        yValues.add(new PieEntry(40f, "Jan"));
-        yValues.add(new PieEntry(13f, "S"));
-        yValues.add(new PieEntry(17f, "U"));
-        yValues.add(new PieEntry(35f, "I"));
-        yValues.add(new PieEntry(20f, "R"));
-        yValues.add(new PieEntry(40f, "K"));
+        yValues.add(new PieEntry(60f, "잠"));
+        yValues.add(new PieEntry(10f, "아침식사"));
+        yValues.add(new PieEntry(35f, "공부"));
+        yValues.add(new PieEntry(20f, "휴식"));
+        yValues.add(new PieEntry(10f, "점심식사"));
+        yValues.add(new PieEntry(35f, "운동"));
+        yValues.add(new PieEntry(20f, "휴식"));
+        yValues.add(new PieEntry(10f, "저녁식사"));
 
         PieDataSet dataSet = new PieDataSet(yValues, "temp");
         dataSet.setSliceSpace(0.5f);
@@ -155,8 +121,6 @@ public class TimeTableListActivity extends AppCompatActivity {
         exT.setDate("2020-12-12");
 
         //임시로 만든 user에 dateTable 만들어줌
-        user.getDateTable().add(exT1);
-        user.getDateTable().add(exT2);
         user.getDateTable().add(exT);
         user.getDateTable().add(exT);
         user.getDateTable().add(exT);

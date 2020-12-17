@@ -4,15 +4,8 @@ package com.example.harujogak;
 //        목표 리스트를 보여주는 화면을 먼저 만들고 거기서 다시 추가, 수정, 삭제 가능하도록
 //        보여주는 것은 목표 이름, D-Day만
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -22,8 +15,8 @@ public class Goal {
     int sum=0;
     int count1=0,count2=0; //for percent
     private String goal_name; //목표 이름
-    private String startday; //"2020 / 00 / 00" 형태 날짜로 저장 - 시작일(통계를 위한 값)
-    private String deadline; //"2020 / 00 / 00" 형태 날짜로 저장 - 마감일
+    private String startday; //"2020 - 00 - 00" 형태 날짜로 저장 - 시작일(통계를 위한 값)
+    private String deadline; //"2020 - 00 - 00" 형태 날짜로 저장 - 마감일
     private int percent;
 
     public Goal(String gn, String sd, String dl){
